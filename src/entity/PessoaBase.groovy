@@ -2,11 +2,12 @@ package entity
 
 import Interface.Pessoa
 
-class PessoaBase implements Pessoa{
+class PessoaBase implements Pessoa {
     String nome
     String email
     String cep
     List<String> competencias = []
+    List<Curtida> curtidas = []
 
     PessoaBase(String nome, String email, String cep, List<String> competencias) {
         this.nome = nome
@@ -15,22 +16,18 @@ class PessoaBase implements Pessoa{
         this.competencias = competencias
     }
 
-    @Override
     String getNome() {
         return nome
     }
 
-    @Override
     String getEmail() {
         return email
     }
 
-    @Override
     String getCep() {
         return cep
     }
 
-    @Override
     List<String> getCompetencias() {
         return competencias
     }
