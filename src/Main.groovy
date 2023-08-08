@@ -88,14 +88,17 @@ linketinder.cadastrarEmpresa(empresa5)
 
 def opcao = 0
 def reader = new BufferedReader(new InputStreamReader(System.in))
-while (opcao != 6) {
+
+while (opcao != 7) {
     println("\nMenu:")
     println("1 - Listar empresas")
     println("2 - Listar candidatos")
     println("3 - Cadastrar novo candidato")
     println("4 - Cadastrar nova empresa")
-    println("5 - Encontrar match de candidatos")
-    println("6 - Sair")
+    println("5 - Curtir uma vaga")
+    println("6 - Curtir um candidato")
+    println("7 - Encontrar match de candidatos")
+    println("8 - Sair")
     print("Escolha uma opção: ")
 
     try {
@@ -119,16 +122,33 @@ while (opcao != 6) {
                 println("Empresa cadastrada com sucesso!")
                 break
             case 5:
-                print("Informe as competências desejadas (separadas por vírgula): ")
-                def competenciasDesejadas = reader.readLine().split(',').toList()
-                def resultado = linketinder.encontrarMatch(competenciasDesejadas)
-
-                println("Candidatos compatíveis:")
-                resultado.each { candidato ->
-                    println("Nome: ${candidato.nome}, Competências: ${candidato.competencias}")
-                }
+                println("Digite o nome do candidato que curtiu a vaga: ")
+                def nomeCandidatoVaga = reader.readLine()
+                println("Digite o nome da empresa da vaga curtida: ")
+                def nomeEmpresaVaga = reader.readLine()
+                linketinder.curtirVaga(nomeCandidatoVaga, nomeEmpresaVaga)
+                println("Vaga curtida com sucesso!")
                 break
             case 6:
+                println("Digite o nome da empresa que curtiu o candidato: ")
+                def nomeEmpresaCandidato = reader.readLine()
+                println("Digite o nome do candidato curtido: ")
+                def nomeCandidatoCurtido = reader.readLine()
+                linketinder.curtirCandidato(nomeEmpresaCandidato, nomeCandidatoCurtido)
+                println("Candidato curtido com sucesso!")
+                break
+            case 7:
+                def matches = linketinder.encontrarMatches()
+                if (matches.isEmpty()) {
+                    println("Nenhum match encontrado.")
+                } else {
+                    println("Matches encontrados:")
+                    matches.each { curtida ->
+                        println("Candidato: ${curtida.candidato.nome}, Empresa: ${curtida.empresa.nome}")
+                    }
+                }
+                break
+            case 8:
                 println("Saindo...")
                 break
             default:
