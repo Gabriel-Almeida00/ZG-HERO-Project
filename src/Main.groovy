@@ -1,5 +1,8 @@
+
+
 import entity.Candidato
 import entity.Empresa
+
 import service.LinkeTinder
 
 def criarCandidato(reader) {
