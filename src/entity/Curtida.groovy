@@ -2,10 +2,10 @@ package entity
 
 class Curtida {
     PessoaBase candidato
-    PessoaBase empresa
+    Vaga vaga
 
-    Curtida(PessoaBase candidato, PessoaBase empresa) {
+    Curtida(PessoaBase candidato, Vaga vaga) {
         this.candidato = candidato
-        this.empresa = empresa
+        this.vaga = vaga
     }
 }

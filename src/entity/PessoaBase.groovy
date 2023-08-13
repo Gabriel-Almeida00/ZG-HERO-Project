@@ -1,19 +1,16 @@
 package entity
 
-import Interface.Pessoa
 
-class PessoaBase implements Pessoa {
+class PessoaBase  {
     String nome
     String email
     String cep
-    List<String> competencias = []
     List<Curtida> curtidas = []
 
-    PessoaBase(String nome, String email, String cep, List<String> competencias) {
+    PessoaBase(String nome, String email, String cep) {
         this.nome = nome
         this.email = email
         this.cep = cep
-        this.competencias = competencias
     }
 
     String getNome() {
@@ -28,7 +25,8 @@ class PessoaBase implements Pessoa {
         return cep
     }
 
-    List<String> getCompetencias() {
-        return competencias
+    List<Curtida> getCurtidas() {
+        return curtidas
     }
+
 }
