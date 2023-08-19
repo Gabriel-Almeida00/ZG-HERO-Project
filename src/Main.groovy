@@ -1,12 +1,5 @@
-
-
-import entity.Candidato
-import entity.Empresa
-
-import service.LinkeTinder
-
 def criarCandidato(reader) {
-    print("Nome: ")
+  /*  print("Nome: ")
     def nome = reader.readLine()
 
     print("Email: ")
@@ -160,4 +153,6 @@ while (opcao != 7) {
     } catch (NumberFormatException e) {
         println("Opção inválida, tente novamente.")
     }
+
+   */
 }

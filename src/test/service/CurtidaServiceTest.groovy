@@ -4,18 +4,16 @@ import entity.Candidato
 import entity.Empresa
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import service.CandidatoService
-import service.CurtidaService
-import service.EmpresaService
+import service.CurtidaCandidatoService
 
 class CurtidaServiceTest {
-    CurtidaService service
+    CurtidaCandidatoService service
     Empresa empresa
     Candidato candidato
 
     @BeforeEach
     void setUp() {
-        service = new CurtidaService()
+        service = new CurtidaCandidatoService()
         service.empresas = []
         service.candidatos = []
 

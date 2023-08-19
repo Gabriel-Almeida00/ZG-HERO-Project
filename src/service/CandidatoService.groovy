@@ -1,10 +1,9 @@
 package service
 
-import Interface.CandidatoInterface
+import Interface.ICandidato
 import entity.Candidato
-import entity.Curtida
 
-class CandidatoService implements CandidatoInterface {
+class CandidatoService implements ICandidato {
     List<Candidato> candidatos = []
 
     List<Candidato> listarCandidatos() {

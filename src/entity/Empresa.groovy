@@ -1,6 +1,6 @@
 package entity
 
-class Empresa extends PessoaBase{
+class Empresa extends Pessoa{
     String cnpj
     String pais
     String estado

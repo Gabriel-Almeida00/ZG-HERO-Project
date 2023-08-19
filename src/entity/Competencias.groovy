@@ -1,10 +1,12 @@
 package entity
 
+import entity.enums.NivelCompetencia
+
 class Competencias {
     String nome
-    int nivel
+    NivelCompetencia nivel
 
-    Competencias(String nome, int nivel) {
+    Competencias(String nome, NivelCompetencia nivel) {
         this.nome = nome
         this.nivel = nivel
     }

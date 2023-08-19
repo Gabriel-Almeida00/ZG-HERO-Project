@@ -1,12 +1,10 @@
 package service
 
-import Interface.EmpresaInterface
-import entity.Candidato
-import entity.Curtida
+import Interface.IEmpresa
 import entity.Empresa
 import entity.Vaga
 
-class EmpresaService implements EmpresaInterface{
+class EmpresaService implements IEmpresa{
     List<Empresa> empresas = []
 
     List<Empresa> listarEmpresas() {

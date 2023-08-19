@@ -1,11 +1,13 @@
 package entity
 
-class Curtida {
-    PessoaBase candidato
-    Vaga vaga
+import java.time.Instant
 
-    Curtida(PessoaBase candidato, Vaga vaga) {
+abstract class Curtida {
+    Candidato candidato
+    Instant dataHora
+
+    Curtida(Candidato candidato) {
         this.candidato = candidato
-        this.vaga = vaga
+        this.dataHora = Instant.now()
     }
 }
