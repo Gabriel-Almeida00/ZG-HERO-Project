@@ -16,7 +16,7 @@ class EmpresaService implements IEmpresa{
     }
 
     void criarVaga(String nomeEmpresa, Vaga vaga) {
-        def empresa = empresas.find { it.nome == nomeEmpresa }
+        Empresa empresa = empresas.find { it.nome == nomeEmpresa }
 
         if (empresa) {
             empresa.getVagas().add(vaga)

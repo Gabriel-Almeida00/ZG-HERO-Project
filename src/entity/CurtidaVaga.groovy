@@ -7,12 +7,4 @@ class CurtidaVaga extends Curtida {
         super(candidato)
         this.vaga = vaga
     }
-
-    Candidato getCandidato() {
-        return candidato
-    }
-
-    Vaga getVaga() {
-        return vaga
-    }
 }

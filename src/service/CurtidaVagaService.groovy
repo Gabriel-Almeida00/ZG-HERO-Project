@@ -8,7 +8,7 @@ import entity.Vaga
 class CurtidaVagaService implements  ICurtdaVaga{
 
     void curtirVaga(Candidato candidato, Vaga vaga) {
-        def curtida = new CurtidaVaga(candidato)
+        CurtidaVaga curtida = new CurtidaVaga(candidato, vaga)
         vaga.getCurtidas().add(curtida)
     }
 }

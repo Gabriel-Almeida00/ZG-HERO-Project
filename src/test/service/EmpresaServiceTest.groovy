@@ -3,6 +3,9 @@ package test.service
 import entity.Competencias
 import entity.Empresa
 import entity.Vaga
+import entity.enums.NivelCompetencia
+import entity.enums.NivelExperiencia
+import entity.enums.NivelFormacao
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import service.EmpresaService
@@ -51,7 +54,16 @@ class EmpresaServiceTest {
 
     @Test
     void testCriarVaga() {
-        Vaga vaga = new Vaga("Desenvolvedor Java", "Descrição da vaga", [new Competencias("Java",3)])
+        Vaga vaga = new Vaga(
+                "Desenvolvedor Java",
+                "Descrição da vaga",
+                [new Competencias(
+                        "Java",
+                        NivelCompetencia.Basico
+                )],
+                NivelFormacao.Graduacao,
+                NivelExperiencia.Junior)
+
         service.criarVaga("Empresa A", vaga)
 
         assert empresa.getVagas().size() == 1
