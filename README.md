@@ -59,12 +59,39 @@ O modelo pode ser visualizado em detalhes no arquivo [linketinder_model.png](htt
 
 Script sql para criação:([https://github.com/Gabriel-Almeida00/ZG-HERO-Project/blob/main/src/sql/linketinder.pdf](https://github.com/Gabriel-Almeida00/ZG-HERO-Project/blob/main/src/sql/linketinder).
 
+# Lógica de Matches com Tabelas Intermediárias
+
+Este documento descreve a lógica de matches implementada no sistema Linketinder, utilizando duas tabelas intermediárias para representar as curtidas entre candidatos e vagas, bem como entre empresas e candidatos.
+
+## Funcionamento da Lógica de Matches
+
+A lógica de matches no Linketinder envolve a criação de curtidas tanto por parte dos candidatos em vagas quanto por parte das empresas em candidatos. A partir dessas curtidas, é possível identificar matchs e permitir que as partes entrem em contato.
+
+### Tabelas Intermediárias
+
+Foram criadas duas tabelas intermediárias para registrar as curtidas:
+
+1. Tabela `vagas_curtidas`: Relaciona candidatos e vagas que foram curtidas. Possui colunas `idCandidato` e `idVaga`.
+
+2. Tabela `candidatos_curtidos`: Relaciona empresas e candidatos que foram curtidos. Possui colunas `idCandidato` e `idEmpresa`.
+
+## Identificação de Matchs
+
+A identificação de matchs ocorre quando tanto o candidato quanto a empresa têm um interesse mútuo. Isso é verificado através de uma consulta SQL que junta as duas tabelas intermediárias, verificando se há correspondência nas curtidas.
+
+### Exemplo de Consulta SQL
+
+A seguinte consulta SQL é usada para identificar matchs:
+
+```sql
+SELECT vc.idCandidato, vc.idVaga
+FROM vagas_curtidas vc
+JOIN candidatos_curtidos cc ON vc.idCandidato = cc.idCandidato AND vc.idVaga = cc.idEmpresa;
+```
+
 ## PostgreSQL
 
 O banco de dados foi implementado usando o sistema de gerenciamento de banco de dados PostgreSQL. O PostgreSQL é uma escolha sólida para sistemas relacionais, oferecendo robustez, escalabilidade e recursos avançados.
-
-
-
 
 
 ## Contribuição
