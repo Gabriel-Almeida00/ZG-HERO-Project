@@ -1,42 +1,147 @@
 package entity
 
-class Candidato extends Pessoa {
-    String cpf
-    int idade
-    String estado
-    String descricaoPessoal
-    List<Competencias> competencias = []
-    List<Formacao> formacoes = []
-    List<Experiencia> experiencias = []
-    List<CurtidaCandidato> curtidas = []
+class Candidato   {
 
-    Candidato(
-            String nome,
-            String email,
-            String cep,
-            String cpf,
-            int idade,
-            String estado,
-            String descricaoPessoal,
-            List<Competencias> competencias,
-            List<Formacao> formacoes,
-            List<Experiencia> experiencias)
+    Integer id
+    String nome
+    String sobrenome
+    Date dataNascimento
+    String email
+    String cpf
+    String pais
+    String cep
+    String descricao
+    String senha
+    List<CandidatoCompetencia> competencias
+    List<Formacao> formacoes
+    List<Experiencia> experiencias
+
+    Candidato(String nome,
+              String sobrenome,
+              Date dataNascimento,
+              String email,
+              String cpf,
+              String pais,
+              String cep,
+              String descricao,
+              String senha)
     {
-        super(nome, email, cep)
+        this.nome = nome
+        this.sobrenome = sobrenome
+        this.dataNascimento = dataNascimento
+        this.email = email
         this.cpf = cpf
-        this.idade = idade
-        this.estado = estado
-        this.descricaoPessoal = descricaoPessoal
-        this.competencias = competencias
-        this.formacoes = formacoes
-        this.experiencias = experiencias
+        this.pais = pais
+        this.cep = cep
+        this.descricao = descricao
+        this.senha = senha
+        competencias = []
+        formacoes = []
+        experiencias = []
     }
 
-    List<Competencias> getCompetencias() {
+    Integer getId() {
+        return id
+    }
+
+    void setId(Integer id) {
+        this.id = id
+    }
+
+    String getNome() {
+        return nome
+    }
+
+    void setNome(String nome) {
+        this.nome = nome
+    }
+
+    String getSobrenome() {
+        return sobrenome
+    }
+
+    void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome
+    }
+
+    Date getDataNascimento() {
+        return dataNascimento
+    }
+
+    void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento
+    }
+
+    String getEmail() {
+        return email
+    }
+
+    void setEmail(String email) {
+        this.email = email
+    }
+
+    String getCpf() {
+        return cpf
+    }
+
+    void setCpf(String cpf) {
+        this.cpf = cpf
+    }
+
+    String getPais() {
+        return pais
+    }
+
+    void setPais(String pais) {
+        this.pais = pais
+    }
+
+    String getCep() {
+        return cep
+    }
+
+    void setCep(String cep) {
+        this.cep = cep
+    }
+
+    String getDescricao() {
+        return descricao
+    }
+
+    void setDescricao(String descricao) {
+        this.descricao = descricao
+    }
+
+    String getSenha() {
+        return senha
+    }
+
+    void setSenha(String senha) {
+        this.senha = senha
+    }
+
+
+    List<CandidatoCompetencia> getCompetencias() {
         return competencias
     }
 
-    List<CurtidaCandidato> getCurtidas() {
-        return curtidas
+    void setCompetencias(List<CandidatoCompetencia> competencias) {
+        this.competencias = competencias
+    }
+
+    List<Formacao> getFormacoes() {
+        return formacoes
+    }
+
+    void setFormacoes(List<Formacao> formacoes) {
+        this.formacoes = formacoes
+    }
+
+    List<Experiencia> getExperiencias() {
+        return experiencias
+    }
+
+    void setExperiencias(List<Experiencia> experiencias) {
+        this.experiencias = experiencias
     }
 }

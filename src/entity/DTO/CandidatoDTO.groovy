@@ -2,7 +2,7 @@ package entity.DTO
 
 import entity.Candidato
 import entity.Competencias
-import entity.CurtidaCandidato
+import entity.CandidatoCurtido
 import entity.Experiencia
 import entity.Formacao
 
@@ -10,7 +10,7 @@ class CandidatoDTO {
     List<Competencias> competencias = []
     List<Formacao> formacoes = []
     List<Experiencia> experiencias = []
-    List<CurtidaCandidato> curtidas = []
+    List<CandidatoCurtido> curtidas = []
 
     CandidatoDTO(Candidato candidato) {
         this.competencias = candidato.getCompetencias()

@@ -2,27 +2,34 @@ package test.service
 
 import entity.Candidato
 import entity.Competencias
-import entity.CurtidaVaga
+import entity.Empresa
 import entity.Experiencia
 import entity.Formacao
-import entity.Vaga
 import entity.enums.NivelCompetencia
 import entity.enums.NivelExperiencia
 import entity.enums.NivelFormacao
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import service.CurtidaVagaService
+import service.CurtidaCandidatoService
 
-class CurtidaVagaServiceTest {
+class CandidatoCurtidoServiceTest {
 
-    private CurtidaVagaService service
-    private Candidato candidato
-    private Vaga vaga
+    CurtidaCandidatoService curtidaCandidatoService
+    Empresa empresa
+    Candidato candidato
 
     @BeforeEach
     void setUp() {
-        service = new CurtidaVagaService()
-
+        curtidaCandidatoService = new CurtidaCandidatoService()
+        empresa = new Empresa(
+                "Nome da Empresa",
+                "email@empresa.com",
+                "12345678",
+                "12345678901234",
+                "Brasil",
+                "São Paulo",
+                "Descrição da Empresa"
+        )
         candidato = new Candidato(
                 "João",
                 "joao@gmail.com",
@@ -43,23 +50,13 @@ class CurtidaVagaServiceTest {
                         "dev backend",
                         "tech ltda",
                         NivelExperiencia.Estagio)])
-
-        vaga = new Vaga(
-                "Vaga de Desenvolvedor",
-                "Descrição da vaga",
-                [new Competencias(
-                        "Java",
-                        NivelCompetencia.Basico
-                )],
-                NivelFormacao.Graduacao,
-                NivelExperiencia.Junior)
     }
 
     @Test
-    void testCurtirVaga() {
-        service.curtirVaga(candidato, vaga)
+    void testCurtirCandidato() {
+        curtidaCandidatoService.curtirCandidato(empresa, candidato)
 
-        assert vaga.curtidas.size() == 1
-        assert vaga.curtidas[0].candidato == candidato
+        assert candidato.getCurtidas().size() == 1
+        assert candidato.getCurtidas()[0].empresa == empresa
     }
 }
