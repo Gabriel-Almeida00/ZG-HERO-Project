@@ -1,10 +1,7 @@
 package test.service
 
-import db.DatabaseConnection
 import db.IDatabaseConnection
 import entity.Candidato
-import org.junit.jupiter.api.BeforeEach
-import org.mockito.Mock
 
 import static org.mockito.Mockito.*;
 import java.sql.*;
@@ -45,5 +42,41 @@ class CandatoServiceTest {
         // Verifique as interações com os mocks
         verify(databaseConnectionMock).prepareStatement(anyString());
         verify(statementMock).executeQuery();
+    }
+
+    @Test
+    void testCadastrarCandidato() throws SQLException {
+        // Crie um mock da IDatabaseConnection
+        IDatabaseConnection databaseConnectionMock = mock(IDatabaseConnection.class);
+
+        // Crie um mock de PreparedStatement
+        PreparedStatement statementMock = mock(PreparedStatement.class);
+
+        // Defina o comportamento do mock da IDatabaseConnection
+        when(databaseConnectionMock.prepareStatement(anyString())).thenReturn(statementMock);
+
+        // Crie uma instância de CandidatoService usando o mock da IDatabaseConnection
+        CandidatoService candidatoService = new CandidatoService(databaseConnectionMock);
+
+        // Dados do candidato para o teste
+        Candidato candidato = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123");
+
+        // Chame o método a ser testado
+        candidatoService.cadastrarCandidato(candidato);
+
+        // Verifique as interações com os mocks
+        verify(databaseConnectionMock).prepareStatement(anyString());
+        verify(statementMock).setString(1, candidato.getNome());
+        verify(statementMock).setString(2, candidato.getSobrenome());
+        verify(statementMock).executeUpdate();
     }
 }
