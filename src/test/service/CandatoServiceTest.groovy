@@ -1,87 +1,54 @@
 package test.service
 
-import db.IDatabaseConnection
+import dao.candidato.ICandidatoCompetenciaDao
+import dao.candidato.ICandidatoDao
+import dao.candidato.IExperienciaDao
+import dao.candidato.IFormacaoDao
 import entity.Candidato
+import entity.Competencias
 import entity.Experiencia
 import entity.Formacao
 import org.junit.jupiter.api.BeforeEach
-
+import org.junit.jupiter.api.Test
 import static org.mockito.Mockito.*;
-import java.sql.*;
-import org.junit.jupiter.api.Test;
-import service.CandidatoService;
+import service.CandidatoServiceService
 
+import java.sql.SQLException
 
 class CandatoServiceTest {
 
-    private IDatabaseConnection databaseConnectionMock;
-    private Connection connectionMock;
-    private PreparedStatement statementMock;
-    private ResultSet resultSetMock;
+    private ICandidatoDao candidatoDaoMock;
+    private ICandidatoCompetenciaDao candidatoCompetenciaDao
+    private IExperienciaDao experienciaDao
+    private IFormacaoDao formacaoDao
+    private CandidatoServiceService candidatoService;
 
     @BeforeEach
     void setup() {
-        databaseConnectionMock = mock(IDatabaseConnection.class);
-        connectionMock = mock(Connection.class);
-        statementMock = mock(PreparedStatement.class);
-        resultSetMock = mock(ResultSet.class);
-
-        when(databaseConnectionMock.getConnection()).thenReturn(connectionMock);
+        candidatoDaoMock = mock(ICandidatoDao.class);
+        candidatoCompetenciaDao = mock(ICandidatoCompetenciaDao.class)
+        experienciaDao = mock(IExperienciaDao.class)
+        formacaoDao = mock(IFormacaoDao.class)
+        candidatoService = new CandidatoServiceService(candidatoDaoMock, candidatoCompetenciaDao, experienciaDao, formacaoDao);
     }
 
     @Test
     void testListarCandidatos() throws SQLException {
+        List<Candidato> candidatosMock = new ArrayList<>();
 
-        when(databaseConnectionMock.prepareStatement(anyString())).thenReturn(statementMock);
-        when(statementMock.executeQuery()).thenReturn(resultSetMock);
-        when(resultSetMock.next()).thenReturn(true, true, false);
-        when(resultSetMock.getString("nome")).thenReturn("João", "Maria");
-        when(resultSetMock.getString("sobrenome")).thenReturn("Silva", "Silva");
+        when(candidatoDaoMock.listarCandidatos()).thenReturn(candidatosMock);
 
+        List<Candidato> resultado = candidatoService.listarCandidatos();
 
-        CandidatoService candidatoService = new CandidatoService(databaseConnectionMock);
+        assert candidatosMock == resultado;
 
-        List<Candidato> candidatos = candidatoService.listarCandidatos();
-
-        assert candidatos.size() == 2;
-        assert candidatos.get(0).getNome() == "João";
-        assert candidatos.get(1).getNome() == "Maria";
-
-        verify(databaseConnectionMock).prepareStatement(anyString());
-        verify(statementMock).executeQuery();
+        verify(candidatoDaoMock).listarCandidatos();
     }
 
     @Test
-    void testCadastrarCandidato() throws SQLException {
-
-        when(databaseConnectionMock.prepareStatement(anyString())).thenReturn(statementMock);
-
-        CandidatoService candidatoService = new CandidatoService(databaseConnectionMock);
-
-        Candidato candidato = new Candidato(
-                "João",
-                "Silva",
-                new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123");
-
-        candidatoService.cadastrarCandidato(candidato);
-
-        verify(databaseConnectionMock).prepareStatement(anyString());
-        verify(statementMock).setString(1, candidato.getNome());
-        verify(statementMock).setString(2, candidato.getSobrenome());
-        verify(statementMock).executeUpdate();
-    }
-
-    @Test
-    void testAtualizarCandidato() throws SQLException {
-
-
-        Candidato candidatoAtualizado = new Candidato(
+    void testObterCandidatoPorId() throws SQLException {
+        Integer candidatoId = 1;
+        Candidato candidatoMock = new Candidato(
                 "João",
                 "Silva",
                 new Date(System.currentTimeMillis()),
@@ -92,122 +59,340 @@ class CandatoServiceTest {
                 "Descrição do candidato",
                 "senha123"
         );
-        candidatoAtualizado.setId(1)
+        when(candidatoDaoMock.obterCandidatoPorId(candidatoId)).thenReturn(candidatoMock);
 
-        when(databaseConnectionMock.prepareStatement(anyString())).thenReturn(statementMock);
+        Candidato result = candidatoService.obterCandidatoPorId(candidatoId);
 
-        CandidatoService candidatoService = new CandidatoService(databaseConnectionMock);
+        verify(candidatoDaoMock).obterCandidatoPorId(candidatoId);
+        assert candidatoMock == result;
+    }
 
-        candidatoService.atualizarCandidato(candidatoAtualizado);
+    @Test
+    void testCadastrarCandidato() throws SQLException {
+        Candidato candidatoMock = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
+        );
 
-        verify(databaseConnectionMock).prepareStatement(anyString());
-        verify(statementMock).executeUpdate()
+        candidatoService.cadastrarCandidato(candidatoMock);
+
+        verify(candidatoDaoMock).adicionarCandidato(candidatoMock);
+    }
+
+    @Test
+    void testAtualizarCandidato() throws SQLException {
+
+        Candidato candidatoMock = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
+        );
+        candidatoMock.setId(1)
+
+        candidatoService.atualizarCandidato(candidatoMock);
+
+        verify(candidatoDaoMock).atualizarCandidato(candidatoMock);
     }
 
     @Test
     void testDeletarCandidato() throws SQLException {
-
-        when(databaseConnectionMock.prepareStatement(anyString())).thenReturn(statementMock);
-
-        CandidatoService candidatoService = new CandidatoService(databaseConnectionMock);
-
-        int candidatoId = 1
-        candidatoService.deletarCandidato(candidatoId);
-
-        verify(databaseConnectionMock).prepareStatement(anyString());
-        verify(statementMock).executeUpdate();
-    }
-
-    @Test
-    void testAdicionarFormacaoCandidato() throws SQLException {
-        when(databaseConnectionMock.prepareStatement(anyString())).thenReturn(statementMock);
-
-        CandidatoService candidatoService = new CandidatoService(databaseConnectionMock);
-
-        Formacao formacao = new Formacao(
-                1,
-                "Nome da Instituição",
-                "Nome do Curso",
-                "Nível do Curso",
-                "Ano de Conclusão"
+        Candidato candidatoMock = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
         );
+        Integer idCandidato = 1;
+        candidatoMock.setId(idCandidato)
 
-        candidatoService.adicionarFormacaoCandidato(1, formacao);
+        when(candidatoDaoMock.obterCandidatoPorId(idCandidato))
+                .thenReturn(candidatoMock);
 
-        verify(databaseConnectionMock).prepareStatement(anyString());
+        candidatoService.deletarCandidato(idCandidato);
 
-
-        verify(statementMock).setInt(eq(1), eq(1));
-        verify(statementMock).setString(eq(2), eq("Nome da Instituição"));
-        verify(statementMock).setString(eq(3), eq("Nome do Curso"));
-        verify(statementMock).setString(eq(4), eq("Nível do Curso"));
-        verify(statementMock).setString(eq(5), eq("Ano de Conclusão"));
-
-        verify(statementMock).executeUpdate();
+        verify(candidatoDaoMock).deletarCandidato(idCandidato);
     }
 
     @Test
-    void testAdicionarExperienciaCandidato() throws SQLException {
-        when(databaseConnectionMock.prepareStatement(anyString())).thenReturn(statementMock);
-
-        CandidatoService candidatoService = new CandidatoService(databaseConnectionMock);
-
-        Experiencia experiencia = new Experiencia(
-                1,
-                "Desenvolvedor",
-                "Empresa XYZ",
-                "Júnior"
+    void testListarCompetenciasCandidato() throws SQLException {
+        Candidato candidatoMock = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
         );
+        Integer idCandidato = 1;
+        candidatoMock.setId(idCandidato);
 
-        candidatoService.adicionarExperienciaCandidato(1, experiencia);
+        List<Competencias> competenciasMock = new ArrayList<>();
+        competenciasMock.add(new Competencias("Java", "Avançado"));
+        competenciasMock.add(new Competencias("SQL", "Intermediário"));
 
-        verify(databaseConnectionMock).prepareStatement(anyString());
+        when(candidatoDaoMock.obterCandidatoPorId(candidatoMock.getId())).thenReturn(candidatoMock);
 
-        verify(statementMock).setInt(eq(1), eq(1));
-        verify(statementMock).setString(eq(2), eq("Desenvolvedor"));
-        verify(statementMock).setString(eq(3), eq("Empresa XYZ"));
-        verify(statementMock).setString(eq(4), eq("Júnior"));
+        when(candidatoCompetenciaDao.listarCompetenciasPorCandidato(candidatoMock.getId())).thenReturn(competenciasMock);
 
-        verify(statementMock).executeUpdate();
+        List<Competencias> result = candidatoService.listarCompetenciasCandidato(candidatoMock.getId());
+
+        verify(candidatoCompetenciaDao).listarCompetenciasPorCandidato(candidatoMock.getId());
+
+        assert competenciasMock.size() == result.size();
+        assert competenciasMock == result;
     }
 
     @Test
-    void testAdicionarCompetencia() throws SQLException {
-        when(databaseConnectionMock.prepareStatement(anyString())).thenReturn(statementMock);
-
-        CandidatoService candidatoService = new CandidatoService(databaseConnectionMock);
-
+    void testAdicionarCompetenciaCandidato() throws SQLException {
         Integer idCandidato = 1;
         Integer idCompetencia = 2;
 
-        candidatoService.adicionarCompetencia(idCandidato, idCompetencia);
+        Candidato candidatoMock = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
+        );
+        candidatoMock.setId(idCandidato);
 
-        verify(databaseConnectionMock).prepareStatement(anyString());
-        verify(statementMock).setInt(1, idCandidato);
-        verify(statementMock).setInt(2, idCompetencia);
-        verify(statementMock).executeUpdate();
+        Competencias competencias = new Competencias("Java", "Avançado");
+        competencias.setId(idCompetencia);
+
+        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock);
+
+        candidatoService.adicionarCompetenciaCandidato(idCandidato, competencias);
+
+        verify(candidatoCompetenciaDao).adicionarCandidatoCompetencia(idCandidato, idCompetencia);
     }
 
+    @Test
+    void testAtualizarNivelCompetencia() throws SQLException {
+        Integer idCandidato = 1;
+        Integer idCompetencia = 2;
+        String novoNivel = "Intermediário";
+
+        Candidato candidatoMock = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
+        );
+        candidatoMock.setId(idCandidato);
+
+        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock);
+
+        candidatoService.atualizarNivelCompetencia(idCandidato, idCompetencia, novoNivel);
+
+        verify(candidatoCompetenciaDao).atualizarNivelCompetenciaCandidato(idCandidato, idCompetencia, novoNivel);
+    }
 
     @Test
-    void testObterCandidatoPorId() throws Exception {
-        Integer candidatoId = 1;
+    void testExcluirCompetenciaCandidato() throws SQLException {
+        Integer idCandidato = 1;
+        Integer idCompetencia = 1;
 
-        when(databaseConnectionMock.prepareStatement(anyString())).thenReturn(statementMock);
-        when(statementMock.executeQuery()).thenReturn(resultSetMock);
-        when(resultSetMock.next()).thenReturn(true);
-        when(resultSetMock.getInt("id")).thenReturn(candidatoId);
-        when(resultSetMock.getString("nome")).thenReturn("João");
+        Candidato candidatoMock = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
+        );
+        candidatoMock.setId(idCandidato);
 
-        CandidatoService candidatoService = new CandidatoService(databaseConnectionMock);
+        Competencias competenciaMock = new Competencias(
+                "Java",
+                "Avançado");
+        competenciaMock.setId(idCompetencia);
 
-        Candidato candidato = candidatoService.obterCandidatoPorId(candidatoId);
+        when(candidatoCompetenciaDao.buscarCompetenciaPorId(idCompetencia)).thenReturn(competenciaMock);
+        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock)
 
-        assert candidato != null;
-        assert candidato.getNome() == ("João");
-        assert candidato.getId() == candidatoId;
+        candidatoService.excluirCompetenciaCandidato(idCandidato, idCompetencia);
 
-        verify(databaseConnectionMock).prepareStatement(anyString());
-        verify(statementMock).executeQuery();
+        verify(candidatoCompetenciaDao).excluirCompetenciaCandidato(idCandidato, idCompetencia);
+    }
+
+    @Test
+    void testAdicionarExperiencia() throws SQLException {
+        Experiencia experienciaMock = mock(Experiencia.class);
+
+        doNothing().when(experienciaDao).adicionarExperiencia(experienciaMock);
+
+        candidatoService.adicionarExperiencia(experienciaMock);
+
+        verify(experienciaDao, times(1)).adicionarExperiencia(experienciaMock);
+    }
+
+    @Test
+    void testAtualizarExperiencia() throws SQLException {
+        Experiencia experienciaMock = mock(Experiencia.class);
+
+        doNothing().when(experienciaDao).atualizarExperiencia(experienciaMock);
+
+        candidatoService.atualizarExperiencia(experienciaMock);
+
+        verify(experienciaDao, times(1)).atualizarExperiencia(experienciaMock);
+    }
+
+    @Test
+    void testListarExperienciasPorCandidato() throws SQLException {
+        Integer idCandidato = 1;
+        Candidato candidatoMock = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
+        );
+        candidatoMock.setId(idCandidato);
+        List<Experiencia> experienciasMock = new ArrayList<>();
+
+        when(experienciaDao.listarExperienciasPorCandidato(idCandidato)).thenReturn(experienciasMock);
+        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock)
+
+        List<Experiencia> result = candidatoService.listarExperienciasPorCandidato(idCandidato);
+
+        assert experienciasMock == result;
+    }
+
+    @Test
+    void testExcluirExperiencia() throws SQLException {
+        Integer idExperiencia = 1;
+        Integer idCandidato = 1;
+        Experiencia experienciaMock = new Experiencia(
+                idCandidato,
+                "dev junior",
+                "tech global",
+                "junior"
+        )
+
+        when(experienciaDao.buscarExperienciaPorId(idExperiencia)).thenReturn(experienciaMock)
+
+        candidatoService.excluirExperiencia(idExperiencia);
+
+        verify(experienciaDao).excluirExperiencia(idExperiencia);
+    }
+
+    @Test
+    void testAdicionarFormacao() throws SQLException {
+        Formacao formacao = new Formacao(
+                1,
+                "Instituição",
+                "Curso",
+                "Nível",
+                "2023");
+
+        doNothing().when(formacaoDao).adicionarFormacao(formacao);
+
+        candidatoService.adicionarFormacao(formacao);
+
+        verify(formacaoDao, times(1)).adicionarFormacao(formacao);
+    }
+
+    @Test
+    void testAtualizarFormacao() throws SQLException {
+        Formacao formacao = new Formacao(
+                1,
+                "Instituição",
+                "Curso",
+                "Nível",
+                "2023");
+
+        doNothing().when(formacaoDao).atualizarFormacao(formacao);
+
+        candidatoService.atualizarFormacao(formacao);
+
+        verify(formacaoDao, times(1)).atualizarFormacao(formacao);
+    }
+
+    @Test
+    void testExcluirFormacao() throws SQLException {
+        Integer idFormacao = 1;
+        Integer idCandidato = 1;
+
+        Formacao formacaoMock = new Formacao(
+                idCandidato,
+                "fatec",
+                "análise e desenvolvimento de sistemas",
+                "tecnologo",
+                "2025"
+        )
+
+        when(formacaoDao.buscarFormacaoPorId(idFormacao)).thenReturn(formacaoMock)
+        doNothing().when(formacaoDao).excluirFormacao(idFormacao);
+
+        candidatoService.excluirFormacao(idFormacao);
+
+        verify(formacaoDao, times(1)).excluirFormacao(idFormacao);
+    }
+
+    @Test
+    void testListarFormacoesPorCandidato() throws SQLException {
+        Integer idCandidato = 1;
+
+        Candidato candidatoMock = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
+        );
+        candidatoMock.setId(idCandidato);
+
+        List<Formacao> formacoes = new ArrayList<>();
+        formacoes.add(new Formacao(idCandidato, "Instituição 1", "Curso 1", "Nível 1", "Ano 2021"));
+        formacoes.add(new Formacao(idCandidato, "Instituição 2", "Curso 2", "Nível 2", "Ano 2022"));
+
+        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock)
+        when(formacaoDao.listarFormacoesPorCandidato(idCandidato)).thenReturn(formacoes);
+
+        List<Formacao> result = candidatoService.listarFormacoesPorCandidato(idCandidato);
+
+        verify(formacaoDao, times(1)).listarFormacoesPorCandidato(idCandidato);
+        assert formacoes == result;
     }
 }
