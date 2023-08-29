@@ -1,15 +1,16 @@
 package entity
 
-import entity.enums.NivelExperiencia
 
 class Experiencia {
 
     Integer id
+    Integer idCandidato;
     String cargo
     String empresa
     String nivel
 
-    Experiencia(String cargo, String empresa, String nivel) {
+    Experiencia(Integer idCandidato, String cargo, String empresa, String nivel) {
+        this.idCandidato = idCandidato
         this.cargo = cargo
         this.empresa = empresa
         this.nivel = nivel
@@ -21,6 +22,14 @@ class Experiencia {
 
     void setId(Integer id) {
         this.id = id
+    }
+
+    Integer getIdCandidato() {
+        return idCandidato
+    }
+
+    void setIdCandidato(Integer idCandidato) {
+        this.idCandidato = idCandidato
     }
 
     String getCargo() {

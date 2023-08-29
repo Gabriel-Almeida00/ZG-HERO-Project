@@ -144,4 +144,28 @@ class Candidato   {
     void setExperiencias(List<Experiencia> experiencias) {
         this.experiencias = experiencias
     }
+
+    void adicionarFormacao(Formacao formacao) {
+        formacoes.add(formacao);
+    }
+
+    void removerFormacao(Formacao formacao) {
+        formacoes.remove(formacao);
+    }
+
+    void adicionarExperiencia(Experiencia experiencia) {
+        experiencias.add(experiencia);
+    }
+
+    void removerExperiencia(Experiencia experiencia) {
+        experiencias.remove(experiencia);
+    }
+
+    void adicionarCompetencia(CandidatoCompetencia competencia) {
+        competencias.add(competencia);
+    }
+
+    void removerCompetencia(CandidatoCompetencia competencia) {
+        competencias.remove(competencia);
+    }
 }

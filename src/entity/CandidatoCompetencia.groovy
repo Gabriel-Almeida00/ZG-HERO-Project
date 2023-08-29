@@ -2,13 +2,13 @@ package entity
 
 class CandidatoCompetencia {
 
-    Integer id
-    Candidato candidato
-    List<Competencias> competencia
+    Integer id;
+    Integer idCandidato;
+    Integer idCompetencia;
 
-    CandidatoCompetencia(Candidato candidato, List<Competencias> competencia) {
-        this.candidato = candidato
-        this.competencia = competencia
+    CandidatoCompetencia(Integer idCandidato, Integer idCompetencia) {
+        this.idCandidato = idCandidato
+        this.idCompetencia = idCompetencia
     }
 
     Integer getId() {
@@ -19,19 +19,19 @@ class CandidatoCompetencia {
         this.id = id
     }
 
-    Candidato getCandidato() {
-        return candidato
+    Integer getIdCandidato() {
+        return idCandidato
     }
 
-    void setCandidato(Candidato candidato) {
-        this.candidato = candidato
+    void setIdCandidato(Integer idCandidato) {
+        this.idCandidato = idCandidato
     }
 
-    List<Competencias> getCompetencia() {
-        return competencia
+    Integer getIdCompetencia() {
+        return idCompetencia
     }
 
-    void setCompetencia(List<Competencias> competencia) {
-        this.competencia = competencia
+    void setIdCompetencia(Integer idCompetencia) {
+        this.idCompetencia = idCompetencia
     }
 }

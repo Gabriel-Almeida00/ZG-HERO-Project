@@ -1,16 +1,17 @@
 package entity
 
-import entity.enums.NivelFormacao
 
 class Formacao {
 
     Integer id
+    Integer idCandidato
     String instituicao
     String curso
     String nivel
     String anoConclusao
 
-    Formacao(String instituicao, String curso, String nivel, String anoConclusao) {
+    Formacao(Integer idCandidato, String instituicao, String curso, String nivel, String anoConclusao) {
+        this.idCandidato = idCandidato
         this.instituicao = instituicao
         this.curso = curso
         this.nivel = nivel
@@ -23,6 +24,14 @@ class Formacao {
 
     void setId(Integer id) {
         this.id = id
+    }
+
+    Integer getIdCandidato() {
+        return idCandidato
+    }
+
+    void setIdCandidato(Integer idCandidato) {
+        this.idCandidato = idCandidato
     }
 
     String getInstituicao() {
