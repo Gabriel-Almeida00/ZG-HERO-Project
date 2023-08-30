@@ -10,6 +10,7 @@ import dao.candidato.ICandidatoDao
 import dao.candidato.IExperienciaDao
 import dao.candidato.IFormacaoDao
 import entity.Candidato
+import entity.CandidatoCompetencia
 import entity.Competencias
 import entity.Experiencia
 import entity.Formacao
@@ -92,59 +93,59 @@ class CandidatoService implements ICandidatoService {
         }
     }
 
-    List<Competencias> listarCompetenciasCandidato(Integer idCandidato) {
+    @Override
+    public List<Competencias> listarCompetenciasPorCandidato(Integer idCandidato) {
         try {
-            Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato);
-            if (candidato == null) {
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
+            Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato)
+            if(candidato == null){
+                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato);
             }
             return candidatoCompetenciaDao.listarCompetenciasPorCandidato(idCandidato);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
         }
     }
 
-    void adicionarCompetenciaCandidato(Integer idCandidato, Competencias competencias) {
-        try{
-            Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato);
-            if (candidato == null) {
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
-            }
-            Integer idCompetencia = competencias.getId();
-            candidatoCompetenciaDao.adicionarCandidatoCompetencia(idCandidato, idCompetencia);
-        }
-        catch (SQLException e){
+    @Override
+    public Competencias buscarCompetenciaPorId(Integer idCompetencia) {
+        try {
+            return candidatoCompetenciaDao.buscarCompetenciaPorId(idCompetencia);
+        } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
         }
     }
 
-    void atualizarNivelCompetencia(Integer idCandidato, Integer idCompetencia, String novoNivel) {
-        try{
-            Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato);
-            if (candidato == null) {
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
-            }
-            candidatoCompetenciaDao.atualizarNivelCompetenciaCandidato(idCandidato, idCompetencia, novoNivel);
-        }
-        catch (SQLException e){
+    @Override
+    public void adicionarCandidatoCompetencia(CandidatoCompetencia candidatoCompetencia) {
+        try {
+            candidatoCompetenciaDao.adicionarCandidatoCompetencia(candidatoCompetencia);
+        } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
         }
     }
 
-    void excluirCompetenciaCandidato(Integer idCandidato, Integer idCompetencia) {
-        try{
-            Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato);
-            Competencias competencias = candidatoCompetenciaDao.buscarCompetenciaPorId(idCompetencia);
-            if (candidato == null) {
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
+    @Override
+    public void atualizarNivelCompetenciaCandidato(CandidatoCompetencia candidatoCompetencia) {
+        try {
+            Competencias competencias = candidatoCompetenciaDao.buscarCompetenciaPorId(candidatoCompetencia.getId())
+            if(competencias == null){
+                throw new CompetenciaNotFoundException("Competencia não encontrada com id : " + candidatoCompetencia.getId())
             }
-            if (competencias == null) {
-                throw new CompetenciaNotFoundException("Competencia não encontrada com ID : " + idCompetencia)
-            }
-            candidatoCompetenciaDao.excluirCompetenciaCandidato(idCandidato, idCompetencia);
+            candidatoCompetenciaDao.atualizarNivelCompetenciaCandidato(candidatoCompetencia);
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
         }
-        catch (SQLException e){
+    }
+
+    @Override
+    public void excluirCompetenciaCandidato(Integer id) {
+        try {
+            Competencias competencias = candidatoCompetenciaDao.buscarCompetenciaPorId(id)
+            if(competencias == null){
+                throw new CompetenciaNotFoundException("Competencia não encontrada com id : " + id)
+            }
+            candidatoCompetenciaDao.excluirCompetenciaCandidato(id);
+        } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
         }
     }

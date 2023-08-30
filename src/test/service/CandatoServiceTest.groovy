@@ -5,6 +5,7 @@ import dao.candidato.ICandidatoDao
 import dao.candidato.IExperienciaDao
 import dao.candidato.IFormacaoDao
 import entity.Candidato
+import entity.CandidatoCompetencia
 import entity.Competencias
 import entity.Experiencia
 import entity.Formacao
@@ -155,7 +156,7 @@ class CandatoServiceTest {
 
         when(candidatoCompetenciaDao.listarCompetenciasPorCandidato(candidatoMock.getId())).thenReturn(competenciasMock);
 
-        List<Competencias> result = candidatoService.listarCompetenciasCandidato(candidatoMock.getId());
+        List<Competencias> result = candidatoService.listarCompetenciasPorCandidato(candidatoMock.getId());
 
         verify(candidatoCompetenciaDao).listarCompetenciasPorCandidato(candidatoMock.getId());
 
@@ -164,88 +165,55 @@ class CandatoServiceTest {
     }
 
     @Test
-    void testAdicionarCompetenciaCandidato() throws SQLException {
+    void testAdicionarCandidatoCompetencia() throws SQLException {
         Integer idCandidato = 1;
         Integer idCompetencia = 2;
+        String nivel = "Avançado";
 
-        Candidato candidatoMock = new Candidato(
-                "João",
-                "Silva",
-                new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
-        );
-        candidatoMock.setId(idCandidato);
+        CandidatoCompetencia candidatoCompetencia = new CandidatoCompetencia(idCandidato, idCompetencia, nivel);
 
-        Competencias competencias = new Competencias("Java", "Avançado");
-        competencias.setId(idCompetencia);
+        doNothing().when(candidatoCompetenciaDao).adicionarCandidatoCompetencia(candidatoCompetencia);
 
-        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock);
+        candidatoService.adicionarCandidatoCompetencia(candidatoCompetencia);
 
-        candidatoService.adicionarCompetenciaCandidato(idCandidato, competencias);
-
-        verify(candidatoCompetenciaDao).adicionarCandidatoCompetencia(idCandidato, idCompetencia);
+        verify(candidatoCompetenciaDao, times(1)).adicionarCandidatoCompetencia(candidatoCompetencia);
     }
 
     @Test
-    void testAtualizarNivelCompetencia() throws SQLException {
-        Integer idCandidato = 1;
-        Integer idCompetencia = 2;
+    void testAtualizarNivelCompetenciaCandidato() throws SQLException {
+        Integer id = 1
+        Integer idCompetencia = 1;
         String novoNivel = "Intermediário";
 
-        Candidato candidatoMock = new Candidato(
-                "João",
-                "Silva",
-                new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
-        );
-        candidatoMock.setId(idCandidato);
+        CandidatoCompetencia candidatoCompetencia = new CandidatoCompetencia(1, idCompetencia, novoNivel);
+        candidatoCompetencia.setId(id)
 
-        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock);
+        Competencias competenciasMock = new Competencias("Java", "Avançado");
+        competenciasMock.setId(idCompetencia);
 
-        candidatoService.atualizarNivelCompetencia(idCandidato, idCompetencia, novoNivel);
+        when(candidatoCompetenciaDao.buscarCompetenciaPorId(idCompetencia)).thenReturn(competenciasMock);
+        doNothing().when(candidatoCompetenciaDao).atualizarNivelCompetenciaCandidato(candidatoCompetencia);
 
-        verify(candidatoCompetenciaDao).atualizarNivelCompetenciaCandidato(idCandidato, idCompetencia, novoNivel);
+        candidatoService.atualizarNivelCompetenciaCandidato(candidatoCompetencia);
+
+        verify(candidatoCompetenciaDao, times(1)).buscarCompetenciaPorId(idCompetencia);
+        verify(candidatoCompetenciaDao, times(1)).atualizarNivelCompetenciaCandidato(candidatoCompetencia);
     }
 
     @Test
     void testExcluirCompetenciaCandidato() throws SQLException {
-        Integer idCandidato = 1;
-        Integer idCompetencia = 1;
+        Integer idCompetencia = 2;
 
-        Candidato candidatoMock = new Candidato(
-                "João",
-                "Silva",
-                new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
-        );
-        candidatoMock.setId(idCandidato);
+        Competencias competenciasMock = new Competencias("Java", "Avançado");
+        competenciasMock.setId(idCompetencia);
 
-        Competencias competenciaMock = new Competencias(
-                "Java",
-                "Avançado");
-        competenciaMock.setId(idCompetencia);
+        when(candidatoCompetenciaDao.buscarCompetenciaPorId(idCompetencia)).thenReturn(competenciasMock);
+        doNothing().when(candidatoCompetenciaDao).excluirCompetenciaCandidato(idCompetencia);
 
-        when(candidatoCompetenciaDao.buscarCompetenciaPorId(idCompetencia)).thenReturn(competenciaMock);
-        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock)
+        candidatoService.excluirCompetenciaCandidato(idCompetencia);
 
-        candidatoService.excluirCompetenciaCandidato(idCandidato, idCompetencia);
-
-        verify(candidatoCompetenciaDao).excluirCompetenciaCandidato(idCandidato, idCompetencia);
+        verify(candidatoCompetenciaDao, times(1)).buscarCompetenciaPorId(idCompetencia);
+        verify(candidatoCompetenciaDao, times(1)).excluirCompetenciaCandidato(idCompetencia);
     }
 
     @Test

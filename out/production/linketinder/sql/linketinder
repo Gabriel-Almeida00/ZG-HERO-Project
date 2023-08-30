@@ -25,7 +25,6 @@ CREATE TABLE empresas (
 CREATE TABLE competencias (
   id serial PRIMARY KEY,
   nome varchar NOT NULL,
-  nivel varchar NOT NULL
 );
 
 CREATE TABLE vagas (
@@ -41,13 +40,15 @@ CREATE TABLE vagas (
 CREATE TABLE candidato_competencia (
   id serial PRIMARY KEY,
   idCandidato int NOT NULL,
-  idCompetencia int NOT NULL
+  idCompetencia int NOT NULL,
+  nivel varchar NOT NULL
 );
 
 CREATE TABLE vaga_competencia (
   id serial PRIMARY KEY,
   idVaga int NOT NULL,
-  idCompetencia int NOT NULL
+  idCompetencia int NOT NULL,
+   nivel varchar NOT NULL
 );
 
 CREATE TABLE formacoes (

@@ -1,38 +1,46 @@
 package service
 
-import Interface.ICompetenciaService
+import Exception.DataBaseException
+import dao.competencia.ICompetenciaDao
 import db.IDatabaseConnection
 import entity.Competencias
 
+import java.sql.SQLException
+
 class CompetenciaService implements ICompetenciaService {
-    private IDatabaseConnection databaseConnection;
+    private ICompetenciaDao competenciaDao;
 
-    public CompetenciaService(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection;
+    CompetenciaService(ICompetenciaDao competenciaDao) {
+        this.competenciaDao = competenciaDao;
     }
 
     @Override
-    public Competencias obterCompetenciaPorId(Integer id) {
-        // Implementação para obter uma competência por ID
+    List<Competencias> listarTodasCompetencias() {
+       try{
+           competenciaDao.listarTodasCompetencias();
+       }
+        catch (SQLException e){
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+        }
     }
 
     @Override
-    public List<Competencias> listarCompetencias() {
-        // Implementação para listar todas as competências
+    Competencias buscarCompetenciaPorId(Integer id) {
+        return null
     }
 
     @Override
-    public void adicionarCompetencia(Competencias competencia) {
-        // Implementação para adicionar uma nova competência
+    void adicionarCompetencia(Competencias competencia) {
+
     }
 
     @Override
-    public void atualizarCompetencia(Integer id, Competencias competencia) {
-        // Implementação para atualizar uma competência por ID
+    void atualizarCompetencia(Competencias competencia) {
+
     }
 
     @Override
-    public void deletarCompetencia(Integer id) {
-        // Implementação para deletar uma competência por ID
+    void excluirCompetencia(Integer idCompetencia) {
+
     }
 }

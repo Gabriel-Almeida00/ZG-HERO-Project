@@ -5,10 +5,12 @@ class CandidatoCompetencia {
     Integer id;
     Integer idCandidato;
     Integer idCompetencia;
+    String nivel;
 
-    CandidatoCompetencia(Integer idCandidato, Integer idCompetencia) {
+    CandidatoCompetencia(Integer idCandidato, Integer idCompetencia, String nivel) {
         this.idCandidato = idCandidato
         this.idCompetencia = idCompetencia
+        this.nivel = nivel
     }
 
     Integer getId() {
@@ -33,5 +35,13 @@ class CandidatoCompetencia {
 
     void setIdCompetencia(Integer idCompetencia) {
         this.idCompetencia = idCompetencia
+    }
+
+    String getNivel() {
+        return nivel
+    }
+
+    void setNivel(String nivel) {
+        this.nivel = nivel
     }
 }
