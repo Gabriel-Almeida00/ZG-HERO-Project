@@ -1,5 +1,6 @@
 package service
 
+import Exception.CompetenciaNotFoundException
 import Exception.DataBaseException
 import dao.competencia.ICompetenciaDao
 import db.IDatabaseConnection
@@ -15,32 +16,55 @@ class CompetenciaService implements ICompetenciaService {
     }
 
     @Override
-    List<Competencias> listarTodasCompetencias() {
-       try{
-           competenciaDao.listarTodasCompetencias();
-       }
-        catch (SQLException e){
+    public List<Competencias> listarCompetencias() {
+        try {
+            return competenciaDao.listarTodasCompetencias();
+        } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
         }
     }
 
     @Override
-    Competencias buscarCompetenciaPorId(Integer id) {
-        return null
+    public Competencias buscarCompetenciaPorId(Integer idCompetencia) {
+        try {
+            return competenciaDao.buscarCompetenciaPorId(idCompetencia);
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+        }
     }
 
     @Override
-    void adicionarCompetencia(Competencias competencia) {
-
+    public void adicionarCompetencia(Competencias competencia) {
+        try {
+            competenciaDao.adicionarCompetencia(competencia);
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+        }
     }
 
     @Override
-    void atualizarCompetencia(Competencias competencia) {
-
+    public void atualizarCompetencia(Competencias competencia) {
+        try {
+            Competencias existingCompetencia = competenciaDao.buscarCompetenciaPorId(competencia.getId());
+            if (existingCompetencia == null) {
+                throw new CompetenciaNotFoundException("Competência não encontrada com ID: " + competencia.getId());
+            }
+            competenciaDao.atualizarCompetencia(competencia);
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+        }
     }
 
     @Override
-    void excluirCompetencia(Integer idCompetencia) {
-
+    public void excluirCompetencia(Integer idCompetencia) {
+        try {
+            Competencias existingCompetencia = competenciaDao.buscarCompetenciaPorId(idCompetencia);
+            if (existingCompetencia == null) {
+                throw new CompetenciaNotFoundException("Competência não encontrada com ID: " + idCompetencia);
+            }
+            competenciaDao.excluirCompetencia(idCompetencia);
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+        }
     }
 }

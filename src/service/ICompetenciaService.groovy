@@ -3,7 +3,7 @@ package service
 import entity.Competencias
 
 interface ICompetenciaService {
-    List<Competencias> listarTodasCompetencias()
+    List<Competencias> listarCompetencias()
     Competencias buscarCompetenciaPorId(Integer id)
     void adicionarCompetencia(Competencias competencia)
     void atualizarCompetencia(Competencias competencia)
