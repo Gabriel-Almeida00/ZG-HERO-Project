@@ -101,4 +101,20 @@ class Empresa  {
     void setVagas(List<Vaga> vagas) {
         this.vagas = vagas
     }
+
+
+    @Override
+    public String toString() {
+        return "Empresa{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", cnpj='" + cnpj + '\'' +
+                ", email='" + email + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", pais='" + pais + '\'' +
+                ", cep='" + cep + '\'' +
+                ", senha='" + senha + '\'' +
+                ", vagas=" + vagas +
+                '}';
+    }
 }

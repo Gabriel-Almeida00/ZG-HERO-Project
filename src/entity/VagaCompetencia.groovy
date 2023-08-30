@@ -3,12 +3,14 @@ package entity
 class VagaCompetencia {
 
     Integer id
-    Vaga vaga
-    List<Competencias> competencias
+    Integer idVaga
+    Integer idCompetencia
+    String nivel
 
-    VagaCompetencia(Vaga vaga, List<Competencias> competencias) {
-        this.vaga = vaga
-        this.competencias = competencias
+    VagaCompetencia(Integer idVaga, Integer idCompetencia, String nivel) {
+        this.idVaga = idVaga
+        this.idCompetencia = idCompetencia
+        this.nivel = nivel
     }
 
     Integer getId() {
@@ -19,19 +21,27 @@ class VagaCompetencia {
         this.id = id
     }
 
-    Vaga getVaga() {
-        return vaga
+    Integer getIdVaga() {
+        return idVaga
     }
 
-    void setVaga(Vaga vaga) {
-        this.vaga = vaga
+    void setIdVaga(Integer idVaga) {
+        this.idVaga = idVaga
     }
 
-    List<Competencias> getCompetencias() {
-        return competencias
+    Integer getIdCompetencia() {
+        return idCompetencia
     }
 
-    void setCompetencias(List<Competencias> competencias) {
-        this.competencias = competencias
+    void setIdCompetencia(Integer idCompetencia) {
+        this.idCompetencia = idCompetencia
+    }
+
+    String getNivel() {
+        return nivel
+    }
+
+    void setNivel(String nivel) {
+        this.nivel = nivel
     }
 }

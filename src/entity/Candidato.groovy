@@ -15,6 +15,7 @@ class Candidato   {
     List<CandidatoCompetencia> competencias
     List<Formacao> formacoes
     List<Experiencia> experiencias
+    List<CandidatoCurtido> curtida;
 
     Candidato(String nome,
               String sobrenome,
@@ -38,6 +39,15 @@ class Candidato   {
         competencias = []
         formacoes = []
         experiencias = []
+        curtida = []
+    }
+
+    List<CandidatoCurtido> getCurtida() {
+        return curtida
+    }
+
+    void setCurtida(List<CandidatoCurtido> curtida) {
+        this.curtida = curtida
     }
 
     Integer getId() {

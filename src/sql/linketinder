@@ -24,7 +24,7 @@ CREATE TABLE empresas (
 
 CREATE TABLE competencias (
   id serial PRIMARY KEY,
-  nome varchar NOT NULL,
+  nome varchar NOT NULL
 );
 
 CREATE TABLE vagas (
@@ -159,11 +159,11 @@ INSERT INTO candidatos_curtidos (idCandidato, idEmpresa) VALUES (3, 1);
 --Identificar Matchs entre Candidatos e Vagas
 SELECT vc.idCandidato, vc.idVaga
 FROM vagas_curtidas vc
-JOIN candidatos_curtidos cc ON vc.idCandidato = cc.idCandidato AND vc.idVaga = cc.idEmpresa
+JOIN candidatos_curtidos cc ON vc.idCandidato = cc.idCandidato AND vc.idVaga = cc.idEmpresa;
 
 --Identificar Matchs entre Empresas e Candidatos
 SELECT cc.idCandidato, cc.idEmpresa
 FROM candidatos_curtidos cc
-JOIN vagas_curtidas vc ON cc.idCandidato = vc.idCandidato AND cc.idEmpresa = vc.idVaga
+JOIN vagas_curtidas vc ON cc.idCandidato = vc.idCandidato AND cc.idEmpresa = vc.idVaga;
 
 

@@ -1,8 +1,5 @@
 package entity
 
-import entity.enums.NivelExperiencia
-import entity.enums.NivelFormacao
-
 class Vaga {
 
     Integer id
@@ -13,6 +10,7 @@ class Vaga {
     String formacaoMinima
     String experienciaMinima
     List<VagaCompetencia> competencias
+    List<VagaCurtida> curtida
 
 
     Vaga(Integer idEmpresa,
@@ -29,6 +27,15 @@ class Vaga {
         this.formacaoMinima = formacaoMinima
         this.experienciaMinima = experienciaMinima
         competencias = []
+        curtida = []
+    }
+
+    List<VagaCurtida> getCurtida() {
+        return curtida
+    }
+
+    void setCurtida(List<VagaCurtida> curtida) {
+        this.curtida = curtida
     }
 
     Integer getId() {
