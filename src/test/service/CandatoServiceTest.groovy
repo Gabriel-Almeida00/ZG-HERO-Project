@@ -11,7 +11,7 @@ import entity.Formacao
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import static org.mockito.Mockito.*;
-import service.CandidatoServiceService
+import service.CandidatoService
 
 import java.sql.SQLException
 
@@ -21,7 +21,7 @@ class CandatoServiceTest {
     private ICandidatoCompetenciaDao candidatoCompetenciaDao
     private IExperienciaDao experienciaDao
     private IFormacaoDao formacaoDao
-    private CandidatoServiceService candidatoService;
+    private CandidatoService candidatoService;
 
     @BeforeEach
     void setup() {
@@ -29,7 +29,7 @@ class CandatoServiceTest {
         candidatoCompetenciaDao = mock(ICandidatoCompetenciaDao.class)
         experienciaDao = mock(IExperienciaDao.class)
         formacaoDao = mock(IFormacaoDao.class)
-        candidatoService = new CandidatoServiceService(candidatoDaoMock, candidatoCompetenciaDao, experienciaDao, formacaoDao);
+        candidatoService = new CandidatoService(candidatoDaoMock, candidatoCompetenciaDao, experienciaDao, formacaoDao);
     }
 
     @Test

@@ -1,76 +1,133 @@
 package test.service
 
-import entity.Competencias
+
+import dao.empresa.IEmpresaDao
 import entity.Empresa
-import entity.Vaga
-import entity.enums.NivelCompetencia
-import entity.enums.NivelExperiencia
-import entity.enums.NivelFormacao
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import static org.mockito.Mockito.*;
 import service.EmpresaService
+
+import java.sql.SQLException
+
 
 class EmpresaServiceTest {
 
-    EmpresaService service
-    Empresa empresa
+    private IEmpresaDao empresaDao;
+    private EmpresaService empresaService;
 
     @BeforeEach
-    void setUp() {
-        service = new EmpresaService()
-        service.empresas = []
-
-        service.cadastrarEmpresa(empresa = new Empresa("Empresa A", "contato@empresaA.com", "123456789", "123456789", "Brasil", "Sp", "Descrição Empresa A"))
-        service.cadastrarEmpresa(new Empresa("Empresa B", "contato@empresaB.com", "987654321", "987654321", "Brasil", "RJ", "Descrição Empresa B"))
-
+    void setup() {
+        empresaDao = mock(IEmpresaDao.class);
+        empresaService = new EmpresaService(empresaDao);
     }
 
     @Test
-    void testListarEmpresas() {
-        List<Empresa> empresas = service.listarEmpresas()
+    void testListarTodasEmpresas() throws SQLException {
+        List<Empresa> empresasMock = new ArrayList<>();
+        empresasMock.add(new Empresa(
+                "empresa 1",
+                "12345",
+                "empresa1@gmail.com",
+                "empresa 1 descrição",
+                "brasil",
+                "54321",
+                "12345"
+        ));
+        empresasMock.add(new Empresa(
+                "empresa 2",
+                "54321",
+                "empresa2@gmail.com",
+                "empresa 2 descrição",
+                "argentina",
+                "98765",
+                "34534"));
 
-        assert empresas.size() == 2
+        when(empresaDao.listarTodasEmpresas()).thenReturn(empresasMock);
 
-        Empresa primeiraEmpresa = empresas[0]
-        assert primeiraEmpresa.getNome() == "Empresa A"
-        assert primeiraEmpresa.getCnpj() == "123456789"
-        assert primeiraEmpresa.getPais() == "Brasil"
+        List<Empresa> result = empresaService.listarTodasEmpresas();
 
-        Empresa segundaEmpresa = empresas[1]
-        assert segundaEmpresa.getNome() == "Empresa B"
-        assert segundaEmpresa.getCnpj() == "987654321"
-        assert segundaEmpresa.getPais() == "Brasil"
+        verify(empresaDao).listarTodasEmpresas();
+        assert empresasMock == result;
     }
 
     @Test
-    void testCadastrarEmpresa() {
-        def empresa = new Empresa("Empresa A", "contato@empresaA.com", "123456789", "Brasil", "SP", "123456", "Descrição Empresa A")
+    void testObterEmpresaPorId() throws SQLException {
+        Integer idEmpresa = 1;
+        Empresa empresaMock = new Empresa(
+                "empresa 2",
+                "54321",
+                "empresa2@gmail.com",
+                "empresa 2 descrição",
+                "argentina",
+                "98765",
+                "34534");
 
-        service.cadastrarEmpresa(empresa)
+        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock);
 
-        assert service.empresas.size() == 3
-        assert service.empresas[2] == empresa
+        Empresa result = empresaService.obterEmpresaPorId(idEmpresa);
+
+        verify(empresaDao).buscarEmpresaPorId(idEmpresa);
+        assert empresaMock == result;
     }
 
     @Test
-    void testCriarVaga() {
-        Vaga vaga = new Vaga(
-                "Desenvolvedor Java",
-                "Descrição da vaga",
-                [new Competencias(
-                        "Java",
-                        NivelCompetencia.Basico
-                )],
-                NivelFormacao.Graduacao,
-                NivelExperiencia.Junior)
+    void testAdicionarEmpresa() throws SQLException {
+        Empresa empresaMock = new Empresa(
+                "empresa 2",
+                "54321",
+                "empresa2@gmail.com",
+                "empresa 2 descrição",
+                "argentina",
+                "98765",
+                "34534");
 
-        service.criarVaga("Empresa A", vaga)
+        empresaService.adicionarEmpresa(empresaMock);
 
-        assert empresa.getVagas().size() == 1
-        assert empresa.getVagas()[0].getNome() == "Desenvolvedor Java"
-        assert empresa.getVagas()[0].getDescricao() == "Descrição da vaga"
-        assert empresa.getVagas()[0].getRequisitos().size() == 1
-        assert empresa.getVagas()[0].getRequisitos()[0].getNome() == "Java"
+        verify(empresaDao).adicionarEmpresa(empresaMock);
+    }
+
+    @Test
+    void testAtualizarEmpresa() throws SQLException {
+        Integer idEmpresa = 1;
+        Empresa empresaMock = new Empresa(
+                "empresa 2",
+                "54321",
+                "empresa2@gmail.com",
+                "empresa 2 descrição",
+                "argentina",
+                "98765",
+                "34534");
+        empresaMock.setId(idEmpresa);
+
+        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock);
+
+        empresaService.atualizarEmpresa(empresaMock);
+
+        verify(empresaDao).buscarEmpresaPorId(idEmpresa);
+        verify(empresaDao).atualizarEmpresa(empresaMock);
+    }
+
+    @Test
+    void testExcluirEmpresa() throws SQLException {
+        Integer idEmpresa = 1;
+        Empresa empresaMock = new Empresa(
+                "empresa 2",
+                "54321",
+                "empresa2@gmail.com",
+                "empresa 2 descrição",
+                "argentina",
+                "98765",
+                "34534"
+        );
+        empresaMock.setId(idEmpresa);
+
+        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock);
+
+        empresaService.excluirEmpresa(idEmpresa);
+
+        verify(empresaDao).buscarEmpresaPorId(idEmpresa);
+        verify(empresaDao).excluirEmpresa(idEmpresa);
     }
 
 }

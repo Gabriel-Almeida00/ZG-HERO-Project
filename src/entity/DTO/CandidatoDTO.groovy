@@ -16,6 +16,6 @@ class CandidatoDTO {
         this.competencias = candidato.getCompetencias()
         this.formacoes = candidato.getFormacoes()
         this.experiencias = candidato.getExperiencias()
-        this.curtidas = candidato.getCurtidas()
+        this.curtidas = candidato.get()
     }
 }
