@@ -5,6 +5,7 @@ import Exception.VagaNotFoundException
 import dao.vaga.IVagaCompetenciaDao
 import dao.vaga.IVagaDao
 import dao.vaga.VagaDao
+import entity.Competencias
 import entity.Vaga
 import entity.VagaCompetencia
 import entity.dto.VagaDTO
@@ -101,13 +102,13 @@ class VagaService implements IVagaService{
     }
 
     @Override
-    public List<VagaCompetencia> listarCompetenciasPorVaga(Integer idVaga) {
+    public List<Competencias> listarCompetenciasPorVaga(Integer idVaga) {
         try {
             Vaga vaga = vagaDao.buscarVagaPorId(idVaga)
             if(vaga == null){
                 throw new VagaNotFoundException("Vaga não encontrada com ID: " + idVaga)
             }
-            List<VagaCompetencia> vagaCompetenciaList = vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga);
+            List<Competencias> vagaCompetenciaList = vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga);
             return vagaCompetenciaList
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);

@@ -1,6 +1,7 @@
 package service
 
 import dao.vaga.VagaCompetenciaDao
+import entity.Competencias
 import entity.Vaga
 import entity.VagaCompetencia
 import entity.dto.VagaDTO
@@ -17,5 +18,5 @@ interface IVagaService {
     void adicionarVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException;
     void atualizarNivelVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException;
     void excluirVagaCompetencia(Integer idVagaCompetencia) throws SQLException;
-    List<VagaCompetencia> listarCompetenciasPorVaga(Integer idVaga) throws SQLException;
+    List<Competencias> listarCompetenciasPorVaga(Integer idVaga) throws SQLException;
 }

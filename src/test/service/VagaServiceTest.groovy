@@ -2,6 +2,7 @@ package test.service
 
 import dao.vaga.IVagaCompetenciaDao
 import dao.vaga.IVagaDao
+import entity.Competencias
 import entity.Vaga
 import entity.VagaCompetencia
 import entity.dto.VagaDTO
@@ -10,14 +11,14 @@ import org.junit.jupiter.api.Test
 
 import java.sql.SQLException
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.*
 import service.VagaService
 
 class VagaServiceTest {
 
     private IVagaDao vagaDao
     private IVagaCompetenciaDao vagaCompetenciaDao
-    private VagaService service;
+    private VagaService service
 
     @BeforeEach
     void setup() {
@@ -29,7 +30,7 @@ class VagaServiceTest {
     @Test
     void testListarTodasVagas() throws SQLException {
 
-        List<VagaDTO> vagasMock = new ArrayList<>();
+        List<VagaDTO> vagasMock = new ArrayList<>()
         vagasMock.add(new VagaDTO(
                 1,
                 "desenvolvedor",
@@ -38,7 +39,7 @@ class VagaServiceTest {
                 "graduação",
                 "nenhuma",
                 new ArrayList<>()
-        ));
+        ))
         vagasMock.add(new VagaDTO(
                 2,
                 "desenvolvedor",
@@ -47,20 +48,20 @@ class VagaServiceTest {
                 "graduação",
                 "nenhuma",
                 new ArrayList<>()
-        ));
+        ))
 
-        when(vagaDao.listarTodasVagas()).thenReturn(vagasMock);
+        when(vagaDao.listarTodasVagas()).thenReturn(vagasMock)
 
-        List<VagaDTO> result = service.listarTodasVagas();
+        List<VagaDTO> result = service.listarTodasVagas()
 
-        verify(vagaDao, times(1)).listarTodasVagas();
+        verify(vagaDao, times(1)).listarTodasVagas()
 
-        assert vagasMock == result;
+        assert vagasMock == result
     }
 
     @Test
     void testBuscarVagaPorId() throws SQLException {
-        Integer idVaga = 1;
+        Integer idVaga = 1
 
         Vaga vagaMock = new Vaga(
                 2,
@@ -69,13 +70,13 @@ class VagaServiceTest {
                 "RJ",
                 "ensino médio",
                 "nenhuma"
-        );
-        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock);
+        )
+        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock)
 
-        Vaga result = service.buscarVagaPorId(idVaga);
+        Vaga result = service.buscarVagaPorId(idVaga)
 
-        verify(vagaDao).buscarVagaPorId(idVaga);
-        assert vagaMock == result;
+        verify(vagaDao).buscarVagaPorId(idVaga)
+        assert vagaMock == result
     }
 
     @Test
@@ -87,11 +88,11 @@ class VagaServiceTest {
                 "RJ",
                 "ensino médio",
                 "nenhuma"
-        );
+        )
 
-        service.adicionarVaga(vaga);
+        service.adicionarVaga(vaga)
 
-        verify(vagaDao).adicionarVaga(vaga);
+        verify(vagaDao).adicionarVaga(vaga)
     }
 
     @Test
@@ -102,19 +103,19 @@ class VagaServiceTest {
                 "ibm descrição",
                 "RJ",
                 "ensino médio",
-                "nenhuma");
-        vaga.setId(1);
+                "nenhuma")
+        vaga.setId(1)
 
-        when(vagaDao.buscarVagaPorId(vaga.getId())).thenReturn(vaga);
+        when(vagaDao.buscarVagaPorId(vaga.getId())).thenReturn(vaga)
 
-        service.atualizarVaga(vaga);
+        service.atualizarVaga(vaga)
 
-        verify(vagaDao).atualizarVaga(vaga);
+        verify(vagaDao).atualizarVaga(vaga)
     }
 
     @Test
     void testExcluirVaga() throws SQLException {
-        Integer idVaga = 1;
+        Integer idVaga = 1
 
         Vaga vagaMock = new Vaga(
                 2,
@@ -123,49 +124,49 @@ class VagaServiceTest {
                 "RJ",
                 "ensino médio",
                 "nenhuma")
-        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock);
+        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock)
 
-        service.excluirVaga(idVaga);
+        service.excluirVaga(idVaga)
 
-        verify(vagaDao).excluirVaga(idVaga);
+        verify(vagaDao).excluirVaga(idVaga)
     }
 
     @Test
-    public void testAdicionarVagaCompetencia() {
-        VagaCompetencia vagaCompetenciaMock = new VagaCompetencia(1, 2, "Avançado");
+    void testAdicionarVagaCompetencia() {
+        VagaCompetencia vagaCompetenciaMock = new VagaCompetencia(1, 2, "Avançado")
 
-        doNothing().when(vagaCompetenciaDao).adicionarVagaCompetencia(vagaCompetenciaMock);
+        doNothing().when(vagaCompetenciaDao).adicionarVagaCompetencia(vagaCompetenciaMock)
 
-        service.adicionarVagaCompetencia(vagaCompetenciaMock);
+        service.adicionarVagaCompetencia(vagaCompetenciaMock)
 
-        verify(vagaCompetenciaDao, times(1)).adicionarVagaCompetencia(vagaCompetenciaMock);
+        verify(vagaCompetenciaDao, times(1)).adicionarVagaCompetencia(vagaCompetenciaMock)
     }
 
     @Test
-    public void testAtualizarNivelVagaCompetencia() {
-        VagaCompetencia vagaCompetenciaMock = new VagaCompetencia(1, 2, "Intermediário");
+    void testAtualizarNivelVagaCompetencia() {
+        VagaCompetencia vagaCompetenciaMock = new VagaCompetencia(1, 2, "Intermediário")
 
-        doNothing().when(vagaCompetenciaDao).atualizarNivelVagaCompetencia(vagaCompetenciaMock);
+        doNothing().when(vagaCompetenciaDao).atualizarNivelVagaCompetencia(vagaCompetenciaMock)
 
-        service.atualizarNivelVagaCompetencia(vagaCompetenciaMock);
+        service.atualizarNivelVagaCompetencia(vagaCompetenciaMock)
 
-        verify(vagaCompetenciaDao, times(1)).atualizarNivelVagaCompetencia(vagaCompetenciaMock);
+        verify(vagaCompetenciaDao, times(1)).atualizarNivelVagaCompetencia(vagaCompetenciaMock)
     }
 
     @Test
-    public void testExcluirVagaCompetencia() {
-        Integer idVagaCompetencia = 1;
+    void testExcluirVagaCompetencia() {
+        Integer idVagaCompetencia = 1
 
-        doNothing().when(vagaCompetenciaDao).excluirVagaCompetencia(idVagaCompetencia);
+        doNothing().when(vagaCompetenciaDao).excluirVagaCompetencia(idVagaCompetencia)
 
-        service.excluirVagaCompetencia(idVagaCompetencia);
+        service.excluirVagaCompetencia(idVagaCompetencia)
 
-        verify(vagaCompetenciaDao, times(1)).excluirVagaCompetencia(idVagaCompetencia);
+        verify(vagaCompetenciaDao, times(1)).excluirVagaCompetencia(idVagaCompetencia)
     }
 
     @Test
-    public void testListarCompetenciasPorVaga() throws SQLException {
-        Integer idVaga = 1;
+    void testListarCompetenciasPorVaga() throws SQLException {
+        Integer idVaga = 1
 
         Vaga vagaMock = new Vaga(
                 2,
@@ -174,30 +175,27 @@ class VagaServiceTest {
                 "RJ",
                 "ensino médio",
                 "nenhuma"
-        );
+        )
 
-        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock);
+        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock)
 
-        List<VagaCompetencia> vagaCompetenciaListMock = new ArrayList<>();
-        vagaCompetenciaListMock.add(new VagaCompetencia(
-                1,
-                2,
+        List<Competencias> vagaCompetenciaListMock = new ArrayList<>()
+        vagaCompetenciaListMock.add(new Competencias(
+                "java",
                 "Intermediário"
-        ));
-        vagaCompetenciaListMock.add(new VagaCompetencia(
-                1,
-                2,
-                "Avançado"
-        ));
+        ))
+        vagaCompetenciaListMock.add(new Competencias(
+                "groovy",
+                "avançado"
+        ))
 
-        when(vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga)).thenReturn(vagaCompetenciaListMock);
+        when(vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga)).thenReturn(vagaCompetenciaListMock)
 
-        List<VagaCompetencia> result = service.listarCompetenciasPorVaga(idVaga);
+        List<Competencias> result = service.listarCompetenciasPorVaga(idVaga)
 
-        verify(vagaDao).buscarVagaPorId(idVaga);
-        verify(vagaCompetenciaDao).listarCompetenciasPorVaga(idVaga);
-
-        assert vagaCompetenciaListMock.size() == result.size();
-        assert vagaCompetenciaListMock == result;
+        verify(vagaDao).buscarVagaPorId(idVaga)
+        verify(vagaCompetenciaDao).listarCompetenciasPorVaga(idVaga)
+        assert vagaCompetenciaListMock.size() == result.size()
+        assert vagaCompetenciaListMock == result
     }
 }
