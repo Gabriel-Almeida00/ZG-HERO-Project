@@ -12,6 +12,7 @@ import dao.candidato.IFormacaoDao
 import entity.Candidato
 import entity.CandidatoCompetencia
 import entity.Competencias
+import entity.dto.CandidatoDTO
 import entity.Experiencia
 import entity.Formacao
 
@@ -37,7 +38,7 @@ class CandidatoService implements ICandidatoService {
         this.formacaoDao = formacaoDao
     }
 
-    List<Candidato> listarCandidatos() {
+    List<CandidatoDTO> listarCandidatos() {
         try {
             return candidatoDao.listarCandidatos();
         }

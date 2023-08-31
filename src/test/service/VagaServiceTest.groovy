@@ -4,6 +4,7 @@ import dao.vaga.IVagaCompetenciaDao
 import dao.vaga.IVagaDao
 import entity.Vaga
 import entity.VagaCompetencia
+import entity.dto.VagaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -28,27 +29,29 @@ class VagaServiceTest {
     @Test
     void testListarTodasVagas() throws SQLException {
 
-        List<Vaga> vagasMock = new ArrayList<>();
-        vagasMock.add(new Vaga(
+        List<VagaDTO> vagasMock = new ArrayList<>();
+        vagasMock.add(new VagaDTO(
                 1,
-                "tech",
-                "tech descricao",
+                "desenvolvedor",
                 "SP",
+                "tech descricao",
                 "graduação",
-                "nenhuma"
+                "nenhuma",
+                new ArrayList<>()
         ));
-        vagasMock.add(new Vaga(
+        vagasMock.add(new VagaDTO(
                 2,
-                "ibm",
-                "ibm descrição",
-                "RJ",
-                "ensino médio",
-                "nenhuma"
+                "desenvolvedor",
+                "SP",
+                "tech descricao",
+                "graduação",
+                "nenhuma",
+                new ArrayList<>()
         ));
 
         when(vagaDao.listarTodasVagas()).thenReturn(vagasMock);
 
-        List<Vaga> result = service.listarTodasVagas();
+        List<VagaDTO> result = service.listarTodasVagas();
 
         verify(vagaDao, times(1)).listarTodasVagas();
 

@@ -3,14 +3,12 @@ package service
 import entity.Candidato
 import entity.CandidatoCompetencia
 import entity.Competencias
+import entity.dto.CandidatoDTO
 import entity.Experiencia
 import entity.Formacao
 
-import java.sql.SQLException
-
-
 interface ICandidatoService {
-    List<Candidato> listarCandidatos() ;
+    List<CandidatoDTO> listarCandidatos() ;
     Candidato obterCandidatoPorId(Integer idCandidato);
     void cadastrarCandidato(Candidato candidato);
     void atualizarCandidato(Candidato candidato);

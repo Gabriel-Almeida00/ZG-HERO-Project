@@ -3,8 +3,8 @@ package test.service
 import entity.Candidato
 import entity.Competencias
 import entity.CandidatoCurtido
-import entity.DTO.CandidatoDTO
-import entity.DTO.EmpresaDTO
+import entity.dto.CandidatoDTO
+import entity.dto.EmpresaDTO
 import entity.Empresa
 import entity.Experiencia
 import entity.Formacao

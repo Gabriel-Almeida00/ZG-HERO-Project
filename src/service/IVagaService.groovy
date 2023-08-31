@@ -3,11 +3,12 @@ package service
 import dao.vaga.VagaCompetenciaDao
 import entity.Vaga
 import entity.VagaCompetencia
+import entity.dto.VagaDTO
 
 import java.sql.SQLException
 
 interface IVagaService {
-    List<Vaga> listarTodasVagas() throws SQLException;
+    List<VagaDTO> listarTodasVagas() throws SQLException;
     Vaga buscarVagaPorId(Integer idVaga) throws SQLException;
     void adicionarVaga(Vaga vaga) throws SQLException;
     void atualizarVaga(Vaga vaga) throws SQLException;

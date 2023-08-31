@@ -7,6 +7,7 @@ import dao.candidato.IFormacaoDao
 import entity.Candidato
 import entity.CandidatoCompetencia
 import entity.Competencias
+import entity.dto.CandidatoDTO
 import entity.Experiencia
 import entity.Formacao
 import org.junit.jupiter.api.BeforeEach
@@ -35,11 +36,11 @@ class CandatoServiceTest {
 
     @Test
     void testListarCandidatos() throws SQLException {
-        List<Candidato> candidatosMock = new ArrayList<>();
+        List<CandidatoDTO> candidatosMock = new ArrayList<>();
 
         when(candidatoDaoMock.listarCandidatos()).thenReturn(candidatosMock);
 
-        List<Candidato> resultado = candidatoService.listarCandidatos();
+        List<CandidatoDTO> resultado = candidatoService.listarCandidatos();
 
         assert candidatosMock == resultado;
 

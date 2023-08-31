@@ -1,4 +1,4 @@
-package entity.DTO
+package entity.dto
 
 import entity.Empresa
 

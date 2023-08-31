@@ -1,8 +1,8 @@
 package Interface
 
 import entity.Candidato
-import entity.DTO.CandidatoDTO
-import entity.DTO.EmpresaDTO
+import entity.dto.CandidatoDTO
+import entity.dto.EmpresaDTO
 import entity.Vaga
 
 interface IMatch {

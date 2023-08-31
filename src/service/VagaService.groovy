@@ -4,8 +4,10 @@ import Exception.DataBaseException
 import Exception.VagaNotFoundException
 import dao.vaga.IVagaCompetenciaDao
 import dao.vaga.IVagaDao
+import dao.vaga.VagaDao
 import entity.Vaga
 import entity.VagaCompetencia
+import entity.dto.VagaDTO
 
 import java.sql.SQLException
 
@@ -20,7 +22,7 @@ class VagaService implements IVagaService{
     }
 
     @Override
-    public List<Vaga> listarTodasVagas() {
+    public List<VagaDTO> listarTodasVagas() {
         try {
             return vagaDao.listarTodasVagas();
         } catch (SQLException e) {

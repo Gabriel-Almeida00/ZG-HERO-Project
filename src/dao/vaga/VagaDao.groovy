@@ -2,6 +2,8 @@ package dao.vaga
 
 import db.IDatabaseConnection
 import entity.Vaga
+import entity.dto.CompetenciaDTO
+import entity.dto.VagaDTO
 
 import java.sql.PreparedStatement
 import java.sql.ResultSet
@@ -16,31 +18,60 @@ class VagaDao implements IVagaDao{
     }
 
     @Override
-    List<Vaga> listarTodasVagas() throws SQLException {
-        List<Vaga> vagas = new ArrayList<>();
+    List<VagaDTO> listarTodasVagas() throws SQLException {
+        List<VagaDTO> vagaDTOs = new ArrayList<>();
 
-        String sql = "SELECT id, idEmpresa, nome, descricao, cidade, formacaoMinima, experienciaMinima FROM vagas";
+        String sql = "SELECT" +
+                "    v.id AS id_vaga," +
+                "    v.nome AS nome_vaga," +
+                "    v.descricao," +
+                "    v.cidade," +
+                "    v.formacaoMinima," +
+                "    v.experienciaMinina," +
+                "    c.nome AS nome_competencia," +
+                "    vc.nivel" +
+                " FROM " +
+                "    vagas v" +
+                " INNER JOIN" +
+                "    vaga_competencia vc ON v.id = vc.idVaga" +
+                " INNER JOIN" +
+                "    competencias c ON vc.idCompetencia = c.id;";
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
 
+            Map<Integer, VagaDTO> vagaDTOMap = new HashMap<>();
+
             while (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
-                Integer idEmpresa = resultSet.getInt("idEmpresa");
-                String nome = resultSet.getString("nome");
-                String descricao = resultSet.getString("descricao");
-                String cidade = resultSet.getString("cidade");
-                String formacaoMinima = resultSet.getString("formacaoMinima");
-                String experienciaMinima = resultSet.getString("experienciaMinima");
+                Integer idVaga = resultSet.getInt("id_vaga");
+                String nomeVaga = resultSet.getString("nome_vaga");
 
-                Vaga vaga = new Vaga(idEmpresa, nome, descricao, cidade, formacaoMinima, experienciaMinima);
-                vaga.setId(id);
+                VagaDTO vagaDTO = vagaDTOMap.get(idVaga);
+                if (vagaDTO == null) {
+                    vagaDTO = new VagaDTO(
+                            idVaga,
+                            nomeVaga,
+                            resultSet.getString("cidade"),
+                            resultSet.getString("descricao"),
+                            resultSet.getString("formacaoMinima"),
+                            resultSet.getString("experienciaMinina"),
+                            new ArrayList<>()
+                    );
+                    vagaDTOMap.put(idVaga, vagaDTO);
+                }
 
-                vagas.add(vaga);
+                CompetenciaDTO competenciaDTO = new CompetenciaDTO(
+                        resultSet.getString("nome_competencia"),
+                        resultSet.getString("nivel")
+                );
+
+                vagaDTO.getCompetencias().add(competenciaDTO);
             }
+
+            vagaDTOs.addAll(vagaDTOMap.values());
         }
 
-        return vagas;
+        return vagaDTOs;
     }
 
     @Override
