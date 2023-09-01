@@ -1,13 +1,35 @@
 package entity
 
-import entity.enums.NivelCompetencia
-
 class Competencias {
-    String nome
-    NivelCompetencia nivel
 
-    Competencias(String nome, NivelCompetencia nivel) {
+    private Integer id
+    private String nome
+
+    Competencias( String nome) {
         this.nome = nome
-        this.nivel = nivel
+
+    }
+
+    Integer getId() {
+        return id
+    }
+
+    void setId(Integer id) {
+        this.id = id
+    }
+
+    String getNome() {
+        return nome
+    }
+
+    void setNome(String nome) {
+        this.nome = nome
+    }
+
+
+
+    @Override
+    public String toString() {
+        return nome
     }
 }

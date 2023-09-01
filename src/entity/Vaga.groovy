@@ -1,22 +1,57 @@
 package entity
 
-import entity.enums.NivelExperiencia
-import entity.enums.NivelFormacao
-
 class Vaga {
+
+    Integer id
+    Integer idEmpresa
     String nome
     String descricao
-    List<CurtidaVaga> curtidas = []
-    List<Competencias> requisitos = []
-    NivelFormacao formacaoMinima
-    NivelExperiencia experienciaMinima
+    String cidade
+    String formacaoMinima
+    String experienciaMinima
+    List<VagaCompetencia> competencias
+    List<VagaCurtida> curtida
 
-    Vaga(String nome, String descricao, List<Competencias> requisitos, NivelFormacao formacaoMinima, NivelExperiencia experienciaMinima) {
+
+    Vaga(Integer idEmpresa,
+         String nome,
+         String descricao,
+         String cidade,
+         String formacaoMinima,
+         String experienciaMinima
+         ) {
+        this.idEmpresa = idEmpresa
         this.nome = nome
         this.descricao = descricao
-        this.requisitos = requisitos
+        this.cidade = cidade
         this.formacaoMinima = formacaoMinima
         this.experienciaMinima = experienciaMinima
+        competencias = []
+        curtida = []
+    }
+
+    List<VagaCurtida> getCurtida() {
+        return curtida
+    }
+
+    void setCurtida(List<VagaCurtida> curtida) {
+        this.curtida = curtida
+    }
+
+    Integer getId() {
+        return id
+    }
+
+    void setId(Integer id) {
+        this.id = id
+    }
+
+    Integer getIdEmpresa() {
+        return idEmpresa
+    }
+
+    void setIdEmpresa(Integer idEmpresa) {
+        this.idEmpresa = idEmpresa
     }
 
     String getNome() {
@@ -35,36 +70,35 @@ class Vaga {
         this.descricao = descricao
     }
 
-    Competencias[] getRequisitos() {
-        return requisitos
+    String getCidade() {
+        return cidade
     }
 
-    void setRequisitos(Competencias[] requisitos) {
-        this.requisitos = requisitos
+    void setCidade(String cidade) {
+        this.cidade = cidade
     }
 
-    NivelFormacao getFormacaoMinima() {
+    String getFormacaoMinima() {
         return formacaoMinima
     }
 
-    void setFormacaoMinima(NivelFormacao formacaoMinima) {
+    void setFormacaoMinima(String formacaoMinima) {
         this.formacaoMinima = formacaoMinima
     }
 
-    NivelExperiencia getExperienciaMinima() {
+    String getExperienciaMinima() {
         return experienciaMinima
     }
 
-    void setExperienciaMinima(NivelExperiencia experienciaMinima) {
+    void setExperienciaMinima(String experienciaMinima) {
         this.experienciaMinima = experienciaMinima
     }
 
-    void adicionarCurtida(CurtidaVaga curtida) {
-        curtidas.add(curtida)
+    List<VagaCompetencia> getCompetencias() {
+        return competencias
     }
 
-    List<CurtidaVaga> getCurtidas() {
-        return curtidas
+    void setCompetencias(List<VagaCompetencia> competencias) {
+        this.competencias = competencias
     }
-
 }

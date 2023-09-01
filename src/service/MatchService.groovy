@@ -2,11 +2,8 @@ package service
 
 import Interface.IMatch
 import entity.Candidato
-    import entity.CurtidaCandidato
-import entity.CurtidaVaga
-import entity.DTO.CandidatoDTO
-import entity.DTO.EmpresaDTO
-import entity.Empresa
+import entity.dto.CandidatoDTO
+import entity.dto.EmpresaDTO
 import entity.Vaga
 
 class MatchService implements IMatch {
