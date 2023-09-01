@@ -2,20 +2,20 @@ package entity
 
 class Candidato   {
 
-    Integer id
-    String nome
-    String sobrenome
-    Date dataNascimento
-    String email
-    String cpf
-    String pais
-    String cep
-    String descricao
-    String senha
-    List<CandidatoCompetencia> competencias
-    List<Formacao> formacoes
-    List<Experiencia> experiencias
-    List<CandidatoCurtido> curtida;
+    private Integer id
+    private String nome
+    private String sobrenome
+    private Date dataNascimento
+    private String email
+    private String cpf
+    private String pais
+    private String cep
+    private String descricao
+    private String senha
+    private List<CandidatoCompetencia> competencias
+    private List<Formacao> formacoes
+    private List<Experiencia> experiencias
+    private List<CandidatoCurtido> curtida;
 
     Candidato(String nome,
               String sobrenome,

@@ -116,6 +116,7 @@ class CandidatoService implements ICandidatoService {
         }
     }
 
+
     @Override
     public void adicionarCandidatoCompetencia(CandidatoCompetencia candidatoCompetencia) {
         try {
@@ -128,10 +129,6 @@ class CandidatoService implements ICandidatoService {
     @Override
     public void atualizarNivelCompetenciaCandidato(CandidatoCompetencia candidatoCompetencia) {
         try {
-            Competencias competencias = candidatoCompetenciaDao.buscarCompetenciaPorId(candidatoCompetencia.getId())
-            if(competencias == null){
-                throw new CompetenciaNotFoundException("Competencia não encontrada com id : " + candidatoCompetencia.getId())
-            }
             candidatoCompetenciaDao.atualizarNivelCompetenciaCandidato(candidatoCompetencia);
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
@@ -141,10 +138,6 @@ class CandidatoService implements ICandidatoService {
     @Override
     public void excluirCompetenciaCandidato(Integer id) {
         try {
-            Competencias competencias = candidatoCompetenciaDao.buscarCompetenciaPorId(id)
-            if(competencias == null){
-                throw new CompetenciaNotFoundException("Competencia não encontrada com id : " + id)
-            }
             candidatoCompetenciaDao.excluirCompetenciaCandidato(id);
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);

@@ -34,16 +34,16 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao{
         String sql = "UPDATE vaga_competencia SET nivel = ? WHERE idVaga = ? AND idCompetencia = ?"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
-            statement.setString(1, vagaCompetencia.getNivel());
-            statement.setInt(2, vagaCompetencia.getIdVaga());
-            statement.setInt(3, vagaCompetencia.getIdCompetencia());
+            statement.setString(1, vagaCompetencia.getNivel())
+            statement.setInt(2, vagaCompetencia.getIdVaga())
+            statement.setInt(3, vagaCompetencia.getIdCompetencia())
 
             statement.executeUpdate()
         }
     }
 
     @Override
-    public void excluirVagaCompetencia(Integer idVagaCompetencia) throws SQLException {
+     void excluirVagaCompetencia(Integer idVagaCompetencia) throws SQLException {
         String sql = "DELETE FROM vaga_competencia WHERE id = ?"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {

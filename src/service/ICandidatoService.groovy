@@ -15,7 +15,7 @@ interface ICandidatoService {
     void deletarCandidato(Integer candidatoId);
 
     List<Competencias> listarCompetenciasPorCandidato(Integer idCandidato)
-    Competencias buscarCompetenciaPorId(Integer idCompetencia);
+    Competencias buscarCompetenciaPorId(Integer idCompetencia)
     void adicionarCandidatoCompetencia(CandidatoCompetencia candidatoCompetencia);
     void atualizarNivelCompetenciaCandidato(CandidatoCompetencia candidatoCompetencia);
     void excluirCompetenciaCandidato(Integer id);

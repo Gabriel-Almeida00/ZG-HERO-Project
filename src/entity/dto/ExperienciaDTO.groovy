@@ -24,4 +24,9 @@ class ExperienciaDTO {
     void setNivel(String nivel) {
         this.nivel = nivel
     }
+
+    @Override
+     String toString() {
+        return cargo + " - " + nivel
+    }
 }

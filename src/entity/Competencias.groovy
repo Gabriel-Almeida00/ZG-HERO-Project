@@ -2,9 +2,9 @@ package entity
 
 class Competencias {
 
-    Integer id
-    String nome
-    String nivel
+    private Integer id
+    private String nome
+    private String nivel
 
     Competencias( String nome, String nivel) {
         this.nome = nome
@@ -33,5 +33,11 @@ class Competencias {
 
     void setNivel(String nivel) {
         this.nivel = nivel
+    }
+
+
+    @Override
+    public String toString() {
+        return nome + " - " + nivel
     }
 }

@@ -24,4 +24,10 @@ class FormacaoDTO {
     void setAnoConclusao(String anoConclusao) {
         this.anoConclusao = anoConclusao
     }
+
+
+    @Override
+     String toString() {
+        return curso + " - " + anoConclusao
+    }
 }

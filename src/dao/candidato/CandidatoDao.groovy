@@ -14,20 +14,20 @@ import java.sql.ResultSet
 
 class CandidatoDao implements ICandidatoDao {
 
-    private final IDatabaseConnection databaseConnection;
+    private final IDatabaseConnection databaseConnection
 
     CandidatoDao(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection;
+        this.databaseConnection = databaseConnection
     }
 
     @Override
     Candidato obterCandidatoPorId(Integer id) {
-        Candidato candidato = null;
-        String sql = "SELECT * FROM candidatos WHERE id = ?";
+        Candidato candidato = null
+        String sql = "SELECT * FROM candidatos WHERE id = ?"
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
+            statement.setInt(1, id)
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -53,12 +53,27 @@ class CandidatoDao implements ICandidatoDao {
     @Override
     List<CandidatoDTO> listarCandidatos() {
         List<CandidatoDTO> candidatosDTO = new ArrayList<>();
-        String sql = "SELECT c.id, c.descricao, comp.nome as competencia_nome, cc.nivel as competencia_nivel, f.curso, f.anoConclusao, e.cargo, e.nivel as experiencia_nivel " +
-                "FROM candidatos c " +
-                "LEFT JOIN candidato_competencia cc ON c.id = cc.idCandidato " +
-                "LEFT JOIN competencias comp ON cc.idCompetencia = comp.id " +
-                "LEFT JOIN formacoes f ON c.id = f.idCandidato " +
-                "LEFT JOIN experiencias e ON c.id = e.idCandidato";
+        String sql = "SELECT " +
+                "    c.id, " +
+                "    c.descricao, " +
+                "    ARRAY_AGG(DISTINCT comp.nome) AS competencias, " +
+                "    ARRAY_AGG(DISTINCT cc.nivel) AS niveis_competencias, " +
+                "    ARRAY_AGG(DISTINCT f.curso) AS formacoes, " +
+                "    ARRAY_AGG(DISTINCT f.anoConclusao) AS anos_formacoes, " +
+                "    ARRAY_AGG(DISTINCT e.cargo) AS cargos_experiencias, " +
+                "    ARRAY_AGG(DISTINCT e.nivel) AS niveis_experiencias " +
+                "FROM " +
+                "    candidatos c " +
+                "LEFT JOIN " +
+                "    candidato_competencia cc ON c.id = cc.idCandidato " +
+                "LEFT JOIN " +
+                "    competencias comp ON cc.idCompetencia = comp.id " +
+                "LEFT JOIN " +
+                "    formacoes f ON c.id = f.idCandidato " +
+                "LEFT JOIN " +
+                "    experiencias e ON c.id = e.idCandidato " +
+                "GROUP BY " +
+                "    c.id, c.descricao;"
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
@@ -72,22 +87,26 @@ class CandidatoDao implements ICandidatoDao {
 
                 CandidatoDTO candidatoDTO = candidatosMap.getOrDefault(candidatoId, new CandidatoDTO(candidatoId, descricao, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
-                String nivelCompetencia = resultSet.getString("competencia_nivel");
-                String nomeCompetencia = resultSet.getString("competencia_nome");
+                String nivelCompetencia = resultSet.getString("niveis_competencias");
+                String nomeCompetencia = resultSet.getString("competencias");
                 if (nomeCompetencia != null) {
                     candidatoDTO.getCompetencias().add(new CompetenciaDTO(nomeCompetencia, nivelCompetencia));
                 }
 
-                String cursoFormacao = resultSet.getString("curso");
-                String anoConclusao = resultSet.getString("anoconclusao");
+                String cursoFormacao = resultSet.getString("formacoes");
+                String anoConclusao = resultSet.getString("anos_formacoes");
                 if (cursoFormacao != null) {
                     candidatoDTO.getFormacoes().add(new FormacaoDTO(cursoFormacao, anoConclusao));
+                } else {
+                    candidatoDTO.getFormacoes().add(new FormacaoDTO("", ""));
                 }
 
-                String cargoExperiencia = resultSet.getString("cargo");
-                String nivelExperiencia = resultSet.getString("experiencia_nivel");
+                String cargoExperiencia = resultSet.getString("cargos_experiencias");
+                String nivelExperiencia = resultSet.getString("niveis_experiencias");
                 if (cargoExperiencia != null) {
                     candidatoDTO.getExperiencias().add(new ExperienciaDTO(cargoExperiencia, nivelExperiencia));
+                } else {
+                    candidatoDTO.getExperiencias().add(new ExperienciaDTO("", ""));
                 }
 
                 candidatosMap.put(candidatoId, candidatoDTO);

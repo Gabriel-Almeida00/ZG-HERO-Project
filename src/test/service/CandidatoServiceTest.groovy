@@ -17,7 +17,7 @@ import service.CandidatoService
 
 import java.sql.SQLException
 
-class CandatoServiceTest {
+class CandidatoServiceTest {
 
     private ICandidatoDao candidatoDaoMock;
     private ICandidatoCompetenciaDao candidatoCompetenciaDao
@@ -192,12 +192,10 @@ class CandatoServiceTest {
         Competencias competenciasMock = new Competencias("Java", "Avançado");
         competenciasMock.setId(idCompetencia);
 
-        when(candidatoCompetenciaDao.buscarCompetenciaPorId(idCompetencia)).thenReturn(competenciasMock);
         doNothing().when(candidatoCompetenciaDao).atualizarNivelCompetenciaCandidato(candidatoCompetencia);
 
         candidatoService.atualizarNivelCompetenciaCandidato(candidatoCompetencia);
 
-        verify(candidatoCompetenciaDao, times(1)).buscarCompetenciaPorId(idCompetencia);
         verify(candidatoCompetenciaDao, times(1)).atualizarNivelCompetenciaCandidato(candidatoCompetencia);
     }
 
