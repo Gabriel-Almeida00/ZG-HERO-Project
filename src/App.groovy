@@ -1,4 +1,4 @@
-import UI.CandidatoMenu
+import UI.candidato.CandidatoMenu
 
 class App {
     static void main(String[] args) {

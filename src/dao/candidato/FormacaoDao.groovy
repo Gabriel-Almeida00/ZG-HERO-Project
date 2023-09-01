@@ -75,7 +75,7 @@ class FormacaoDao implements IFormacaoDao {
     public Formacao buscarFormacaoPorId(Integer idFormacao) throws SQLException {
         String sql = "SELECT id, idCandidato, instituicao, curso, nivel, anoConclusao FROM formacoes WHERE id = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idFormacao);
 
             try (ResultSet resultSet = statement.executeQuery()) {

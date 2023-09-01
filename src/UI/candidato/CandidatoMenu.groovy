@@ -1,4 +1,4 @@
-package UI
+package UI.candidato
 
 import dao.candidato.CandidatoCompetenciaDao
 import dao.candidato.CandidatoDao
@@ -20,6 +20,8 @@ class CandidatoMenu {
 
     CandidatoService candidatoService
     CompetenciaCandidatoMenu competenciaCandidatoMenu
+    ExperienciaMenu experienciaCandidatoMenu
+    FormacaoMenu formacaoMenu
 
     CandidatoMenu() {
         IDatabaseConnection databaseConnection = new DatabaseConnection()
@@ -28,6 +30,8 @@ class CandidatoMenu {
         IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection)
         IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection)
 
+        formacaoMenu = new FormacaoMenu()
+        experienciaCandidatoMenu = new ExperienciaMenu()
         competenciaCandidatoMenu = new CompetenciaCandidatoMenu()
         candidatoService = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao)
     }
@@ -40,7 +44,9 @@ class CandidatoMenu {
             println "3. Atualizar candidato"
             println "4. Deletar candidato"
             println "5. Gerenciar Competencias do candidato"
-            println "6. Voltar"
+            println "6. Gerenciar experiencias do candidato"
+            println "7. Gerenciar formações do candidato"
+            println "8. Voltar"
 
             int opcao = Integer.parseInt(reader.readLine())
             switch (opcao) {
@@ -60,6 +66,12 @@ class CandidatoMenu {
                     competenciaCandidatoMenu.exibirMenuCandidato(reader)
                     break
                 case 6:
+                    experienciaCandidatoMenu.exibirMenuCandidato(reader)
+                    break
+                case 7:
+                    formacaoMenu.exibirMenuCandidato(reader)
+                    break
+                case 8:
                     return
                 default:
                     println "Opção inválida. Tente novamente."

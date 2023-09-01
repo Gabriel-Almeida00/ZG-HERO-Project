@@ -1,4 +1,4 @@
-package UI
+package UI.candidato
 
 import dao.candidato.CandidatoCompetenciaDao
 import dao.candidato.CandidatoDao
@@ -98,7 +98,7 @@ class CompetenciaCandidatoMenu {
         CandidatoCompetencia candidatoCompetencia = criarCompetenciaCandidato(reader)
         candidatoCompetencia.setId(idCompetencia)
 
-        candidatoService.atualizarNivelCompetenciaCandidato(candidatoCompetencia);
+        candidatoService.atualizarNivelCompetenciaCandidato(candidatoCompetencia)
     }
 
     void excluirCompetencia(Reader reader){
