@@ -6,6 +6,7 @@ import dao.vaga.IVagaCompetenciaDao
 import dao.vaga.IVagaDao
 import dao.vaga.VagaDao
 import entity.Competencias
+import entity.Empresa
 import entity.Vaga
 import entity.VagaCompetencia
 import entity.dto.VagaDTO
@@ -27,6 +28,15 @@ class VagaService implements IVagaService{
         try {
             return vagaDao.listarTodasVagas();
         } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    List<VagaDTO> listarVagasDaEmpresa(int idEmpresa) throws SQLException {
+        try{
+            return  vagaDao.listarVagasDaEmpresa(idEmpresa)
+        } catch (SQLException e){
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
         }
     }

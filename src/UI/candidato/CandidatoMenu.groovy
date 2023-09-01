@@ -138,16 +138,28 @@ class CandidatoMenu {
 
     void listarCandidatos() {
         List<CandidatoDTO> candidatos = candidatoService.listarCandidatos()
-        candidatos.each {
+        candidatos.each { candidato ->
             println "======================="
-            println "ID: ${it.id}"
-            println "Descrição: ${it.descricao}"
-            println "Formações: ${it.formacoes}"
-            println "Experiencias: ${it.experiencias}"
-            println "Competencias: ${it.competencias}"
-            println ""
+            println "ID: ${candidato.id}"
+            println "Descrição:"
+            println "  - ${candidato.descricao}"
 
-        }
+            println "Formações:"
+            candidato.formacoes.each { formacao ->
+                println "  - ${formacao.curso} - (${formacao.anoConclusao})"
+            }
+
+            println "Experiências:"
+            candidato.experiencias.each { experiencia ->
+                println "  - ${experiencia.cargo} - ${experiencia.nivel}"
+            }
+
+            println "Competências:"
+            candidato.competencias.each { competencia ->
+                    println "  - ${competencia.nome} - ${competencia.nivel}"
+                }
+            }
+            println ""
     }
 
     void deletarCandidato(Reader reader) {

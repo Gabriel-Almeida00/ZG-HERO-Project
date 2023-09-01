@@ -60,6 +60,38 @@ class VagaServiceTest {
     }
 
     @Test
+    void testListarVagasDaEmpresa() throws SQLException {
+        Integer idEmpresa = 1
+        List<VagaDTO> vagasMock = new ArrayList<>()
+        vagasMock.add(new VagaDTO(
+                1,
+                "desenvolvedor",
+                "SP",
+                "tech descricao",
+                "graduação",
+                "nenhuma",
+                new ArrayList<>()
+        ))
+        vagasMock.add(new VagaDTO(
+                2,
+                "desenvolvedor",
+                "SP",
+                "tech descricao",
+                "graduação",
+                "nenhuma",
+                new ArrayList<>()
+        ))
+
+        when(vagaDao.listarVagasDaEmpresa(idEmpresa)).thenReturn(vagasMock)
+
+        List<VagaDTO> result = service.listarVagasDaEmpresa(idEmpresa)
+
+        verify(vagaDao, times(1)).listarVagasDaEmpresa(idEmpresa)
+
+        assert vagasMock == result
+    }
+
+    @Test
     void testBuscarVagaPorId() throws SQLException {
         Integer idVaga = 1
 

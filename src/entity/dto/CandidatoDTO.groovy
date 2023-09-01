@@ -7,8 +7,6 @@ class CandidatoDTO {
     List<FormacaoDTO> formacoes = []
     List<ExperienciaDTO> experiencias = []
 
-
-
     CandidatoDTO(
             Integer id,
             String descricao,

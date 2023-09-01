@@ -117,6 +117,7 @@ class CandidatoDao implements ICandidatoDao {
         return candidatosDTO;
     }
 
+
     @Override
     void adicionarCandidato(Candidato candidato) {
         String sql = "INSERT INTO candidatos (nome, sobrenome, dataNascimento, email, cpf, pais, cep, descricao, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";

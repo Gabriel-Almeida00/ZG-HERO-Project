@@ -5,6 +5,7 @@ import entity.Vaga
 import entity.dto.CompetenciaDTO
 import entity.dto.VagaDTO
 
+import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -75,8 +76,60 @@ class VagaDao implements IVagaDao{
     }
 
     @Override
+    List<VagaDTO> listarVagasDaEmpresa(int idEmpresa) throws SQLException {
+        List<VagaDTO> vagaDTOs = new ArrayList<>();
+
+        String sql = "SELECT " +
+                "    v.id AS id_vaga," +
+                "    v.nome AS nome_vaga," +
+                "    v.descricao," +
+                "    v.cidade," +
+                "    v.formacaoMinima," +
+                "    v.experienciaMinina" +
+                " FROM " +
+                "    vagas v" +
+                " JOIN" +
+                "    empresas e ON v.idEmpresa = e.id" +
+                " WHERE" +
+                "    v.idEmpresa = ?"
+
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, idEmpresa);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                Map<Integer, VagaDTO> vagaDTOMap = new HashMap<>();
+
+                while (resultSet.next()) {
+                    Integer idVaga = resultSet.getInt("id_vaga");
+                    String nomeVaga = resultSet.getString("nome_vaga");
+
+                    VagaDTO vagaDTO = vagaDTOMap.get(idVaga);
+                    if (vagaDTO == null) {
+                        vagaDTO = new VagaDTO(
+                                idVaga,
+                                nomeVaga,
+                                resultSet.getString("cidade"),
+                                resultSet.getString("descricao"),
+                                resultSet.getString("formacaoMinima"),
+                                resultSet.getString("experienciaMinina"),
+                                new ArrayList<>()
+                        );
+                        vagaDTOMap.put(idVaga, vagaDTO);
+                    }
+
+                    vagaDTOs.add(vagaDTO);
+                }
+            }
+        }
+
+        return vagaDTOs;
+    }
+
+    @Override
     Vaga buscarVagaPorId(Integer idVaga) throws SQLException {
-        String sql = "SELECT idEmpresa, nome, descricao, cidade, formacaoMinima, experienciaMinima FROM vagas WHERE id = ?";
+        String sql = "SELECT idEmpresa, nome, descricao, cidade, formacaoMinima, experienciaMinina FROM vagas WHERE id = ?";
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idVaga);
@@ -88,7 +141,7 @@ class VagaDao implements IVagaDao{
                     String descricao = resultSet.getString("descricao");
                     String cidade = resultSet.getString("cidade");
                     String formacaoMinima = resultSet.getString("formacaoMinima");
-                    String experienciaMinima = resultSet.getString("experienciaMinima");
+                    String experienciaMinima = resultSet.getString("experienciaMinina");
 
                     Vaga vaga = new Vaga(idEmpresa, nome, descricao, cidade, formacaoMinima, experienciaMinima);
                     vaga.setId(idVaga);

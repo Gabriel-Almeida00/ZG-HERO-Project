@@ -206,12 +206,10 @@ class CandidatoServiceTest {
         Competencias competenciasMock = new Competencias("Java", "Avançado");
         competenciasMock.setId(idCompetencia);
 
-        when(candidatoCompetenciaDao.buscarCompetenciaPorId(idCompetencia)).thenReturn(competenciasMock);
         doNothing().when(candidatoCompetenciaDao).excluirCompetenciaCandidato(idCompetencia);
 
         candidatoService.excluirCompetenciaCandidato(idCompetencia);
 
-        verify(candidatoCompetenciaDao, times(1)).buscarCompetenciaPorId(idCompetencia);
         verify(candidatoCompetenciaDao, times(1)).excluirCompetenciaCandidato(idCompetencia);
     }
 

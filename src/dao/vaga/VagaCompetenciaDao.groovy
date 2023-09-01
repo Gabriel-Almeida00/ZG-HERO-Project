@@ -55,25 +55,22 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao{
     @Override
      List<Competencias> listarCompetenciasPorVaga(Integer idVaga) throws SQLException {
         List<Competencias> vagaCompetencias = new ArrayList<>()
-            String sql = "SELECT " +
-                    "    c.nome AS nomeCompetencia," +
-                    "    vc.nivel AS nivel" +
-                    "FROM" +
-                    "    vaga_competencia vc " +
-                    "INNER JOIN " +
-                    "    competencias c ON vc.idCompetencia = c.id " +
-                    "WHERE " +
-                    "    vc.idVaga = ?;"
+            String sql = "SELECT vc.id, c.nome AS nomeCompetencia, vc.nivel AS nivel " +
+                    "FROM vaga_competencia vc " +
+                    "INNER JOIN competencias c ON vc.idCompetencia = c.id " +
+                    "WHERE vc.idVaga = ?;"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idVaga)
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
+                    Integer id = resultSet.getInt("id")
                     String nomeCompetencia = resultSet.getString("nomeCompetencia")
                     String nivel = resultSet.getString("nivel")
 
                     Competencias competencia = new Competencias(nomeCompetencia, nivel)
+                    competencia.setId(id)
                     vagaCompetencias.add(competencia)
                 }
             }
