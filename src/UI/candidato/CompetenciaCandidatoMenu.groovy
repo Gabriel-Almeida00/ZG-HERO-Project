@@ -98,7 +98,7 @@ class CompetenciaCandidatoMenu {
     }
 
     void atualizarCompetenciaCandidato(Reader reader) {
-        println "Digite o ID da competencia:"
+        println "Digite o ID da competencia do candidato:"
         Integer idCompetencia = Integer.parseInt(reader.readLine())
 
         CandidatoCompetencia candidatoCompetencia = criarCompetenciaCandidato(reader)

@@ -10,6 +10,7 @@ import entity.Competencias
 import entity.dto.CandidatoDTO
 import entity.Experiencia
 import entity.Formacao
+import entity.dto.CompetenciaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import static org.mockito.Mockito.*;
@@ -149,15 +150,15 @@ class CandidatoServiceTest {
         Integer idCandidato = 1;
         candidatoMock.setId(idCandidato);
 
-        List<Competencias> competenciasMock = new ArrayList<>();
-        competenciasMock.add(new Competencias("Java", "Avançado"));
-        competenciasMock.add(new Competencias("SQL", "Intermediário"));
+        List<CompetenciaDTO> competenciasMock = new ArrayList<>();
+        competenciasMock.add(new CompetenciaDTO("Java", "Avançado"));
+        competenciasMock.add(new CompetenciaDTO("SQL", "Intermediário"));
 
         when(candidatoDaoMock.obterCandidatoPorId(candidatoMock.getId())).thenReturn(candidatoMock);
 
         when(candidatoCompetenciaDao.listarCompetenciasPorCandidato(candidatoMock.getId())).thenReturn(competenciasMock);
 
-        List<Competencias> result = candidatoService.listarCompetenciasPorCandidato(candidatoMock.getId());
+        List<CompetenciaDTO> result = candidatoService.listarCompetenciasPorCandidato(candidatoMock.getId());
 
         verify(candidatoCompetenciaDao).listarCompetenciasPorCandidato(candidatoMock.getId());
 
@@ -189,7 +190,7 @@ class CandidatoServiceTest {
         CandidatoCompetencia candidatoCompetencia = new CandidatoCompetencia(1, idCompetencia, novoNivel);
         candidatoCompetencia.setId(id)
 
-        Competencias competenciasMock = new Competencias("Java", "Avançado");
+        CompetenciaDTO competenciasMock = new CompetenciaDTO("Java", "Avançado");
         competenciasMock.setId(idCompetencia);
 
         doNothing().when(candidatoCompetenciaDao).atualizarNivelCompetenciaCandidato(candidatoCompetencia);
@@ -203,7 +204,7 @@ class CandidatoServiceTest {
     void testExcluirCompetenciaCandidato() throws SQLException {
         Integer idCompetencia = 2;
 
-        Competencias competenciasMock = new Competencias("Java", "Avançado");
+        CompetenciaDTO competenciasMock = new CompetenciaDTO("Java", "Avançado");
         competenciasMock.setId(idCompetencia);
 
         doNothing().when(candidatoCompetenciaDao).excluirCompetenciaCandidato(idCompetencia);

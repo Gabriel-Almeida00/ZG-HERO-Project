@@ -15,6 +15,7 @@ import entity.Competencias
 import entity.dto.CandidatoDTO
 import entity.Experiencia
 import entity.Formacao
+import entity.dto.CompetenciaDTO
 
 import java.sql.SQLException
 
@@ -95,7 +96,7 @@ class CandidatoService implements ICandidatoService {
     }
 
     @Override
-    public List<Competencias> listarCompetenciasPorCandidato(Integer idCandidato) {
+    public List<CompetenciaDTO> listarCompetenciasPorCandidato(Integer idCandidato) {
         try {
             Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato)
             if(candidato == null){

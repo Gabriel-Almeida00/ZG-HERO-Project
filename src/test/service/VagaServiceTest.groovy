@@ -2,7 +2,6 @@ package test.service
 
 import dao.vaga.IVagaCompetenciaDao
 import dao.vaga.IVagaDao
-import entity.Competencias
 import entity.Vaga
 import entity.VagaCompetencia
 import entity.dto.CompetenciaDTO

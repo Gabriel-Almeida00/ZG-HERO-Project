@@ -6,6 +6,7 @@ import entity.Competencias
 import entity.dto.CandidatoDTO
 import entity.Experiencia
 import entity.Formacao
+import entity.dto.CompetenciaDTO
 
 interface ICandidatoService {
     List<CandidatoDTO> listarCandidatos() ;
@@ -14,7 +15,7 @@ interface ICandidatoService {
     void atualizarCandidato(Candidato candidato);
     void deletarCandidato(Integer candidatoId);
 
-    List<Competencias> listarCompetenciasPorCandidato(Integer idCandidato)
+    List<CompetenciaDTO> listarCompetenciasPorCandidato(Integer idCandidato)
     Competencias buscarCompetenciaPorId(Integer idCompetencia)
     void adicionarCandidatoCompetencia(CandidatoCompetencia candidatoCompetencia);
     void atualizarNivelCompetenciaCandidato(CandidatoCompetencia candidatoCompetencia);

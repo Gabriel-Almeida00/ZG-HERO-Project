@@ -3,6 +3,7 @@ package dao.candidato
 import db.IDatabaseConnection
 import entity.CandidatoCompetencia
 import entity.Competencias
+import entity.dto.CompetenciaDTO
 
 import java.sql.Connection
 import java.sql.PreparedStatement
@@ -18,8 +19,8 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao{
     }
 
     @Override
-     List<Competencias> listarCompetenciasPorCandidato(Integer idCandidato) throws SQLException {
-        List<Competencias> competenciasList = new ArrayList<>()
+     List<CompetenciaDTO> listarCompetenciasPorCandidato(Integer idCandidato) throws SQLException {
+        List<CompetenciaDTO> competenciasList = new ArrayList<>()
         String sql = "SELECT cc.id, c.nome, cc.nivel FROM candidato_competencia cc JOIN competencias c ON cc.idCompetencia = c.id WHERE cc.idCandidato = ?"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
@@ -31,7 +32,7 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao{
                     String nome = resultSet.getString("nome")
                     String nivel = resultSet.getString("nivel")
 
-                    Competencias competencias = new Competencias(nome, nivel)
+                    CompetenciaDTO competencias = new CompetenciaDTO(nome, nivel)
                     competencias.setId(id)
                     competenciasList.add(competencias)
                 }
@@ -89,10 +90,9 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao{
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     String nome = resultSet.getString("nome")
-                    String nivel = resultSet.getString("nivel")
                     Integer id = resultSet.getInt("id")
 
-                    Competencias competencias = new Competencias( nome, nivel)
+                    Competencias competencias = new Competencias( nome)
                     competencias.setId(id)
                     return competencias
                 }
