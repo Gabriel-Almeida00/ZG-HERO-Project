@@ -4,6 +4,7 @@ import dao.competencia.CompetenciaDao
 import dao.competencia.ICompetenciaDao
 import db.DatabaseConnection
 import db.IDatabaseConnection
+import entity.Competencias
 import service.CompetenciaService
 
 class CompetenciaMenu {
@@ -28,16 +29,16 @@ class CompetenciaMenu {
             int opcao = Integer.parseInt(reader.readLine())
             switch (opcao) {
                 case 1:
-                    listarCandidatos()
+                    listarCompetencias()
                     break
                 case 2:
-                    cadastrarCandidato(reader)
+                    adicionarCompetencia(reader)
                     break
                 case 3:
-                    atualizarCandidato(reader)
+                    atualizaCompetencia(reader)
                     break
                 case 4:
-                    deletarCandidato(reader)
+                    excluirCompetencia(reader)
                     break
                 case 5:
                     return
@@ -45,5 +46,45 @@ class CompetenciaMenu {
                     println "Opção inválida. Tente novamente."
             }
         }
+    }
+
+    Competencias criarCompetencia(Reader reader){
+        println "Digite o nome da competencia que deseja adicionar: "
+        String nome = reader.readLine()
+
+        return new Competencias(nome)
+    }
+
+    void listarCompetencias( ){
+        List<Competencias> competencias = competenciaService.listarCompetencias()
+
+        competencias.each {competencia ->
+            println "================="
+            println "Id : ${competencia.id}"
+            println "Nome : ${competencia.nome}"
+            println ""
+        }
+    }
+
+    void adicionarCompetencia(Reader reader){
+        Competencias competencias = criarCompetencia(reader)
+        competenciaService.adicionarCompetencia(competencias)
+    }
+
+    void atualizaCompetencia(Reader reader){
+        println "Digite o id da competencia que deseja atualizar: "
+        Integer id = Integer.parseInt(reader.readLine())
+
+        Competencias competencias = criarCompetencia(reader)
+        competencias.setId(id)
+
+        competenciaService.atualizarCompetencia(competencias)
+    }
+
+    void excluirCompetencia(Reader reader){
+        println "Digite o id da competencia que deseja excluir: "
+        Integer id = Integer.parseInt(reader.readLine())
+
+        competenciaService.excluirCompetencia(id)
     }
 }

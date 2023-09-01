@@ -3,6 +3,7 @@ package dao.vaga
 import db.IDatabaseConnection
 import entity.Competencias
 import entity.VagaCompetencia
+import entity.dto.CompetenciaDTO
 
 import java.sql.PreparedStatement
 import java.sql.ResultSet
@@ -53,8 +54,8 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao{
     }
 
     @Override
-     List<Competencias> listarCompetenciasPorVaga(Integer idVaga) throws SQLException {
-        List<Competencias> vagaCompetencias = new ArrayList<>()
+     List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) throws SQLException {
+        List<CompetenciaDTO> vagaCompetencias = new ArrayList<>()
             String sql = "SELECT vc.id, c.nome AS nomeCompetencia, vc.nivel AS nivel " +
                     "FROM vaga_competencia vc " +
                     "INNER JOIN competencias c ON vc.idCompetencia = c.id " +
@@ -69,7 +70,7 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao{
                     String nomeCompetencia = resultSet.getString("nomeCompetencia")
                     String nivel = resultSet.getString("nivel")
 
-                    Competencias competencia = new Competencias(nomeCompetencia, nivel)
+                    CompetenciaDTO competencia = new CompetenciaDTO(nomeCompetencia, nivel)
                     competencia.setId(id)
                     vagaCompetencias.add(competencia)
                 }

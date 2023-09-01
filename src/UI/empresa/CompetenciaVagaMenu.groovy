@@ -1,5 +1,7 @@
 package UI.empresa
 
+import UI.candidato.CandidatoMenu
+import UI.competencia.CompetenciaMenu
 import dao.vaga.IVagaCompetenciaDao
 import dao.vaga.IVagaDao
 import dao.vaga.VagaCompetenciaDao
@@ -8,16 +10,20 @@ import db.DatabaseConnection
 import db.IDatabaseConnection
 import entity.Competencias
 import entity.VagaCompetencia
+import entity.dto.CompetenciaDTO
 import service.VagaService
 
 class CompetenciaVagaMenu {
 
     VagaService vagaService
+    CompetenciaMenu competenciaMenu
 
     CompetenciaVagaMenu() {
         IDatabaseConnection databaseConnection = new DatabaseConnection()
         IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(databaseConnection)
         IVagaDao vagaDao = new VagaDao(databaseConnection)
+
+        competenciaMenu = new CompetenciaMenu()
         vagaService = new VagaService(vagaDao, vagaCompetenciaDao)
     }
 
@@ -73,7 +79,7 @@ class CompetenciaVagaMenu {
     void listarCompetenciasDaVaga(Reader reader){
         println "Digite o id da vaga: "
         Integer id = Integer.parseInt(reader.readLine())
-        List<Competencias> vagaCompetencias = vagaService.listarCompetenciasPorVaga(id)
+        List<CompetenciaDTO> vagaCompetencias = vagaService.listarCompetenciasPorVaga(id)
 
         vagaCompetencias.each {competencia ->
             println "========================="
@@ -85,6 +91,8 @@ class CompetenciaVagaMenu {
     }
 
     void adicionarCompetenciaVaga(Reader reader){
+        println "Competencias: "
+        competenciaMenu.listarCompetencias()
         VagaCompetencia vagaCompetencia = criarCompetenciaVaga(reader)
         vagaService.adicionarVagaCompetencia(vagaCompetencia)
     }

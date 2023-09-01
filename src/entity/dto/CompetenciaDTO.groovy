@@ -1,6 +1,7 @@
 package entity.dto
 
 class CompetenciaDTO {
+    Integer id
     String nome
     String nivel
 
@@ -19,6 +20,14 @@ class CompetenciaDTO {
 
     String getNivel() {
         return nivel
+    }
+
+    Integer getId() {
+        return id
+    }
+
+    void setId(Integer id) {
+        this.id = id
     }
 
     void setNivel(String nivel) {

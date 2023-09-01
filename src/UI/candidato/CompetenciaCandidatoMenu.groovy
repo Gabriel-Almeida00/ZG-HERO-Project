@@ -1,5 +1,6 @@
 package UI.candidato
 
+import UI.competencia.CompetenciaMenu
 import dao.candidato.CandidatoCompetenciaDao
 import dao.candidato.CandidatoDao
 import dao.candidato.ExperienciaDao
@@ -18,6 +19,7 @@ import service.CandidatoService
 class CompetenciaCandidatoMenu {
 
     CandidatoService candidatoService
+    CompetenciaMenu competenciaMenu
 
     CompetenciaCandidatoMenu() {
         IDatabaseConnection databaseConnection = new DatabaseConnection()
@@ -25,6 +27,8 @@ class CompetenciaCandidatoMenu {
         ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection)
         IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection)
         IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection)
+
+        competenciaMenu = new CompetenciaMenu()
 
         candidatoService = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao)
     }
@@ -87,6 +91,8 @@ class CompetenciaCandidatoMenu {
     }
 
     void adicionarCompetenciaCandidato(Reader reader) {
+        println "Competencias :"
+        competenciaMenu.listarCompetencias()
         CandidatoCompetencia candidatoCompetencia = criarCompetenciaCandidato(reader)
         candidatoService.adicionarCandidatoCompetencia(candidatoCompetencia)
     }

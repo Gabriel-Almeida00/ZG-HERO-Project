@@ -9,6 +9,7 @@ import entity.Competencias
 import entity.Empresa
 import entity.Vaga
 import entity.VagaCompetencia
+import entity.dto.CompetenciaDTO
 import entity.dto.VagaDTO
 
 import java.sql.SQLException
@@ -112,13 +113,13 @@ class VagaService implements IVagaService{
     }
 
     @Override
-    public List<Competencias> listarCompetenciasPorVaga(Integer idVaga) {
+    public List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) {
         try {
             Vaga vaga = vagaDao.buscarVagaPorId(idVaga)
             if(vaga == null){
                 throw new VagaNotFoundException("Vaga não encontrada com ID: " + idVaga)
             }
-            List<Competencias> vagaCompetenciaList = vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga);
+            List<CompetenciaDTO> vagaCompetenciaList = vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga);
             return vagaCompetenciaList
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);

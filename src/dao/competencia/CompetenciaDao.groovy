@@ -17,12 +17,12 @@ class CompetenciaDao implements  ICompetenciaDao{
     }
 
     public void adicionarCompetencia(Competencias competencia) throws SQLException {
-        String sql = "INSERT INTO competencias (nome, nivel) VALUES (?, ?)";
+        String sql = "INSERT INTO competencias (nome) VALUES (?)";
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, competencia.getNome());
-            statement.setString(2, competencia.getNivel());
+
 
             statement.executeUpdate();
         }
@@ -38,9 +38,8 @@ class CompetenciaDao implements  ICompetenciaDao{
             try (  ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     String nome = resultSet.getString("nome");
-                    String nivel = resultSet.getString("nivel");
 
-                    Competencias competencias = new Competencias( nome, nivel);
+                    Competencias competencias = new Competencias( nome);
                     competencias.setId(id)
                     return competencias
                 }
@@ -60,9 +59,8 @@ class CompetenciaDao implements  ICompetenciaDao{
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
                 String nome = resultSet.getString("nome");
-                String nivel = resultSet.getString("nivel");
 
-                Competencias competencia = new Competencias(nome, nivel);
+                Competencias competencia = new Competencias(nome);
                 competencia.setId(id)
                 competencias.add(competencia);
             }
@@ -71,14 +69,13 @@ class CompetenciaDao implements  ICompetenciaDao{
     }
 
     public void atualizarCompetencia(Competencias competencia) throws SQLException {
-        String sql = "UPDATE competencias SET nome = ?, nivel = ? WHERE id = ?";
+        String sql = "UPDATE competencias SET nome = ? WHERE id = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, competencia.getNome());
-            statement.setString(2, competencia.getNivel());
-            statement.setInt(3, competencia.getId());
+            statement.setInt(2, competencia.getId());
 
             statement.executeUpdate();
         }

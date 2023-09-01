@@ -4,6 +4,7 @@ import dao.vaga.VagaCompetenciaDao
 import entity.Competencias
 import entity.Vaga
 import entity.VagaCompetencia
+import entity.dto.CompetenciaDTO
 import entity.dto.VagaDTO
 
 import java.sql.SQLException
@@ -19,5 +20,5 @@ interface IVagaService {
     void adicionarVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException;
     void atualizarNivelVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException;
     void excluirVagaCompetencia(Integer idVagaCompetencia) throws SQLException;
-    List<Competencias> listarCompetenciasPorVaga(Integer idVaga) throws SQLException;
+    List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) throws SQLException;
 }

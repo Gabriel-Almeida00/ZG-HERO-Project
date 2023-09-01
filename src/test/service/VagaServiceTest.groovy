@@ -5,6 +5,7 @@ import dao.vaga.IVagaDao
 import entity.Competencias
 import entity.Vaga
 import entity.VagaCompetencia
+import entity.dto.CompetenciaDTO
 import entity.dto.VagaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -211,19 +212,19 @@ class VagaServiceTest {
 
         when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock)
 
-        List<Competencias> vagaCompetenciaListMock = new ArrayList<>()
-        vagaCompetenciaListMock.add(new Competencias(
+        List<CompetenciaDTO> vagaCompetenciaListMock = new ArrayList<>()
+        vagaCompetenciaListMock.add(new CompetenciaDTO(
                 "java",
                 "Intermediário"
         ))
-        vagaCompetenciaListMock.add(new Competencias(
+        vagaCompetenciaListMock.add(new CompetenciaDTO(
                 "groovy",
                 "avançado"
         ))
 
         when(vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga)).thenReturn(vagaCompetenciaListMock)
 
-        List<Competencias> result = service.listarCompetenciasPorVaga(idVaga)
+        List<CompetenciaDTO> result = service.listarCompetenciasPorVaga(idVaga)
 
         verify(vagaDao).buscarVagaPorId(idVaga)
         verify(vagaCompetenciaDao).listarCompetenciasPorVaga(idVaga)

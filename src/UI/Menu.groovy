@@ -19,7 +19,7 @@ class Menu {
 
     void exibirMenuCandidato(Reader reader) {
         while (true) {
-            println "Menu Candidato:"
+            println "Menu :"
             println "1. Gerenciar candidatos"
             println "2. Gerenciar empresa"
             println "3. Gerenciar Competencias"
