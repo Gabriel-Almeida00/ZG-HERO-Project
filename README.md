@@ -50,6 +50,7 @@ groovy Main.groovy
    # Banco de Dados do Linketinder
 
 Este repositório contém a modelagem de banco de dados para o Linketinder, um aplicativo de matchmaking entre candidatos e empresas. O banco de dados foi implementado usando PostgreSQL e o modelo foi criado usando a ferramenta dbdiagram.io.
+- foi implementado o banco de dados nesse projeto com o padrão dao
 
 ## Modelo de Entidade-Relacionamento (MER)
 
