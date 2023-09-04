@@ -25,7 +25,7 @@ class VagaService implements IVagaService{
     }
 
     @Override
-    public List<VagaDTO> listarTodasVagas() {
+    List<VagaDTO> listarTodasVagas() {
         try {
             return vagaDao.listarTodasVagas();
         } catch (SQLException e) {

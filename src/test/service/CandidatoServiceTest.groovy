@@ -1,56 +1,71 @@
 package test.service
 
+import UI.candidato.CandidatoMenu
 import dao.candidato.ICandidatoCompetenciaDao
 import dao.candidato.ICandidatoDao
 import dao.candidato.IExperienciaDao
 import dao.candidato.IFormacaoDao
+import dao.curtida.ICurtidaDao
+import dao.vaga.IVagaDao
 import entity.Candidato
 import entity.CandidatoCompetencia
-import entity.Competencias
+import entity.Vaga
 import entity.dto.CandidatoDTO
 import entity.Experiencia
 import entity.Formacao
 import entity.dto.CompetenciaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.*
 import service.CandidatoService
 
 import java.sql.SQLException
 
 class CandidatoServiceTest {
 
-    private ICandidatoDao candidatoDaoMock;
+    private ICandidatoDao candidatoDaoMock
     private ICandidatoCompetenciaDao candidatoCompetenciaDao
     private IExperienciaDao experienciaDao
     private IFormacaoDao formacaoDao
-    private CandidatoService candidatoService;
+    private IVagaDao vagaDao
+    private ICurtidaDao curtidaDao
+    private CandidatoService candidatoService
 
     @BeforeEach
     void setup() {
-        candidatoDaoMock = mock(ICandidatoDao.class);
+        candidatoDaoMock = mock(ICandidatoDao.class)
         candidatoCompetenciaDao = mock(ICandidatoCompetenciaDao.class)
         experienciaDao = mock(IExperienciaDao.class)
         formacaoDao = mock(IFormacaoDao.class)
-        candidatoService = new CandidatoService(candidatoDaoMock, candidatoCompetenciaDao, experienciaDao, formacaoDao);
+        vagaDao = mock(IVagaDao.class)
+        curtidaDao = mock((ICurtidaDao.class))
+
+        candidatoService = new CandidatoService(
+                candidatoDaoMock,
+                candidatoCompetenciaDao,
+                experienciaDao,
+                formacaoDao,
+                vagaDao,
+                curtidaDao
+        )
     }
 
     @Test
     void testListarCandidatos() throws SQLException {
-        List<CandidatoDTO> candidatosMock = new ArrayList<>();
+        List<CandidatoDTO> candidatosMock = new ArrayList<>()
 
-        when(candidatoDaoMock.listarCandidatos()).thenReturn(candidatosMock);
+        when(candidatoDaoMock.listarCandidatos()).thenReturn(candidatosMock)
 
-        List<CandidatoDTO> resultado = candidatoService.listarCandidatos();
+        List<CandidatoDTO> resultado = candidatoService.listarCandidatos()
 
-        assert candidatosMock == resultado;
+        assert candidatosMock == resultado
 
-        verify(candidatoDaoMock).listarCandidatos();
+        verify(candidatoDaoMock).listarCandidatos()
     }
 
     @Test
     void testObterCandidatoPorId() throws SQLException {
-        Integer candidatoId = 1;
+        Integer candidatoId = 1
         Candidato candidatoMock = new Candidato(
                 "João",
                 "Silva",
@@ -61,13 +76,13 @@ class CandidatoServiceTest {
                 "12345-678",
                 "Descrição do candidato",
                 "senha123"
-        );
-        when(candidatoDaoMock.obterCandidatoPorId(candidatoId)).thenReturn(candidatoMock);
+        )
+        when(candidatoDaoMock.obterCandidatoPorId(candidatoId)).thenReturn(candidatoMock)
 
-        Candidato result = candidatoService.obterCandidatoPorId(candidatoId);
+        Candidato result = candidatoService.obterCandidatoPorId(candidatoId)
 
-        verify(candidatoDaoMock).obterCandidatoPorId(candidatoId);
-        assert candidatoMock == result;
+        verify(candidatoDaoMock).obterCandidatoPorId(candidatoId)
+        assert candidatoMock == result
     }
 
     @Test
@@ -82,11 +97,11 @@ class CandidatoServiceTest {
                 "12345-678",
                 "Descrição do candidato",
                 "senha123"
-        );
+        )
 
-        candidatoService.cadastrarCandidato(candidatoMock);
+        candidatoService.cadastrarCandidato(candidatoMock)
 
-        verify(candidatoDaoMock).adicionarCandidato(candidatoMock);
+        verify(candidatoDaoMock).adicionarCandidato(candidatoMock)
     }
 
     @Test
@@ -105,9 +120,9 @@ class CandidatoServiceTest {
         );
         candidatoMock.setId(1)
 
-        candidatoService.atualizarCandidato(candidatoMock);
+        candidatoService.atualizarCandidato(candidatoMock)
 
-        verify(candidatoDaoMock).atualizarCandidato(candidatoMock);
+        verify(candidatoDaoMock).atualizarCandidato(candidatoMock)
     }
 
     @Test
@@ -122,16 +137,16 @@ class CandidatoServiceTest {
                 "12345-678",
                 "Descrição do candidato",
                 "senha123"
-        );
-        Integer idCandidato = 1;
+        )
+        Integer idCandidato = 1
         candidatoMock.setId(idCandidato)
 
         when(candidatoDaoMock.obterCandidatoPorId(idCandidato))
-                .thenReturn(candidatoMock);
+                .thenReturn(candidatoMock)
 
-        candidatoService.deletarCandidato(idCandidato);
+        candidatoService.deletarCandidato(idCandidato)
 
-        verify(candidatoDaoMock).deletarCandidato(idCandidato);
+        verify(candidatoDaoMock).deletarCandidato(idCandidato)
     }
 
     @Test
@@ -147,30 +162,30 @@ class CandidatoServiceTest {
                 "Descrição do candidato",
                 "senha123"
         );
-        Integer idCandidato = 1;
-        candidatoMock.setId(idCandidato);
+        Integer idCandidato = 1
+        candidatoMock.setId(idCandidato)
 
-        List<CompetenciaDTO> competenciasMock = new ArrayList<>();
-        competenciasMock.add(new CompetenciaDTO("Java", "Avançado"));
-        competenciasMock.add(new CompetenciaDTO("SQL", "Intermediário"));
+        List<CompetenciaDTO> competenciasMock = new ArrayList<>()
+        competenciasMock.add(new CompetenciaDTO("Java", "Avançado"))
+        competenciasMock.add(new CompetenciaDTO("SQL", "Intermediário"))
 
-        when(candidatoDaoMock.obterCandidatoPorId(candidatoMock.getId())).thenReturn(candidatoMock);
+        when(candidatoDaoMock.obterCandidatoPorId(candidatoMock.getId())).thenReturn(candidatoMock)
 
-        when(candidatoCompetenciaDao.listarCompetenciasPorCandidato(candidatoMock.getId())).thenReturn(competenciasMock);
+        when(candidatoCompetenciaDao.listarCompetenciasPorCandidato(candidatoMock.getId())).thenReturn(competenciasMock)
 
-        List<CompetenciaDTO> result = candidatoService.listarCompetenciasPorCandidato(candidatoMock.getId());
+        List<CompetenciaDTO> result = candidatoService.listarCompetenciasPorCandidato(candidatoMock.getId())
 
-        verify(candidatoCompetenciaDao).listarCompetenciasPorCandidato(candidatoMock.getId());
+        verify(candidatoCompetenciaDao).listarCompetenciasPorCandidato(candidatoMock.getId())
 
-        assert competenciasMock.size() == result.size();
-        assert competenciasMock == result;
+        assert competenciasMock.size() == result.size()
+        assert competenciasMock == result
     }
 
     @Test
     void testAdicionarCandidatoCompetencia() throws SQLException {
-        Integer idCandidato = 1;
-        Integer idCompetencia = 2;
-        String nivel = "Avançado";
+        Integer idCandidato = 1
+        Integer idCompetencia = 2
+        String nivel = "Avançado"
 
         CandidatoCompetencia candidatoCompetencia = new CandidatoCompetencia(idCandidato, idCompetencia, nivel);
 
@@ -346,7 +361,7 @@ class CandidatoServiceTest {
                 "12345-678",
                 "Descrição do candidato",
                 "senha123"
-        );
+        )
         candidatoMock.setId(idCandidato);
 
         List<Formacao> formacoes = new ArrayList<>();
@@ -354,11 +369,49 @@ class CandidatoServiceTest {
         formacoes.add(new Formacao(idCandidato, "Instituição 2", "Curso 2", "Nível 2", "Ano 2022"));
 
         when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock)
-        when(formacaoDao.listarFormacoesPorCandidato(idCandidato)).thenReturn(formacoes);
+        when(formacaoDao.listarFormacoesPorCandidato(idCandidato)).thenReturn(formacoes)
 
-        List<Formacao> result = candidatoService.listarFormacoesPorCandidato(idCandidato);
+        List<Formacao> result = candidatoService.listarFormacoesPorCandidato(idCandidato)
 
-        verify(formacaoDao, times(1)).listarFormacoesPorCandidato(idCandidato);
+        verify(formacaoDao, times(1)).listarFormacoesPorCandidato(idCandidato)
         assert formacoes == result;
     }
+
+    @Test
+    void testCurtirVaga_ComSucesso() throws SQLException {
+        Integer idCandidato = 2
+        Integer idVaga = 2
+
+        Candidato candidato = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
+        )
+        candidato.setId(idCandidato)
+
+        Vaga vaga = new Vaga(
+                2,
+                "desenvolvedor",
+                "SP",
+                "tech descricao",
+                "graduação",
+                "nenhuma"
+        )
+        vaga.setId(idVaga)
+
+        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
+        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vaga)
+
+
+        candidatoService.curtirVaga(idCandidato, idVaga)
+
+        verify(curtidaDao).curtirVaga(idCandidato, idVaga)
+    }
+
 }

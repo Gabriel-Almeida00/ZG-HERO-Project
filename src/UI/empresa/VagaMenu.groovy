@@ -88,6 +88,21 @@ class VagaMenu {
         )
     }
 
+    void listarVagas(){
+        List<VagaDTO> vagas = vagaService.listarTodasVagas()
+
+        vagas.each {vaga ->
+            println "==========="
+            println "Id: ${vaga.id}"
+            println "Nome :${vaga.nome}"
+            println "Descrição: ${vaga.descricao}"
+            println "Cidade: ${vaga.cidade}"
+            println "Requisito de Experiencia: ${vaga.experienciaMinima}"
+            println "Requisito de Formação: ${vaga.formacaoMinima}"
+            println()
+        }
+    }
+
     void listarVagasDaEmpresa(Reader reader){
         println "Digite o id da empresa: "
         Integer id = Integer.parseInt(reader.readLine())

@@ -1,7 +1,9 @@
 package test.service
 
-
+import dao.candidato.ICandidatoDao
+import dao.curtida.ICurtidaDao
 import dao.empresa.IEmpresaDao
+import entity.Candidato
 import entity.Empresa
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -13,13 +15,18 @@ import java.sql.SQLException
 
 class EmpresaServiceTest {
 
-    private IEmpresaDao empresaDao;
-    private EmpresaService empresaService;
+    private IEmpresaDao empresaDao
+    private ICandidatoDao candidatoDao
+    private ICurtidaDao curtidaDao
+    private EmpresaService empresaService
+
 
     @BeforeEach
     void setup() {
-        empresaDao = mock(IEmpresaDao.class);
-        empresaService = new EmpresaService(empresaDao);
+        empresaDao = mock(IEmpresaDao.class)
+        candidatoDao = mock(ICandidatoDao.class)
+        curtidaDao = mock(ICurtidaDao.class)
+        empresaService = new EmpresaService(empresaDao, candidatoDao, curtidaDao)
     }
 
     @Test
@@ -128,6 +135,42 @@ class EmpresaServiceTest {
 
         verify(empresaDao).buscarEmpresaPorId(idEmpresa);
         verify(empresaDao).excluirEmpresa(idEmpresa);
+    }
+
+    @Test
+    void testCurtirCandidato_ComSucesso() throws SQLException {
+        Integer idCandidato = 1;
+        Integer idEmpresa = 2;
+
+        Candidato candidato = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
+        )
+        candidato.setId(idCandidato);
+
+        Empresa empresa = new Empresa(
+                "empresa 2",
+                "54321",
+                "empresa2@gmail.com",
+                "empresa 2 descrição",
+                "argentina",
+                "98765",
+                "34534");
+        empresa.setId(idEmpresa);
+
+        when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidato);
+        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresa);
+
+        empresaService.curtirCandidato(idCandidato, idEmpresa);
+
+        verify(curtidaDao).curtirCandidato(idCandidato, idEmpresa);
     }
 
 }

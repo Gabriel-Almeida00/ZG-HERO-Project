@@ -9,6 +9,10 @@ import dao.candidato.ICandidatoCompetenciaDao
 import dao.candidato.ICandidatoDao
 import dao.candidato.IExperienciaDao
 import dao.candidato.IFormacaoDao
+import dao.curtida.CurtidaDao
+import dao.curtida.ICurtidaDao
+import dao.vaga.IVagaDao
+import dao.vaga.VagaDao
 import db.DatabaseConnection
 import db.IDatabaseConnection
 import entity.CandidatoCompetencia
@@ -27,10 +31,12 @@ class CompetenciaCandidatoMenu {
         ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection)
         IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection)
         IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection)
+        IVagaDao vagaDao = new VagaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
 
         competenciaMenu = new CompetenciaMenu()
 
-        candidatoService = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao)
+        candidatoService = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao, vagaDao, curtidaDao)
     }
 
     void exibirMenuCandidato(Reader reader) {

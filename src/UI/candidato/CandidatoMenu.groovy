@@ -1,27 +1,33 @@
 package UI.candidato
 
-import dao.candidato.CandidatoCompetenciaDao
-import dao.candidato.CandidatoDao
-import dao.candidato.ExperienciaDao
-import dao.candidato.FormacaoDao
-import dao.candidato.ICandidatoCompetenciaDao
-import dao.candidato.ICandidatoDao
-import dao.candidato.IExperienciaDao
-import dao.candidato.IFormacaoDao
+import UI.empresa.VagaMenu
+import dao.candidato.*
+import dao.curtida.CurtidaDao
+import dao.curtida.ICurtidaDao
+import dao.match.IMatchDao
+import dao.match.MatchDao
+import dao.vaga.IVagaDao
+import dao.vaga.VagaDao
 import db.DatabaseConnection
 import db.IDatabaseConnection
 import entity.Candidato
+import entity.VagaCurtida
 import entity.dto.CandidatoDTO
+import entity.dto.VagaCurtidaDTO
 import service.CandidatoService
+import service.IMatchService
+import service.MatchService
 
 import java.text.SimpleDateFormat
 
 class CandidatoMenu {
 
     CandidatoService candidatoService
+    MatchService matchService
     CompetenciaCandidatoMenu competenciaCandidatoMenu
     ExperienciaMenu experienciaCandidatoMenu
     FormacaoMenu formacaoMenu
+    VagaMenu vagaMenu
 
     CandidatoMenu() {
         IDatabaseConnection databaseConnection = new DatabaseConnection()
@@ -29,11 +35,16 @@ class CandidatoMenu {
         ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection)
         IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection)
         IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection)
+        IVagaDao vagaDao = new VagaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
+        IMatchDao matchDao = new MatchDao(databaseConnection)
 
         formacaoMenu = new FormacaoMenu()
         experienciaCandidatoMenu = new ExperienciaMenu()
         competenciaCandidatoMenu = new CompetenciaCandidatoMenu()
-        candidatoService = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao)
+        vagaMenu = new VagaMenu()
+        matchService = new MatchService(matchDao)
+        candidatoService = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao, vagaDao, curtidaDao)
     }
 
     void exibirMenuCandidato(Reader reader) {
@@ -46,7 +57,8 @@ class CandidatoMenu {
             println "5. Gerenciar Competencias do candidato"
             println "6. Gerenciar experiencias do candidato"
             println "7. Gerenciar formações do candidato"
-            println "8. Voltar"
+            println "8. Curtir Vaga"
+            println "9. Voltar"
 
             int opcao = Integer.parseInt(reader.readLine())
             switch (opcao) {
@@ -72,6 +84,9 @@ class CandidatoMenu {
                     formacaoMenu.exibirMenuCandidato(reader)
                     break
                 case 8:
+                    curtirVaga(reader)
+                    break
+                case 9:
                     return
                 default:
                     println "Opção inválida. Tente novamente."
@@ -121,6 +136,18 @@ class CandidatoMenu {
         )
     }
 
+    VagaCurtida criarVagaCurtida(Reader reader) {
+        println "Digite o id do candidato: "
+        Integer idCandidato = Integer.parseInt(reader.readLine())
+
+        println "Digite o id da vaga: "
+        Integer idVaga = Integer.parseInt(reader.readLine())
+
+        return new VagaCurtida(
+                idCandidato, idVaga
+        )
+    }
+
     void cadastrarCandidato(Reader reader) {
         Candidato candidato = criarCandidato(reader)
         candidatoService.cadastrarCandidato(candidato)
@@ -156,10 +183,10 @@ class CandidatoMenu {
 
             println "Competências:"
             candidato.competencias.each { competencia ->
-                    println "  - ${competencia.nome} - ${competencia.nivel}"
-                }
+                println "  - ${competencia.nome} - ${competencia.nivel}"
             }
-            println ""
+        }
+        println ""
     }
 
     void deletarCandidato(Reader reader) {
@@ -167,6 +194,31 @@ class CandidatoMenu {
         Integer idCandidato = Integer.parseInt(reader.readLine())
 
         candidatoService.deletarCandidato(idCandidato)
+    }
+
+    void curtirVaga(Reader reader) {
+        vagaMenu.listarVagas()
+        VagaCurtida vagaCurtida = criarVagaCurtida(reader)
+        Integer idCandidato = vagaCurtida.getIdCandidata()
+        Integer idVaga = vagaCurtida.getIdVaga()
+        candidatoService.curtirVaga(idCandidato, idVaga)
+        verificaMatch(idCandidato, idVaga)
+    }
+
+    void verificaMatch(Integer idCandidato,Integer idVaga){
+        List<VagaCurtidaDTO> matchs = matchService.encontrarMatchesPelaVaga(idCandidato, idVaga)
+
+        matchs.each {match ->
+            println "============================"
+            println "DEU MATCH"
+            println  "A seguinte empresa curtiu seu perfil: "
+            println "Nome :  ${match.nomeEmpresa}"
+            println  "Descrição: ${match.descricaoEmpresa}"
+            println  "Vaga que o candidato curitu: "
+            println  "Nome: ${match.nomeVaga}"
+            println  "Descrição: ${match.descricaoVaga}"
+            println  ""
+        }
     }
 
 }

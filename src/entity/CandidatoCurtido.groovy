@@ -2,12 +2,12 @@ package entity
 
 class CandidatoCurtido {
     Integer id
-    Candidato candidato
-    Empresa empresa
+    Integer idCandidato
+    Integer idEmpresa
 
-    CandidatoCurtido(Candidato candidato, Empresa empresa) {
-        this.candidato = candidato
-        this.empresa = empresa
+    CandidatoCurtido(Integer idCandidato, Integer idEmpresa) {
+        this.idCandidato = idCandidato
+        this.idEmpresa = idEmpresa
     }
 
     Integer getId() {
@@ -18,19 +18,19 @@ class CandidatoCurtido {
         this.id = id
     }
 
-    Candidato getCandidato() {
-        return candidato
+    Integer getIdCandidato() {
+        return idCandidato
     }
 
-    void setCandidato(Candidato candidato) {
-        this.candidato = candidato
+    void setIdCandidato(Integer idCandidato) {
+        this.idCandidato = idCandidato
     }
 
-    Empresa getEmpresa() {
-        return empresa
+    Integer getIdEmpresa() {
+        return idEmpresa
     }
 
-    void setEmpresa(Empresa empresa) {
-        this.empresa = empresa
+    void setIdEmpresa(Integer idEmpresa) {
+        this.idEmpresa = idEmpresa
     }
 }
