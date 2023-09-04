@@ -1,7 +1,6 @@
 package service
 
 import Exception.CandidatosNotFoundException
-import Exception.CompetenciaNotFoundException
 import Exception.DataBaseException
 import Exception.ExperienciaNotFoundException
 import Exception.FormacaoNotFoundException
@@ -41,8 +40,8 @@ class CandidatoService implements ICandidatoService {
             IVagaDao vagaDao,
             ICurtidaDao curtidaDao
     ) {
-        this.candidatoDao = candidatoDao;
-        this.candidatoCompetenciaDao = candidatoCompetenciaDao;
+        this.candidatoDao = candidatoDao
+        this.candidatoCompetenciaDao = candidatoCompetenciaDao
         this.experienciaDao = experienciaDao
         this.formacaoDao = formacaoDao
         this.vagaDao = vagaDao
@@ -51,10 +50,10 @@ class CandidatoService implements ICandidatoService {
 
     List<CandidatoDTO> listarCandidatos() {
         try {
-            return candidatoDao.listarCandidatos();
+            return candidatoDao.listarCandidatos()
         }
         catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e)
         }
     }
 
@@ -62,21 +61,21 @@ class CandidatoService implements ICandidatoService {
         try {
             Candidato candidato = candidatoDao.obterCandidatoPorId(id);
             if (candidato == null) {
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + id);
+                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + id)
             }
-            return candidato;
+            return candidato
         }
         catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e)
         }
     }
 
     void cadastrarCandidato(Candidato candidato) {
         try {
-            candidatoDao.adicionarCandidato(candidato);
+            candidatoDao.adicionarCandidato(candidato)
         }
         catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e)
         }
     }
 

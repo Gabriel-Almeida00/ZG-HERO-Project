@@ -1,31 +1,36 @@
 package service
 
-import Interface.IMatch
-import entity.Candidato
-import entity.dto.CandidatoDTO
-import entity.dto.EmpresaDTO
-import entity.Vaga
+import Exception.DataBaseException
+import dao.match.IMatchDao
+import entity.dto.CandidatoCurtidoDTO
+import entity.dto.VagaCurtidaDTO
 
-class MatchService implements IMatch {
+import java.sql.SQLException
 
-    List<CandidatoDTO> encontrarCandidatosQueCurtiramVagaDaEmpresa(Vaga vaga) {
-        List<CandidatoDTO> candidatosDTO = []
+class MatchService implements IMatchService {
 
-        vaga.getCurtidas().each { curtida ->
-            candidatosDTO.add(new CandidatoDTO(curtida.getCandidato()))
-        }
+    private IMatchDao matchDao
 
-        return candidatosDTO
+    MatchService(IMatchDao matchDao) {
+        this.matchDao = matchDao
     }
 
-    List<EmpresaDTO> encontrarEmpresasQueCurtiramCandidato(Candidato candidato) {
-        List<EmpresaDTO> empresasDTO = []
+    @Override
+    List<VagaCurtidaDTO> encontrarMatchesPelaVaga(Integer idCandidato, Integer idVaga) {
+       try{
+           matchDao.encontrarMatchesPelaVaga(idCandidato, idVaga)
+       } catch (SQLException e){
+           throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e)
+       }
+    }
 
-        candidato.getCurtidas().each { curtida ->
-            empresasDTO.add(new EmpresaDTO(curtida.getEmpresa()))
+    @Override
+    List<CandidatoCurtidoDTO> encontrarMatchesPeloCandidato(Integer idCandidato) {
+        try{
+            matchDao.encontrarMatchesPeloCandidato(idCandidato)
+        } catch (SQLException e){
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e)
         }
-
-        return empresasDTO
     }
 }
 

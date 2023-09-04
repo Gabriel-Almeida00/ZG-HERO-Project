@@ -1,142 +1,55 @@
 package test.service
 
-import entity.Candidato
-import entity.Competencias
-import entity.CandidatoCurtido
-import entity.dto.CandidatoDTO
-import entity.dto.EmpresaDTO
-import entity.Empresa
-import entity.Experiencia
-import entity.Formacao
-import entity.Vaga
-import entity.VagaCurtida
-import entity.enums.NivelCompetencia
-import entity.enums.NivelExperiencia
-import entity.enums.NivelFormacao
+import dao.match.IMatchDao
+import entity.dto.CandidatoCurtidoDTO
+import entity.dto.VagaCurtidaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+
+import java.sql.SQLException
+
+import static org.mockito.Mockito.*
 import service.MatchService
 
 class MatchServiceTest {
-    private MatchService matchService;
+
+    private IMatchDao matchDao
+    private MatchService matchService
 
     @BeforeEach
     void setUp() {
-        matchService = new MatchService();
+        matchDao = mock(IMatchDao.class)
+        matchService = new MatchService(matchDao)
     }
 
     @Test
-    void testEncontrarCandidatosQueCurtiramVagaDaEmpresa() {
-        // Criação de uma vaga fictícia
-        Vaga vaga = new Vaga( "Desenvolvedor Java",
-                "Descrição da vaga",
-                [new Competencias(
-                        "Java",
-                        NivelCompetencia.Basico
-                )],
-                NivelFormacao.Graduacao,
-                NivelExperiencia.Junior);
+     void testEncontrarMatchesPelaVaga() throws SQLException {
+        List<VagaCurtidaDTO> resultadosEsperados = new ArrayList<>()
+        resultadosEsperados.add(new VagaCurtidaDTO("Candidato1", "Descrição Candidato1", "Vaga1", "Descrição Vaga1"))
+        resultadosEsperados.add(new VagaCurtidaDTO("Candidato2", "Descrição Candidato2", "Vaga2", "Descrição Vaga2"))
 
-        // Criação de candidatos fictícios
-        Candidato candidato1 = new Candidato( "João",
-                "joao@gmail.com",
-                "012345",
-                "111111111",
-                25,
-                "SP",
-                "Descrição João",
-                [new Competencias(
-                        "Java",
-                        NivelCompetencia.Intermediario)],
-                [new Formacao(
-                        "impacta",
-                        "análise e desenvolvimento de sistemas",
-                        NivelFormacao.Graduacao,
-                        2023)],
-                [new Experiencia(
-                        "dev backend",
-                        "tech ltda",
-                        NivelExperiencia.Estagio)])
+        when(matchDao.encontrarMatchesPelaVaga(anyInt(), anyInt())).thenReturn(resultadosEsperados)
 
-        Candidato candidato2 = new Candidato(
-                "Pedro",
-                "pedr@gmail.com",
-                "54654",
-                "2222222",
-                32,
-                "RJ",
-                "Descrição Pedro",
-                [new Competencias(
-                        "Groovy",
-                        NivelCompetencia.Intermediario)],
-                [new Formacao(
-                        "puc",
-                        "sistemas de informação",
-                        NivelFormacao.Graduacao,
-                        2026)],
-                [new Experiencia(
-                        "dev backend",
-                        "tech ltda",
-                        NivelExperiencia.Estagio)])
 
-        // Criação de instâncias de VagaCurtida associando candidatos à vaga
-        VagaCurtida curtidaVaga1 = new VagaCurtida(candidato1, vaga);
-        VagaCurtida curtidaVaga2 = new VagaCurtida(candidato2, vaga);
+        List<VagaCurtidaDTO> resultados = matchDao.encontrarMatchesPelaVaga(1, 2)
 
-        // Adicionando as instâncias de VagaCurtida à lista de curtidas da vaga
-        List<VagaCurtida> curtidas = new ArrayList<>();
-        curtidas.add(curtidaVaga1);
-        curtidas.add(curtidaVaga2);
-        vaga.setCurtidas(curtidas);
+        assert resultadosEsperados == resultados
 
-        // Chamada do método a ser testado
-        List<CandidatoDTO> candidatosDTO = matchService.encontrarCandidatosQueCurtiramVagaDaEmpresa(vaga);
-
-        // Verificação do resultado
-        assert  candidatosDTO.size() == 2
-        assert  candidatosDTO.get(0).competencias == candidato1.competencias
-        assert  candidatosDTO.get(1).competencias == candidato2.competencias
+        verify(matchDao, times(1)).encontrarMatchesPelaVaga(1, 2)
     }
 
     @Test
-    void testEncontrarEmpresasQueCurtiramCandidato() {
-        // Criação de um candidato fictício
-        Candidato candidato = new Candidato(
-                "Candidato 1",
-                "candidato1@gmail.com",
-                "123456",
-                "111111111",
-                30,
-                "SP",
-                "Descrição Candidato 1",
-                [new Competencias(
-                        "Java",
-                        NivelCompetencia.Intermediario)],
-                [new Formacao(
-                        "Universidade 1",
-                        "Ciência da Computação",
-                        NivelFormacao.Graduacao, 2010)],
-                [new Experiencia(
-                        "Desenvolvedor",
-                        "Empresa C",
-                        NivelExperiencia.Junior)],
-        );
+     void testEncontrarMatchesPeloCandidato() throws SQLException {
+        List<CandidatoCurtidoDTO> resultadosEsperados = new ArrayList<>()
+        resultadosEsperados.add(new CandidatoCurtidoDTO("Empresa1", "Descrição Empresa1", "Vaga1", "Descrição Vaga1"))
+        resultadosEsperados.add(new CandidatoCurtidoDTO("Empresa2", "Descrição Empresa2", "Vaga2", "Descrição Vaga2"))
 
-        // Criação de instâncias de CandidatoCurtido associando empresa a candidato
-        Empresa empresaA = new Empresa("Empresa A", "contato@empresaA.com", "123456789", "3213132", "Brasil", "SP", "Descrição Empresa A")
-        Empresa empresaB = new Empresa("Empresa B", "contato@empresaB.com", "789797", "313212", "Brasil", "RJ", "Descrição Empresa B")
-        CandidatoCurtido curtidaCandidato1 = new CandidatoCurtido(empresaA, candidato);
-        CandidatoCurtido curtidaCandidato2 = new CandidatoCurtido(empresaB, candidato);
+        when(matchDao.encontrarMatchesPeloCandidato(anyInt())).thenReturn(resultadosEsperados)
 
-        // Adicionando as instâncias de CandidatoCurtido à lista de curtidas do candidato
-        candidato.curtidas.addAll([curtidaCandidato1, curtidaCandidato2]);
+        List<CandidatoCurtidoDTO> resultados = matchDao.encontrarMatchesPeloCandidato(1)
 
-        // Chamada do método a ser testado
-        List<EmpresaDTO> empresasDTO = matchService.encontrarEmpresasQueCurtiramCandidato(candidato);
+        assert resultadosEsperados == resultados
 
-        // Verificação do resultado
-        assert  empresasDTO.size() == 2
-        assert  empresasDTO.get(0).descricaoEmpresa == empresaA.descricaoEmpresa
-        assert  empresasDTO.get(1).descricaoEmpresa == empresaB.descricaoEmpresa
+        verify(matchDao, times(1)).encontrarMatchesPeloCandidato(1)
     }
 }

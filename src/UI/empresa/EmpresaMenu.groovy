@@ -7,15 +7,21 @@ import dao.curtida.CurtidaDao
 import dao.curtida.ICurtidaDao
 import dao.empresa.EmpresaDao
 import dao.empresa.IEmpresaDao
+import dao.match.IMatchDao
+import dao.match.MatchDao
 import db.DatabaseConnection
 import db.IDatabaseConnection
 import entity.CandidatoCurtido
 import entity.Empresa
+import entity.dto.CandidatoCurtidoDTO
+import entity.dto.VagaCurtidaDTO
 import service.EmpresaService
+import service.MatchService
 
 class EmpresaMenu {
 
     EmpresaService empresaService
+    MatchService matchService
     VagaMenu vagaMenu
     CandidatoMenu candidatoMenu
 
@@ -24,9 +30,11 @@ class EmpresaMenu {
         IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
         ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
         ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
+        IMatchDao matchDao = new MatchDao(databaseConnection)
 
 
         empresaService = new EmpresaService(empresaDao, candidatoDao, curtidaDao)
+        matchService = new MatchService(matchDao)
         candidatoMenu = new CandidatoMenu()
         vagaMenu = new VagaMenu()
     }
@@ -152,7 +160,26 @@ class EmpresaMenu {
     void curtirCandidato(Reader reader){
         candidatoMenu.listarCandidatos()
         CandidatoCurtido candidatoCurtido = criarCandidatoCurtido(reader)
-        empresaService.curtirCandidato(candidatoCurtido.getIdCandidato(), candidatoCurtido.idEmpresa)
+        Integer idCandidato = candidatoCurtido.getIdCandidato()
+        Integer idEmpresa = candidatoCurtido.getIdEmpresa()
+        empresaService.curtirCandidato(idCandidato, idEmpresa)
+        verificaMatch(idCandidato)
+    }
+
+    void verificaMatch(Integer idCandidato){
+        List<CandidatoCurtidoDTO> matchs = matchService.encontrarMatchesPeloCandidato(idCandidato)
+
+        matchs.each {match ->
+            println "============================"
+            println "DEU MATCH"
+            println  "O seguinte candidato curtiu uma de suas vagas: "
+            println "Nome :  ${match.nomeCandidato}"
+            println  "Descrição: ${match.descricaoCandidato}"
+            println  "Vaga que o candidato curitu: "
+            println  "Nome: ${match.nomeVaga}"
+            println  "Descrição: ${match.descricaoVaga}"
+            println  ""
+        }
     }
 
 }

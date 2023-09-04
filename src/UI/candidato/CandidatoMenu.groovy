@@ -1,31 +1,29 @@
 package UI.candidato
 
 import UI.empresa.VagaMenu
-import dao.candidato.CandidatoCompetenciaDao
-import dao.candidato.CandidatoDao
-import dao.candidato.ExperienciaDao
-import dao.candidato.FormacaoDao
-import dao.candidato.ICandidatoCompetenciaDao
-import dao.candidato.ICandidatoDao
-import dao.candidato.IExperienciaDao
-import dao.candidato.IFormacaoDao
+import dao.candidato.*
 import dao.curtida.CurtidaDao
 import dao.curtida.ICurtidaDao
+import dao.match.IMatchDao
+import dao.match.MatchDao
 import dao.vaga.IVagaDao
 import dao.vaga.VagaDao
 import db.DatabaseConnection
 import db.IDatabaseConnection
 import entity.Candidato
-import entity.VagaCompetencia
 import entity.VagaCurtida
 import entity.dto.CandidatoDTO
+import entity.dto.VagaCurtidaDTO
 import service.CandidatoService
+import service.IMatchService
+import service.MatchService
 
 import java.text.SimpleDateFormat
 
 class CandidatoMenu {
 
     CandidatoService candidatoService
+    MatchService matchService
     CompetenciaCandidatoMenu competenciaCandidatoMenu
     ExperienciaMenu experienciaCandidatoMenu
     FormacaoMenu formacaoMenu
@@ -39,11 +37,13 @@ class CandidatoMenu {
         IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection)
         IVagaDao vagaDao = new VagaDao(databaseConnection)
         ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
+        IMatchDao matchDao = new MatchDao(databaseConnection)
 
         formacaoMenu = new FormacaoMenu()
         experienciaCandidatoMenu = new ExperienciaMenu()
         competenciaCandidatoMenu = new CompetenciaCandidatoMenu()
         vagaMenu = new VagaMenu()
+        matchService = new MatchService(matchDao)
         candidatoService = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao, vagaDao, curtidaDao)
     }
 
@@ -199,7 +199,26 @@ class CandidatoMenu {
     void curtirVaga(Reader reader) {
         vagaMenu.listarVagas()
         VagaCurtida vagaCurtida = criarVagaCurtida(reader)
-        candidatoService.curtirVaga(vagaCurtida.getIdCandidata(), vagaCurtida.getIdVaga())
+        Integer idCandidato = vagaCurtida.getIdCandidata()
+        Integer idVaga = vagaCurtida.getIdVaga()
+        candidatoService.curtirVaga(idCandidato, idVaga)
+        verificaMatch(idCandidato, idVaga)
+    }
+
+    void verificaMatch(Integer idCandidato,Integer idVaga){
+        List<VagaCurtidaDTO> matchs = matchService.encontrarMatchesPelaVaga(idCandidato, idVaga)
+
+        matchs.each {match ->
+            println "============================"
+            println "DEU MATCH"
+            println  "A seguinte empresa curtiu seu perfil: "
+            println "Nome :  ${match.nomeEmpresa}"
+            println  "Descrição: ${match.descricaoEmpresa}"
+            println  "Vaga que o candidato curitu: "
+            println  "Nome: ${match.nomeVaga}"
+            println  "Descrição: ${match.descricaoVaga}"
+            println  ""
+        }
     }
 
 }
