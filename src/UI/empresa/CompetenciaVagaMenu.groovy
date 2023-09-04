@@ -1,6 +1,5 @@
 package UI.empresa
 
-import UI.candidato.CandidatoMenu
 import UI.competencia.CompetenciaMenu
 import dao.vaga.IVagaCompetenciaDao
 import dao.vaga.IVagaDao
@@ -8,7 +7,6 @@ import dao.vaga.VagaCompetenciaDao
 import dao.vaga.VagaDao
 import db.DatabaseConnection
 import db.IDatabaseConnection
-import entity.Competencias
 import entity.VagaCompetencia
 import entity.dto.CompetenciaDTO
 import service.VagaService

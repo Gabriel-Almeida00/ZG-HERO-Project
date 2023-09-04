@@ -5,13 +5,17 @@ import Exception.CompetenciaNotFoundException
 import Exception.DataBaseException
 import Exception.ExperienciaNotFoundException
 import Exception.FormacaoNotFoundException
+import Exception.VagaNotFoundException
 import dao.candidato.ICandidatoCompetenciaDao
 import dao.candidato.ICandidatoDao
 import dao.candidato.IExperienciaDao
 import dao.candidato.IFormacaoDao
+import dao.curtida.ICurtidaDao
+import dao.vaga.IVagaDao
 import entity.Candidato
 import entity.CandidatoCompetencia
 import entity.Competencias
+import entity.Vaga
 import entity.dto.CandidatoDTO
 import entity.Experiencia
 import entity.Formacao
@@ -22,21 +26,27 @@ import java.sql.SQLException
 
 class CandidatoService implements ICandidatoService {
 
-    private final ICandidatoDao candidatoDao;
-    private final ICandidatoCompetenciaDao candidatoCompetenciaDao;
-    private final IExperienciaDao experienciaDao;
+    private final ICandidatoDao candidatoDao
+    private final ICandidatoCompetenciaDao candidatoCompetenciaDao
+    private final IExperienciaDao experienciaDao
     private final IFormacaoDao formacaoDao
+    private  final IVagaDao vagaDao
+    private final ICurtidaDao curtidaDao
 
     CandidatoService(
             ICandidatoDao candidatoDao,
             ICandidatoCompetenciaDao candidatoCompetenciaDao,
             IExperienciaDao experienciaDao,
-            IFormacaoDao formacaoDao
+            IFormacaoDao formacaoDao,
+            IVagaDao vagaDao,
+            ICurtidaDao curtidaDao
     ) {
         this.candidatoDao = candidatoDao;
         this.candidatoCompetenciaDao = candidatoCompetenciaDao;
         this.experienciaDao = experienciaDao
         this.formacaoDao = formacaoDao
+        this.vagaDao = vagaDao
+        this.curtidaDao = curtidaDao
     }
 
     List<CandidatoDTO> listarCandidatos() {
@@ -239,7 +249,27 @@ class CandidatoService implements ICandidatoService {
             return formacaoDao.listarFormacoesPorCandidato(idCandidato);
         }
         catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e)
+        }
+    }
+
+    @Override
+    void curtirVaga(Integer idCandidato, Integer idVaga) {
+        try{
+            Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato)
+            Vaga vaga = vagaDao.buscarVagaPorId(idVaga)
+
+            if (candidato == null) {
+                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
+            }
+            if(vaga == null){
+                throw new VagaNotFoundException("Vaga não encontrada com ID: " + idVaga)
+            }
+
+            curtidaDao.curtirVaga(idCandidato, idVaga)
+
+        } catch (SQLException e){
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e)
         }
     }
 }

@@ -27,7 +27,9 @@ interface ICandidatoService {
     void excluirExperiencia(Integer idExperiencia);
 
     void adicionarFormacao(Formacao formacao);
-    void atualizarFormacao(Formacao formacao);
-    void excluirFormacao(Integer idFormacao);
-    List<Formacao> listarFormacoesPorCandidato(Integer idCandidato);
+    void atualizarFormacao(Formacao formacao)
+    void excluirFormacao(Integer idFormacao)
+    List<Formacao> listarFormacoesPorCandidato(Integer idCandidato)
+
+    void curtirVaga(Integer idCandidato, Integer idVaga)
 }

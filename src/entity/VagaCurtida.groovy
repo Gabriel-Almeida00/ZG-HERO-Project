@@ -2,12 +2,12 @@ package entity
 
 class VagaCurtida {
     Integer id
-    Candidato candidato
-    Vaga vaga
+    Integer idCandidata
+    Integer idVaga
 
-    VagaCurtida(Candidato candidato, Vaga vaga) {
-        this.candidato = candidato
-        this.vaga = vaga
+    VagaCurtida(Integer idCandidata, Integer idVaga) {
+        this.idCandidata = idCandidata
+        this.idVaga = idVaga
     }
 
     Integer getId() {
@@ -18,19 +18,19 @@ class VagaCurtida {
         this.id = id
     }
 
-    Candidato getCandidato() {
-        return candidato
+    Integer getIdCandidata() {
+        return idCandidata
     }
 
-    void setCandidato(Candidato candidato) {
-        this.candidato = candidato
+    void setIdCandidata(Integer idCandidata) {
+        this.idCandidata = idCandidata
     }
 
-    Vaga getVaga() {
-        return vaga
+    Integer getIdVaga() {
+        return idVaga
     }
 
-    void setVaga(Vaga vaga) {
-        this.vaga = vaga
+    void setIdVaga(Integer idVaga) {
+        this.idVaga = idVaga
     }
 }
