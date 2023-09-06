@@ -41,67 +41,67 @@ CREATE TABLE candidato_competencia (
   id serial PRIMARY KEY,
   idCandidato int NOT NULL,
   idCompetencia int NOT NULL,
-  nivel varchar NOT NULL
+  nivel varchar NOT NULL,
+  FOREIGN KEY (idCandidato) REFERENCES candidatos (id),
+  FOREIGN KEY (idCompetencia) REFERENCES competencias (id)
 );
 
+-- Tabela de relacionamento entre vagas e competências
 CREATE TABLE vaga_competencia (
   id serial PRIMARY KEY,
   idVaga int NOT NULL,
   idCompetencia int NOT NULL,
-   nivel varchar NOT NULL
+  nivel varchar NOT NULL,
+  FOREIGN KEY (idVaga) REFERENCES vagas (id),
+  FOREIGN KEY (idCompetencia) REFERENCES competencias (id)
 );
 
+-- Tabela de formações de candidatos
 CREATE TABLE formacoes (
   id serial PRIMARY KEY,
   idCandidato int NOT NULL,
   instituicao varchar NOT NULL,
   curso varchar NOT NULL,
   nivel varchar NOT NULL,
-  AnoConclusao varchar NOT NULL
+  anoConclusao varchar NOT NULL,
+  FOREIGN KEY (idCandidato) REFERENCES candidatos (id)
 );
 
+-- Tabela de experiências de candidatos
 CREATE TABLE experiencias (
   id serial PRIMARY KEY,
   idCandidato int NOT NULL,
   cargo varchar NOT NULL,
   empresa varchar NOT NULL,
-  nivel varchar NOT NULL
+  nivel varchar NOT NULL,
+  FOREIGN KEY (idCandidato) REFERENCES candidatos (id)
 );
 
-CREATE TABLE vagas_curtidas (
+-- Tabela de status de matches
+CREATE TABLE match_status (
+  id serial PRIMARY KEY,
+  status varchar NOT NULL
+);
+
+-- Tabela de matches
+CREATE TABLE match (
   id serial PRIMARY KEY,
   idCandidato int NOT NULL,
-  idVaga int NOT NULL
+  idEmpresa int NOT NULL,
+  idVaga int NOT NULL,
+  idStatus int NOT NULL,
+  FOREIGN KEY (idCandidato) REFERENCES candidatos (id),
+  FOREIGN KEY (idEmpresa) REFERENCES empresas (id),
+  FOREIGN KEY (idVaga) REFERENCES vagas (id),
+  FOREIGN KEY (idStatus) REFERENCES match_status (id)
 );
 
-CREATE TABLE candidatos_curtidos (
-  id serial PRIMARY KEY,
-  idCandidato int NOT NULL,
-  idEmpresa int NOT NULL
-);
 
-ALTER TABLE vagas ADD FOREIGN KEY (idEmpresa) REFERENCES empresas (id);
-
-ALTER TABLE candidato_competencia ADD FOREIGN KEY (idCandidato) REFERENCES candidatos (id);
-
-ALTER TABLE candidato_competencia ADD FOREIGN KEY (idCompetencia) REFERENCES competencias (id);
-
-ALTER TABLE vaga_competencia ADD FOREIGN KEY (idVaga) REFERENCES vagas (id);
-
-ALTER TABLE vaga_competencia ADD FOREIGN KEY (idCompetencia) REFERENCES competencias (id);
-
-ALTER TABLE formacoes ADD FOREIGN KEY (idCandidato) REFERENCES candidatos (id);
-
-ALTER TABLE experiencias ADD FOREIGN KEY (idCandidato) REFERENCES candidatos (id);
-
-ALTER TABLE vagas_curtidas ADD FOREIGN KEY (idCandidato) REFERENCES candidatos (id);
-
-ALTER TABLE vagas_curtidas ADD FOREIGN KEY (idVaga) REFERENCES vagas (id);
-
-ALTER TABLE candidatos_curtidos ADD FOREIGN KEY (idCandidato) REFERENCES candidatos (id);
-
-ALTER TABLE candidatos_curtidos ADD FOREIGN KEY (idEmpresa) REFERENCES empresas (id);
-
+-- Inserção de status de matches
+INSERT INTO match_status (status) VALUES
+('aguardando'),
+('match'),
+('no_match');
 
 -- Inserir Candidatos
 INSERT INTO Candidatos (nome, sobrenome, dataNascimento, email, cpf, pais, cep, descricao, senha)
@@ -121,7 +121,7 @@ VALUES
   ('Empresa E', '999999999', 'empresa.e@example.com', 'Descrição da Empresa E', 'Brasil', '99999-999', 'senhaxyz');
   
   -- Inserção de vagas
-INSERT INTO vagas (idEmpresa, nome, descricao, cidade, formacaoMinima, experienciaMinina)
+INSERT INTO vagas (idEmpresa, nome, descricao, cidade, formacaoMinima, experienciaMinima)
 VALUES
 (1, 'Desenvolvedor Java', 'Desenvolvimento de aplicativos Java', 'São Paulo', 'Graduação em Ciência da Computação', '1 ano de experiência em Java'),
 (2, 'Designer Gráfico', 'Criação de materiais visuais', 'Rio de Janeiro', 'Graduação em Design Gráfico', 'Experiência em Adobe Creative Suite'),
@@ -129,41 +129,4 @@ VALUES
 (4, 'Engenheiro de Software', 'Desenvolvimento de software para sistemas complexos', 'Porto Alegre', 'Graduação em Engenharia de Software ou áreas afins', '2 anos de experiência em desenvolvimento'),
 (5, 'Gerente de Projetos', 'Gestão de projetos de grande porte', 'Curitiba', 'Graduação em Administração ou Gerenciamento de Projetos', 'Experiência em liderança de equipes');
 
-
---Candidato curte vaga
--- Candidato com ID 1 curte a vaga com ID 1
-INSERT INTO vagas_curtidas (idCandidato, idVaga) VALUES (1, 2);
-
--- Candidato com ID 2 curte a vaga com ID 1
-INSERT INTO vagas_curtidas (idCandidato, idVaga) VALUES (2, 2);
-
--- Candidato com ID 3 curte a vaga com ID 2
-INSERT INTO vagas_curtidas (idCandidato, idVaga) VALUES (3, 2);
-
--- Candidato com ID 1 curte a vaga com ID 3
-INSERT INTO vagas_curtidas (idCandidato, idVaga) VALUES (1, 3);
-
---Empresa Curte candidato
--- Empresa com ID 1 curte o candidato com ID 1
-INSERT INTO candidatos_curtidos (idCandidato, idEmpresa) VALUES (1, 1);
-
--- Empresa com ID 2 curte o candidato com ID 1
-INSERT INTO candidatos_curtidos (idCandidato, idEmpresa) VALUES (1, 2);
-
--- Empresa com ID 3 curte o candidato com ID 2
-INSERT INTO candidatos_curtidos (idCandidato, idEmpresa) VALUES (2, 3);
-
--- Empresa com ID 1 curte o candidato com ID 3
-INSERT INTO candidatos_curtidos (idCandidato, idEmpresa) VALUES (3, 1);
-
---Identificar Matchs entre Candidatos e Vagas
-SELECT vc.idCandidato, vc.idVaga
-FROM vagas_curtidas vc
-JOIN candidatos_curtidos cc ON vc.idCandidato = cc.idCandidato AND vc.idVaga = cc.idEmpresa;
-
---Identificar Matchs entre Empresas e Candidatos
-SELECT cc.idCandidato, cc.idEmpresa
-FROM candidatos_curtidos cc
-JOIN vagas_curtidas vc ON cc.idCandidato = vc.idCandidato AND cc.idEmpresa = vc.idVaga;
-
-
+select * from Candidatos;
