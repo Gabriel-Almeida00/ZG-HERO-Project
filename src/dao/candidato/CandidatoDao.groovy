@@ -85,10 +85,10 @@ class CandidatoDao implements ICandidatoDao {
                 int candidatoId = resultSet.getInt("id")
                 String descricao = resultSet.getString("descricao")
 
-                CandidatoDTO candidatoDTO = candidatosMap.getOrDefault(candidatoId, new CandidatoDTO(candidatoId, descricao, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+                CandidatoDTO candidatoDTO = candidatosMap.getOrDefault(candidatoId, new CandidatoDTO(candidatoId, descricao, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()))
 
-                String nivelCompetencia = resultSet.getString("niveis_competencias");
-                String nomeCompetencia = resultSet.getString("competencias");
+                String nivelCompetencia = resultSet.getString("niveis_competencias")
+                String nomeCompetencia = resultSet.getString("competencias")
                 if (nomeCompetencia != null) {
                     candidatoDTO.getCompetencias().add(new CompetenciaDTO(nomeCompetencia, nivelCompetencia));
                 }
