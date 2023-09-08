@@ -31,6 +31,9 @@ Uma nova funcionalidade foi adicionada ao Linketinder, permitindo que candidatos
 
 Internamente na aplicação, os matches são representados através da classe `Curtida`, que contém referências tanto ao candidato quanto à empresa envolvidos no matc
 
+### Gradle
+Inicialmente o projeto foi feito com maven mas mudou para gradle apartir do commit : https://github.com/Gabriel-Almeida00/ZG-HERO-Project/commit/ec9a86053a36ed6dde1be7e67d165d93c8515fa5
+
 ## Como Executar
 
 1. Certifique-se de ter o Groovy instalado em sua máquina. Você pode baixá-lo [aqui](https://groovy.apache.org/download.html) e seguir as instruções de instalação.
