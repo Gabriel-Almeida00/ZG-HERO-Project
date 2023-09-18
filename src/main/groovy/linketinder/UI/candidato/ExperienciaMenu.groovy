@@ -77,7 +77,7 @@ class ExperienciaMenu {
 
 
         println "Digite o nivel:"
-        String nivel = reader.readLine()
+        Integer nivel = Integer.parseInt(reader.readLine())
 
         return new Experiencia(
                 idCandidato,

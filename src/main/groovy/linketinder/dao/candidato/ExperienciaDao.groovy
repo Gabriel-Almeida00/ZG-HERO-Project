@@ -18,12 +18,12 @@ class ExperienciaDao implements IExperienciaDao {
 
     @Override
     void adicionarExperiencia(Experiencia experiencia) throws SQLException {
-        String sql = "INSERT INTO experiencias (idCandidato, cargo, empresa, nivel) VALUES (?, ?, ?, ?)"
+        String sql = "INSERT INTO experiencias (idCandidato, cargo, empresa, idNivelExperiencia) VALUES (?, ?, ?, ?)"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, experiencia.getIdCandidato())
             statement.setString(2, experiencia.getCargo())
             statement.setString(3, experiencia.getEmpresa())
-            statement.setString(4, experiencia.getNivel())
+            statement.setInt(4, experiencia.getNivel())
 
             statement.executeUpdate()
         }
@@ -31,11 +31,11 @@ class ExperienciaDao implements IExperienciaDao {
 
     @Override
     void atualizarExperiencia(Experiencia experiencia) throws SQLException {
-        String sql = "UPDATE experiencias SET cargo=?, empresa=?, nivel=? WHERE id=?"
+        String sql = "UPDATE experiencias SET cargo=?, empresa=?, idNivelExperiencia=? WHERE id=?"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setString(1, experiencia.getCargo())
             statement.setString(2, experiencia.getEmpresa())
-            statement.setString(3, experiencia.getNivel())
+            statement.setInt(3, experiencia.getNivel())
             statement.setInt(4, experiencia.getId())
 
             statement.executeUpdate()
@@ -45,14 +45,14 @@ class ExperienciaDao implements IExperienciaDao {
     @Override
     List<Experiencia> listarExperienciasPorCandidato(Integer idCandidato) throws SQLException {
         List<Experiencia> experiencias = new ArrayList<>()
-        String sql = "SELECT id, cargo, empresa, nivel FROM experiencias WHERE idCandidato=?"
+        String sql = "SELECT id, cargo, empresa, idNivelExperiencia FROM experiencias WHERE idCandidato=?"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idCandidato)
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     String cargo = resultSet.getString("cargo")
                     String empresa = resultSet.getString("empresa")
-                    String nivel = resultSet.getString("nivel")
+                    Integer nivel = resultSet.getInt("idNivelExperiencia")
                     Integer id = resultSet.getInt("id")
 
                     Experiencia experiencia = new Experiencia(idCandidato, cargo, empresa, nivel)
@@ -75,7 +75,7 @@ class ExperienciaDao implements IExperienciaDao {
 
     @Override
     Experiencia buscarExperienciaPorId(Integer idExperiencia) throws SQLException {
-        String sql = "SELECT id, idCandidato, cargo, empresa, nivel FROM experiencias WHERE id = ?"
+        String sql = "SELECT id, idCandidato, cargo, empresa, idNivelExperiencia FROM experiencias WHERE id = ?"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idExperiencia)
@@ -85,7 +85,7 @@ class ExperienciaDao implements IExperienciaDao {
                     Integer idCandidato = resultSet.getInt("idCandidato")
                     String cargo = resultSet.getString("cargo")
                     String empresa = resultSet.getString("empresa")
-                    String nivel = resultSet.getString("nivel")
+                    Integer nivel = resultSet.getString("idNivelExperiencia")
 
                     return new Experiencia(idCandidato, cargo, empresa, nivel)
                 }

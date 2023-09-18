@@ -9,9 +9,9 @@ class Experiencia {
     Integer idCandidato
     String cargo
     String empresa
-    NivelExperiencia nivel
+    Integer nivel
 
-    Experiencia(Integer idCandidato, String cargo, String empresa, NivelExperiencia nivel) {
+    Experiencia(Integer idCandidato, String cargo, String empresa, Integer nivel) {
         this.idCandidato = idCandidato
         this.cargo = cargo
         this.empresa = empresa
@@ -46,11 +46,11 @@ class Experiencia {
         this.empresa = empresa
     }
 
-    String getNivel() {
+    Integer getNivel() {
         return nivel
     }
 
-    void setNivel(NivelExperiencia nivel) {
+    void setNivel(Integer nivel) {
         this.nivel = nivel
     }
 }
