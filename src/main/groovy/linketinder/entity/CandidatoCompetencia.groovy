@@ -1,15 +1,15 @@
 package linketinder.entity
 
-import linketinder.entity.enums.NivelCompetencia
-
 class CandidatoCompetencia {
 
     Integer id
     Integer idCandidato
     Integer idCompetencia
-    NivelCompetencia nivel
+    Integer nivel
 
-    CandidatoCompetencia(Integer idCandidato, Integer idCompetencia, NivelCompetencia nivel) {
+
+
+    CandidatoCompetencia(Integer idCandidato, Integer idCompetencia, Integer nivel) {
         this.idCandidato = idCandidato
         this.idCompetencia = idCompetencia
         this.nivel = nivel
@@ -39,11 +39,11 @@ class CandidatoCompetencia {
         this.idCompetencia = idCompetencia
     }
 
-    String getNivel() {
+    Integer getNivel() {
         return nivel
     }
 
-    void setNivel(NivelCompetencia nivel) {
+    void setNivel(Integer nivel) {
         this.nivel = nivel
     }
 }

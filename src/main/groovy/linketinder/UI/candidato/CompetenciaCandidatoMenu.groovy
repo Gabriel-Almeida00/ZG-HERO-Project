@@ -10,6 +10,7 @@ import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCompetencia
 import linketinder.entity.dto.CompetenciaDTO
+import linketinder.entity.NivelCompetencia
 import linketinder.service.CandidatoService
 
 class CompetenciaCandidatoMenu {
@@ -69,13 +70,14 @@ class CompetenciaCandidatoMenu {
         println "Digite o Id da competencia:"
         Integer idCompetencia = Integer.parseInt(reader.readLine())
 
-        println "Digite o nivel da competencia"
-        String nivel = reader.readLine()
+        println "Digite o nivel da competencia (1 a 3):"
+        Integer nivel = Integer.parseInt(reader.readLine())
 
-        return new CandidatoCompetencia(
-                idCandidato, idCompetencia, nivel
-        )
+
+        return new CandidatoCompetencia(idCandidato, idCompetencia, nivel)
     }
+
+
 
     void listarCompetenciasDoCandidato(Reader reader) {
         println "Digite o ID do candidato:"
@@ -96,8 +98,12 @@ class CompetenciaCandidatoMenu {
     }
 
     void atualizarCompetenciaCandidato(Reader reader) {
-        println "Digite o ID da competencia do candidato:"
+        listarCompetenciasDoCandidato(reader)
+        println "Digite o ID da competencia que deseja atualizar:"
         Integer idCompetencia = Integer.parseInt(reader.readLine())
+
+        println "Digite o novo nivel da competencia"
+        Integer nivel = Integer.parseInt(reader.readLine())
 
         CandidatoCompetencia candidatoCompetencia = criarCompetenciaCandidato(reader)
         candidatoCompetencia.setId(idCompetencia)

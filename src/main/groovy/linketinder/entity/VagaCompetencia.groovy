@@ -1,7 +1,5 @@
 package linketinder.entity
 
-import linketinder.entity.enums.NivelCompetencia
-
 class VagaCompetencia {
 
     Integer id

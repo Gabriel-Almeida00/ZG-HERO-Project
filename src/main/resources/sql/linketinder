@@ -128,11 +128,11 @@ VALUES
   ('Gerente');
 
 -- Inserir valores na tabela nivel_competencia
-INSERT INTO nivel_competencia (nivel)
-VALUES
-  ('Iniciante'),
-  ('Intermediário'),
-  ('Avançado');
+    INSERT INTO nivel_competencia (nivel)
+    VALUES
+      ('Iniciante'),
+      ('Intermediário'),
+      ('Avançado');
 
 
 -- Inserir Candidatos
