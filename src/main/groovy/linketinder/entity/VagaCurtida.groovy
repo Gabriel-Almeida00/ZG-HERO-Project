@@ -22,10 +22,6 @@ class VagaCurtida {
         return idCandidata
     }
 
-    void setIdCandidata(Integer idCandidata) {
-        this.idCandidata = idCandidata
-    }
-
     Integer getIdVaga() {
         return idVaga
     }

@@ -21,7 +21,7 @@ class MatchService implements IMatchService {
        try{
            matchDao.encontrarMatchesPelaVaga(idCandidato, idVaga)
        } catch (SQLException e){
-           throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e)
+           throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
        }
     }
 
@@ -30,7 +30,7 @@ class MatchService implements IMatchService {
         try{
             matchDao.encontrarMatchesPeloCandidato(idCandidato)
         } catch (SQLException e){
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e)
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 }

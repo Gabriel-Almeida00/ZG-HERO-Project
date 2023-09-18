@@ -17,31 +17,15 @@ class VagaCurtidaDTO {
         return nomeEmpresa
     }
 
-    void setNomeEmpresa(String nomeEmpresa) {
-        this.nomeEmpresa = nomeEmpresa
-    }
-
     String getDescricaoEmpresa() {
         return descricaoEmpresa
-    }
-
-    void setDescricaoEmpresa(String descricaoEmpresa) {
-        this.descricaoEmpresa = descricaoEmpresa
     }
 
     String getNomeVaga() {
         return nomeVaga
     }
 
-    void setNomeVaga(String nomeVaga) {
-        this.nomeVaga = nomeVaga
-    }
-
     String getDescricaoVaga() {
         return descricaoVaga
-    }
-
-    void setDescricaoVaga(String descricaoVaga) {
-        this.descricaoVaga = descricaoVaga
     }
 }

@@ -9,88 +9,88 @@ import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
 
-class CompetenciaDao implements  ICompetenciaDao{
+class CompetenciaDao implements ICompetenciaDao {
 
-    private final IDatabaseConnection databaseConnection;
+    private final IDatabaseConnection databaseConnection
 
     CompetenciaDao(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection;
+        this.databaseConnection = databaseConnection
     }
 
-    public void adicionarCompetencia(Competencias competencia) throws SQLException {
-        String sql = "INSERT INTO competencias (nome) VALUES (?)";
-        try (Connection connection = databaseConnection.getConnection();
+    void adicionarCompetencia(Competencias competencia) throws SQLException {
+        String sql = "INSERT INTO competencias (nome) VALUES (?)"
+        try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, competencia.getNome());
+            statement.setString(1, competencia.getNome())
 
 
-            statement.executeUpdate();
+            statement.executeUpdate()
         }
     }
 
-    public Competencias buscarCompetenciaPorId(Integer id) throws SQLException {
-        String sql = "SELECT * FROM competencias WHERE id = ?";
-        try (Connection connection = databaseConnection.getConnection();
+    Competencias buscarCompetenciaPorId(Integer id) throws SQLException {
+        String sql = "SELECT * FROM competencias WHERE id = ?"
+        try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setInt(1, id);
+            statement.setInt(1, id)
 
-            try (  ResultSet resultSet = statement.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    String nome = resultSet.getString("nome");
+                    String nome = resultSet.getString("nome")
 
-                    Competencias competencias = new Competencias( nome);
+                    Competencias competencias = new Competencias(nome)
                     competencias.setId(id)
                     return competencias
                 }
             }
         }
-        return null;
+        return null
     }
 
-    public List<Competencias> listarTodasCompetencias() throws SQLException {
-        List<Competencias> competencias = new ArrayList<>();
-        String sql = "SELECT * FROM competencias";
+    List<Competencias> listarTodasCompetencias() throws SQLException {
+        List<Competencias> competencias = new ArrayList<>()
+        String sql = "SELECT * FROM competencias"
 
-        try (Connection connection = databaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
-                String nome = resultSet.getString("nome");
+                Integer id = resultSet.getInt("id")
+                String nome = resultSet.getString("nome")
 
-                Competencias competencia = new Competencias(nome);
+                Competencias competencia = new Competencias(nome)
                 competencia.setId(id)
-                competencias.add(competencia);
+                competencias.add(competencia)
             }
         }
-        return competencias;
+        return competencias
     }
 
-    public void atualizarCompetencia(Competencias competencia) throws SQLException {
-        String sql = "UPDATE competencias SET nome = ? WHERE id = ?";
+    void atualizarCompetencia(Competencias competencia) throws SQLException {
+        String sql = "UPDATE competencias SET nome = ? WHERE id = ?"
 
-        try (Connection connection = databaseConnection.getConnection();
+        try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, competencia.getNome());
-            statement.setInt(2, competencia.getId());
+            statement.setString(1, competencia.getNome())
+            statement.setInt(2, competencia.getId())
 
-            statement.executeUpdate();
+            statement.executeUpdate()
         }
     }
 
-    public void excluirCompetencia(Integer idCompetencia) throws SQLException {
-        String sql = "DELETE FROM competencias WHERE id = ?";
+    void excluirCompetencia(Integer idCompetencia) throws SQLException {
+        String sql = "DELETE FROM competencias WHERE id = ?"
 
-        try (Connection connection = databaseConnection.getConnection();
+        try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setInt(1, idCompetencia);
+            statement.setInt(1, idCompetencia)
 
-            statement.executeUpdate();
+            statement.executeUpdate()
         }
     }
 

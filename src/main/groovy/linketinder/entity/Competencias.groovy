@@ -5,7 +5,7 @@ class Competencias {
     private Integer id
     private String nome
 
-    Competencias( String nome) {
+    Competencias(String nome) {
         this.nome = nome
 
     }
@@ -27,9 +27,8 @@ class Competencias {
     }
 
 
-
     @Override
-    public String toString() {
+    String toString() {
         return nome
     }
 }

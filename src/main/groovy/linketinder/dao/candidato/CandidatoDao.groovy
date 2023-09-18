@@ -90,26 +90,26 @@ class CandidatoDao implements ICandidatoDao {
                 String nivelCompetencia = resultSet.getString("niveis_competencias")
                 String nomeCompetencia = resultSet.getString("competencias")
                 if (nomeCompetencia != null) {
-                    candidatoDTO.getCompetencias().add(new CompetenciaDTO(nomeCompetencia, nivelCompetencia));
+                    candidatoDTO.getCompetencias().add(new CompetenciaDTO(nomeCompetencia, nivelCompetencia))
                 }
 
-                String cursoFormacao = resultSet.getString("formacoes");
-                String anoConclusao = resultSet.getString("anos_formacoes");
+                String cursoFormacao = resultSet.getString("formacoes")
+                String anoConclusao = resultSet.getString("anos_formacoes")
                 if (cursoFormacao != null) {
-                    candidatoDTO.getFormacoes().add(new FormacaoDTO(cursoFormacao, anoConclusao));
+                    candidatoDTO.getFormacoes().add(new FormacaoDTO(cursoFormacao, anoConclusao))
                 } else {
-                    candidatoDTO.getFormacoes().add(new FormacaoDTO("", ""));
+                    candidatoDTO.getFormacoes().add(new FormacaoDTO("", ""))
                 }
 
-                String cargoExperiencia = resultSet.getString("cargos_experiencias");
-                String nivelExperiencia = resultSet.getString("niveis_experiencias");
+                String cargoExperiencia = resultSet.getString("cargos_experiencias")
+                String nivelExperiencia = resultSet.getString("niveis_experiencias")
                 if (cargoExperiencia != null) {
-                    candidatoDTO.getExperiencias().add(new ExperienciaDTO(cargoExperiencia, nivelExperiencia));
+                    candidatoDTO.getExperiencias().add(new ExperienciaDTO(cargoExperiencia, nivelExperiencia))
                 } else {
-                    candidatoDTO.getExperiencias().add(new ExperienciaDTO("", ""));
+                    candidatoDTO.getExperiencias().add(new ExperienciaDTO("", ""))
                 }
 
-                candidatosMap.put(candidatoId, candidatoDTO);
+                candidatosMap.put(candidatoId, candidatoDTO)
             }
 
             candidatosDTO.addAll(candidatosMap.values())

@@ -41,16 +41,8 @@ class CandidatoDTO {
         return formacoes
     }
 
-    void setFormacoes(List<FormacaoDTO> formacoes) {
-        this.formacoes = formacoes
-    }
-
     List<ExperienciaDTO> getExperiencias() {
         return experiencias
-    }
-
-    void setExperiencias(List<ExperienciaDTO> experiencias) {
-        this.experiencias = experiencias
     }
 
     String getDescricao() {

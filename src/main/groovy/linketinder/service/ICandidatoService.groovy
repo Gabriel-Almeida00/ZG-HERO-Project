@@ -15,7 +15,6 @@ interface ICandidatoService {
 
     List<CompetenciaDTO> listarCompetenciasPorCandidato(Integer idCandidato)
 
-    Competencias buscarCompetenciaPorId(Integer idCompetencia)
     void adicionarCandidatoCompetencia(CandidatoCompetencia candidatoCompetencia);
     void atualizarNivelCompetenciaCandidato(CandidatoCompetencia candidatoCompetencia);
     void excluirCompetenciaCandidato(Integer id);

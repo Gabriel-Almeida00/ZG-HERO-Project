@@ -38,16 +38,8 @@ class Formacao {
         return instituicao
     }
 
-    void setInstituicao(String instituicao) {
-        this.instituicao = instituicao
-    }
-
     String getCurso() {
         return curso
-    }
-
-    void setCurso(String curso) {
-        this.curso = curso
     }
 
     String getNivel() {
@@ -60,9 +52,5 @@ class Formacao {
 
     String getAnoConclusao() {
         return anoConclusao
-    }
-
-    void setAnoConclusao(String anoConclusao) {
-        this.anoConclusao = anoConclusao
     }
 }

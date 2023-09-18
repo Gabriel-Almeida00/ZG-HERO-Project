@@ -51,8 +51,8 @@ class MatchDao implements IMatchDao {
         return matches
     }
 
-    List<CandidatoCurtidoDTO> encontrarMatchesPeloCandidato(Integer idCandidato) throws SQLException  {
-        List<CandidatoCurtidoDTO> resultados = new ArrayList<>();
+    List<CandidatoCurtidoDTO> encontrarMatchesPeloCandidato(Integer idCandidato) throws SQLException {
+        List<CandidatoCurtidoDTO> resultados = new ArrayList<>()
 
         String sql = "SELECT " +
                 "    c.nome AS nome_candidato, " +
@@ -69,23 +69,23 @@ class MatchDao implements IMatchDao {
                 "WHERE " +
                 "    c.id = ?"
 
-        try (Connection connection = databaseConnection.getConnection();
+        try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, idCandidato);
+            statement.setInt(1, idCandidato)
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    String nomeCandidato = resultSet.getString("nome_candidato");
-                    String descricaoCandidato = resultSet.getString("descricao_candidato");
-                    String nomeVaga = resultSet.getString("nome_vaga");
-                    String descricaoVaga = resultSet.getString("descricao_vaga");
+                    String nomeCandidato = resultSet.getString("nome_candidato")
+                    String descricaoCandidato = resultSet.getString("descricao_candidato")
+                    String nomeVaga = resultSet.getString("nome_vaga")
+                    String descricaoVaga = resultSet.getString("descricao_vaga")
 
-                    CandidatoCurtidoDTO candidatoCurtidoDTO = new CandidatoCurtidoDTO(nomeCandidato, descricaoCandidato, nomeVaga, descricaoVaga);
-                    resultados.add(candidatoCurtidoDTO);
+                    CandidatoCurtidoDTO candidatoCurtidoDTO = new CandidatoCurtidoDTO(nomeCandidato, descricaoCandidato, nomeVaga, descricaoVaga)
+                    resultados.add(candidatoCurtidoDTO)
                 }
             }
         }
 
-        return resultados;
+        return resultados
     }
 }

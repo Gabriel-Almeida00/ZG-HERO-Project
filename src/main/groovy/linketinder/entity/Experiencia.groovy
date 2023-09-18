@@ -4,7 +4,7 @@ package linketinder.entity
 class Experiencia {
 
     Integer id
-    Integer idCandidato;
+    Integer idCandidato
     String cargo
     String empresa
     String nivel
@@ -34,10 +34,6 @@ class Experiencia {
 
     String getCargo() {
         return cargo
-    }
-
-    void setCargo(String cargo) {
-        this.cargo = cargo
     }
 
     String getEmpresa() {

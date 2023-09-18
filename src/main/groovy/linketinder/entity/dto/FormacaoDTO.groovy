@@ -13,21 +13,12 @@ class FormacaoDTO {
         return curso
     }
 
-    void setCurso(String curso) {
-        this.curso = curso
-    }
-
     String getAnoConclusao() {
         return anoConclusao
     }
 
-    void setAnoConclusao(String anoConclusao) {
-        this.anoConclusao = anoConclusao
-    }
-
-
     @Override
-     String toString() {
+    String toString() {
         return curso + " - " + anoConclusao
     }
 }

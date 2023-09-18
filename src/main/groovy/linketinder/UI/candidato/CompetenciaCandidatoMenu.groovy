@@ -1,14 +1,7 @@
 package linketinder.UI.candidato
 
 import linketinder.UI.competencia.CompetenciaMenu
-import linketinder.dao.candidato.CandidatoCompetenciaDao
-import linketinder.dao.candidato.CandidatoDao
-import linketinder.dao.candidato.ExperienciaDao
-import linketinder.dao.candidato.FormacaoDao
-import linketinder.dao.candidato.ICandidatoCompetenciaDao
-import linketinder.dao.candidato.ICandidatoDao
-import linketinder.dao.candidato.IExperienciaDao
-import linketinder.dao.candidato.IFormacaoDao
+import linketinder.dao.candidato.*
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaDao
@@ -16,9 +9,8 @@ import linketinder.dao.vaga.VagaDao
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCompetencia
-import linketinder.entity.Competencias
+import linketinder.entity.dto.CompetenciaDTO
 import linketinder.service.CandidatoService
-
 
 class CompetenciaCandidatoMenu {
 
@@ -89,7 +81,7 @@ class CompetenciaCandidatoMenu {
         println "Digite o ID do candidato:"
         Integer idCandidato = Integer.parseInt(reader.readLine())
 
-        List<Competencias> competencias = candidatoService.listarCompetenciasPorCandidato(idCandidato)
+        List<CompetenciaDTO> competencias = candidatoService.listarCompetenciasPorCandidato(idCandidato)
 
         competencias.each { competencia ->
             println "Competência: ID:${competencia.id}, ${competencia.nome}, Nível: ${competencia.nivel}"

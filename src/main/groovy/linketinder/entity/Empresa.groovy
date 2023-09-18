@@ -1,6 +1,6 @@
 package linketinder.entity
 
-class Empresa  {
+class Empresa {
 
     Integer id
     String nome
@@ -18,8 +18,7 @@ class Empresa  {
             String descricao,
             String pais,
             String cep,
-            String senha)
-    {
+            String senha) {
         this.nome = nome
         this.cnpj = cnpj
         this.email = email
@@ -50,16 +49,8 @@ class Empresa  {
         return cnpj
     }
 
-    void setCnpj(String cnpj) {
-        this.cnpj = cnpj
-    }
-
     String getEmail() {
         return email
-    }
-
-    void setEmail(String email) {
-        this.email = email
     }
 
     String getDescricao() {
@@ -74,37 +65,17 @@ class Empresa  {
         return pais
     }
 
-    void setPais(String pais) {
-        this.pais = pais
-    }
-
     String getCep() {
         return cep
     }
 
-    void setCep(String cep) {
-        this.cep = cep
-    }
 
     String getSenha() {
         return senha
     }
 
-    void setSenha(String senha) {
-        this.senha = senha
-    }
-
-    List<Vaga> getVagas() {
-        return vagas
-    }
-
-    void setVagas(List<Vaga> vagas) {
-        this.vagas = vagas
-    }
-
-
     @Override
-    public String toString() {
+    String toString() {
         return "Empresa{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
@@ -115,6 +86,6 @@ class Empresa  {
                 ", cep='" + cep + '\'' +
                 ", senha='" + senha + '\'' +
                 ", vagas=" + vagas +
-                '}';
+                '}'
     }
 }

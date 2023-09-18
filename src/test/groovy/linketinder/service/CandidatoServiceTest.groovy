@@ -113,7 +113,7 @@ class CandidatoServiceTest {
                 "12345-678",
                 "Descrição do candidato",
                 "senha123"
-        );
+        )
         candidatoMock.setId(1)
 
         candidatoService.atualizarCandidato(candidatoMock)
@@ -157,7 +157,7 @@ class CandidatoServiceTest {
                 "12345-678",
                 "Descrição do candidato",
                 "senha123"
-        );
+        )
         Integer idCandidato = 1
         candidatoMock.setId(idCandidato)
 
@@ -183,73 +183,73 @@ class CandidatoServiceTest {
         Integer idCompetencia = 2
         String nivel = "Avançado"
 
-        CandidatoCompetencia candidatoCompetencia = new CandidatoCompetencia(idCandidato, idCompetencia, nivel);
+        CandidatoCompetencia candidatoCompetencia = new CandidatoCompetencia(idCandidato, idCompetencia, nivel)
 
-        doNothing().when(candidatoCompetenciaDao).adicionarCandidatoCompetencia(candidatoCompetencia);
+        doNothing().when(candidatoCompetenciaDao).adicionarCandidatoCompetencia(candidatoCompetencia)
 
-        candidatoService.adicionarCandidatoCompetencia(candidatoCompetencia);
+        candidatoService.adicionarCandidatoCompetencia(candidatoCompetencia)
 
-        verify(candidatoCompetenciaDao, times(1)).adicionarCandidatoCompetencia(candidatoCompetencia);
+        verify(candidatoCompetenciaDao, times(1)).adicionarCandidatoCompetencia(candidatoCompetencia)
     }
 
     @Test
     void testAtualizarNivelCompetenciaCandidato() throws SQLException {
         Integer id = 1
-        Integer idCompetencia = 1;
-        String novoNivel = "Intermediário";
+        Integer idCompetencia = 1
+        String novoNivel = "Intermediário"
 
-        CandidatoCompetencia candidatoCompetencia = new CandidatoCompetencia(1, idCompetencia, novoNivel);
+        CandidatoCompetencia candidatoCompetencia = new CandidatoCompetencia(1, idCompetencia, novoNivel)
         candidatoCompetencia.setId(id)
 
-        CompetenciaDTO competenciasMock = new CompetenciaDTO("Java", "Avançado");
-        competenciasMock.setId(idCompetencia);
+        CompetenciaDTO competenciasMock = new CompetenciaDTO("Java", "Avançado")
+        competenciasMock.setId(idCompetencia)
 
-        doNothing().when(candidatoCompetenciaDao).atualizarNivelCompetenciaCandidato(candidatoCompetencia);
+        doNothing().when(candidatoCompetenciaDao).atualizarNivelCompetenciaCandidato(candidatoCompetencia)
 
-        candidatoService.atualizarNivelCompetenciaCandidato(candidatoCompetencia);
+        candidatoService.atualizarNivelCompetenciaCandidato(candidatoCompetencia)
 
-        verify(candidatoCompetenciaDao, times(1)).atualizarNivelCompetenciaCandidato(candidatoCompetencia);
+        verify(candidatoCompetenciaDao, times(1)).atualizarNivelCompetenciaCandidato(candidatoCompetencia)
     }
 
     @Test
     void testExcluirCompetenciaCandidato() throws SQLException {
-        Integer idCompetencia = 2;
+        Integer idCompetencia = 2
 
-        CompetenciaDTO competenciasMock = new CompetenciaDTO("Java", "Avançado");
-        competenciasMock.setId(idCompetencia);
+        CompetenciaDTO competenciasMock = new CompetenciaDTO("Java", "Avançado")
+        competenciasMock.setId(idCompetencia)
 
-        doNothing().when(candidatoCompetenciaDao).excluirCompetenciaCandidato(idCompetencia);
+        doNothing().when(candidatoCompetenciaDao).excluirCompetenciaCandidato(idCompetencia)
 
-        candidatoService.excluirCompetenciaCandidato(idCompetencia);
+        candidatoService.excluirCompetenciaCandidato(idCompetencia)
 
-        verify(candidatoCompetenciaDao, times(1)).excluirCompetenciaCandidato(idCompetencia);
+        verify(candidatoCompetenciaDao, times(1)).excluirCompetenciaCandidato(idCompetencia)
     }
 
     @Test
     void testAdicionarExperiencia() throws SQLException {
-        Experiencia experienciaMock = mock(Experiencia.class);
+        Experiencia experienciaMock = mock(Experiencia.class)
 
-        doNothing().when(experienciaDao).adicionarExperiencia(experienciaMock);
+        doNothing().when(experienciaDao).adicionarExperiencia(experienciaMock)
 
-        candidatoService.adicionarExperiencia(experienciaMock);
+        candidatoService.adicionarExperiencia(experienciaMock)
 
-        verify(experienciaDao, times(1)).adicionarExperiencia(experienciaMock);
+        verify(experienciaDao, times(1)).adicionarExperiencia(experienciaMock)
     }
 
     @Test
     void testAtualizarExperiencia() throws SQLException {
-        Experiencia experienciaMock = mock(Experiencia.class);
+        Experiencia experienciaMock = mock(Experiencia.class)
 
-        doNothing().when(experienciaDao).atualizarExperiencia(experienciaMock);
+        doNothing().when(experienciaDao).atualizarExperiencia(experienciaMock)
 
-        candidatoService.atualizarExperiencia(experienciaMock);
+        candidatoService.atualizarExperiencia(experienciaMock)
 
-        verify(experienciaDao, times(1)).atualizarExperiencia(experienciaMock);
+        verify(experienciaDao, times(1)).atualizarExperiencia(experienciaMock)
     }
 
     @Test
     void testListarExperienciasPorCandidato() throws SQLException {
-        Integer idCandidato = 1;
+        Integer idCandidato = 1
         Candidato candidatoMock = new Candidato(
                 "João",
                 "Silva",
@@ -260,22 +260,22 @@ class CandidatoServiceTest {
                 "12345-678",
                 "Descrição do candidato",
                 "senha123"
-        );
-        candidatoMock.setId(idCandidato);
-        List<Experiencia> experienciasMock = new ArrayList<>();
+        )
+        candidatoMock.setId(idCandidato)
+        List<Experiencia> experienciasMock = new ArrayList<>()
 
-        when(experienciaDao.listarExperienciasPorCandidato(idCandidato)).thenReturn(experienciasMock);
+        when(experienciaDao.listarExperienciasPorCandidato(idCandidato)).thenReturn(experienciasMock)
         when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock)
 
-        List<Experiencia> result = candidatoService.listarExperienciasPorCandidato(idCandidato);
+        List<Experiencia> result = candidatoService.listarExperienciasPorCandidato(idCandidato)
 
-        assert experienciasMock == result;
+        assert experienciasMock == result
     }
 
     @Test
     void testExcluirExperiencia() throws SQLException {
-        Integer idExperiencia = 1;
-        Integer idCandidato = 1;
+        Integer idExperiencia = 1
+        Integer idCandidato = 1
         Experiencia experienciaMock = new Experiencia(
                 idCandidato,
                 "dev junior",
@@ -285,9 +285,9 @@ class CandidatoServiceTest {
 
         when(experienciaDao.buscarExperienciaPorId(idExperiencia)).thenReturn(experienciaMock)
 
-        candidatoService.excluirExperiencia(idExperiencia);
+        candidatoService.excluirExperiencia(idExperiencia)
 
-        verify(experienciaDao).excluirExperiencia(idExperiencia);
+        verify(experienciaDao).excluirExperiencia(idExperiencia)
     }
 
     @Test
@@ -297,13 +297,13 @@ class CandidatoServiceTest {
                 "Instituição",
                 "Curso",
                 "Nível",
-                "2023");
+                "2023")
 
-        doNothing().when(formacaoDao).adicionarFormacao(formacao);
+        doNothing().when(formacaoDao).adicionarFormacao(formacao)
 
-        candidatoService.adicionarFormacao(formacao);
+        candidatoService.adicionarFormacao(formacao)
 
-        verify(formacaoDao, times(1)).adicionarFormacao(formacao);
+        verify(formacaoDao, times(1)).adicionarFormacao(formacao)
     }
 
     @Test
@@ -313,19 +313,19 @@ class CandidatoServiceTest {
                 "Instituição",
                 "Curso",
                 "Nível",
-                "2023");
+                "2023")
 
-        doNothing().when(formacaoDao).atualizarFormacao(formacao);
+        doNothing().when(formacaoDao).atualizarFormacao(formacao)
 
-        candidatoService.atualizarFormacao(formacao);
+        candidatoService.atualizarFormacao(formacao)
 
-        verify(formacaoDao, times(1)).atualizarFormacao(formacao);
+        verify(formacaoDao, times(1)).atualizarFormacao(formacao)
     }
 
     @Test
     void testExcluirFormacao() throws SQLException {
-        Integer idFormacao = 1;
-        Integer idCandidato = 1;
+        Integer idFormacao = 1
+        Integer idCandidato = 1
 
         Formacao formacaoMock = new Formacao(
                 idCandidato,
@@ -336,16 +336,16 @@ class CandidatoServiceTest {
         )
 
         when(formacaoDao.buscarFormacaoPorId(idFormacao)).thenReturn(formacaoMock)
-        doNothing().when(formacaoDao).excluirFormacao(idFormacao);
+        doNothing().when(formacaoDao).excluirFormacao(idFormacao)
 
-        candidatoService.excluirFormacao(idFormacao);
+        candidatoService.excluirFormacao(idFormacao)
 
-        verify(formacaoDao, times(1)).excluirFormacao(idFormacao);
+        verify(formacaoDao, times(1)).excluirFormacao(idFormacao)
     }
 
     @Test
     void testListarFormacoesPorCandidato() throws SQLException {
-        Integer idCandidato = 1;
+        Integer idCandidato = 1
 
         Candidato candidatoMock = new Candidato(
                 "João",
@@ -358,11 +358,11 @@ class CandidatoServiceTest {
                 "Descrição do candidato",
                 "senha123"
         )
-        candidatoMock.setId(idCandidato);
+        candidatoMock.setId(idCandidato)
 
-        List<Formacao> formacoes = new ArrayList<>();
-        formacoes.add(new Formacao(idCandidato, "Instituição 1", "Curso 1", "Nível 1", "Ano 2021"));
-        formacoes.add(new Formacao(idCandidato, "Instituição 2", "Curso 2", "Nível 2", "Ano 2022"));
+        List<Formacao> formacoes = new ArrayList<>()
+        formacoes.add(new Formacao(idCandidato, "Instituição 1", "Curso 1", "Nível 1", "Ano 2021"))
+        formacoes.add(new Formacao(idCandidato, "Instituição 2", "Curso 2", "Nível 2", "Ano 2022"))
 
         when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock)
         when(formacaoDao.listarFormacoesPorCandidato(idCandidato)).thenReturn(formacoes)
@@ -370,7 +370,7 @@ class CandidatoServiceTest {
         List<Formacao> result = candidatoService.listarFormacoesPorCandidato(idCandidato)
 
         verify(formacaoDao, times(1)).listarFormacoesPorCandidato(idCandidato)
-        assert formacoes == result;
+        assert formacoes == result
     }
 
     @Test

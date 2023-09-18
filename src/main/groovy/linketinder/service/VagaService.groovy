@@ -12,12 +12,12 @@ import linketinder.entity.dto.VagaDTO
 
 import java.sql.SQLException
 
-class VagaService implements IVagaService{
+class VagaService implements IVagaService {
 
     private IVagaDao vagaDao
     private IVagaCompetenciaDao vagaCompetenciaDao
 
-    VagaService(IVagaDao vagaDao, IVagaCompetenciaDao vagaCompetenciaDao){
+    VagaService(IVagaDao vagaDao, IVagaCompetenciaDao vagaCompetenciaDao) {
         this.vagaDao = vagaDao
         this.vagaCompetenciaDao = vagaCompetenciaDao
     }
@@ -25,102 +25,102 @@ class VagaService implements IVagaService{
     @Override
     List<VagaDTO> listarTodasVagas() {
         try {
-            return vagaDao.listarTodasVagas();
+            return vagaDao.listarTodasVagas()
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
     List<VagaDTO> listarVagasDaEmpresa(int idEmpresa) throws SQLException {
-        try{
-            return  vagaDao.listarVagasDaEmpresa(idEmpresa)
-        } catch (SQLException e){
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public Vaga buscarVagaPorId(Integer idVaga) {
         try {
-            return vagaDao.buscarVagaPorId(idVaga);
+            return vagaDao.listarVagasDaEmpresa(idEmpresa)
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
-    public void adicionarVaga(Vaga vaga) {
+    Vaga buscarVagaPorId(Integer idVaga) {
         try {
-            vagaDao.adicionarVaga(vaga);
+            return vagaDao.buscarVagaPorId(idVaga)
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
-    public void atualizarVaga(Vaga vaga) {
+    void adicionarVaga(Vaga vaga) {
+        try {
+            vagaDao.adicionarVaga(vaga)
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        }
+    }
+
+    @Override
+    void atualizarVaga(Vaga vaga) {
         try {
             Vaga idVaga = vagaDao.buscarVagaPorId(vaga.getId())
-            if(idVaga == null)
+            if (idVaga == null)
                 throw new VagaNotFoundException("Vaga não encontrada com ID :" + vaga.getId())
-            vagaDao.atualizarVaga(vaga);
+            vagaDao.atualizarVaga(vaga)
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
-    public void excluirVaga(Integer idVaga) {
+    void excluirVaga(Integer idVaga) {
         try {
             Vaga vaga = vagaDao.buscarVagaPorId(idVaga)
-            if(vaga == null){
+            if (vaga == null) {
                 throw new VagaNotFoundException("Vaga não encontada com ID : " + idVaga)
             }
-            vagaDao.excluirVaga(idVaga);
+            vagaDao.excluirVaga(idVaga)
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
-    public void adicionarVagaCompetencia(VagaCompetencia vagaCompetencia) {
+    void adicionarVagaCompetencia(VagaCompetencia vagaCompetencia) {
         try {
-            vagaCompetenciaDao.adicionarVagaCompetencia(vagaCompetencia);
+            vagaCompetenciaDao.adicionarVagaCompetencia(vagaCompetencia)
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
-    public void atualizarNivelVagaCompetencia(VagaCompetencia vagaCompetencia) {
+    void atualizarNivelVagaCompetencia(VagaCompetencia vagaCompetencia) {
         try {
-            vagaCompetenciaDao.atualizarNivelVagaCompetencia(vagaCompetencia);
+            vagaCompetenciaDao.atualizarNivelVagaCompetencia(vagaCompetencia)
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
-    public void excluirVagaCompetencia(Integer idVagaCompetencia) {
+    void excluirVagaCompetencia(Integer idVagaCompetencia) {
         try {
-            vagaCompetenciaDao.excluirVagaCompetencia(idVagaCompetencia);
+            vagaCompetenciaDao.excluirVagaCompetencia(idVagaCompetencia)
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
-    public List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) {
+    List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) {
         try {
             Vaga vaga = vagaDao.buscarVagaPorId(idVaga)
-            if(vaga == null){
+            if (vaga == null) {
                 throw new VagaNotFoundException("Vaga não encontrada com ID: " + idVaga)
             }
-            List<CompetenciaDTO> vagaCompetenciaList = vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga);
+            List<CompetenciaDTO> vagaCompetenciaList = vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga)
             return vagaCompetenciaList
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 }

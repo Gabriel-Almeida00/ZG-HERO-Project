@@ -13,10 +13,6 @@ class ExperienciaDTO {
         return cargo
     }
 
-    void setCargo(String cargo) {
-        this.cargo = cargo
-    }
-
     String getNivel() {
         return nivel
     }

@@ -52,7 +52,7 @@ class EmpresaMenu {
             int opcao = Integer.parseInt(reader.readLine())
             switch (opcao) {
                 case 1:
-                    listarEmpresas(reader)
+                    listarEmpresas()
                     break
                 case 2:
                     cadastrarEmpresa(reader)
@@ -122,7 +122,7 @@ class EmpresaMenu {
         )
     }
 
-    void listarEmpresas(Reader reader){
+    void listarEmpresas(){
         List<Empresa> empresas = empresaService.listarTodasEmpresas()
         empresas.each {empresa ->
             println "=========="

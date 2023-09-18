@@ -35,7 +35,7 @@ class CompetenciaDTO {
     }
 
     @Override
-    public String toString() {
+    String toString() {
         return nome + " - " + nivel
     }
 }

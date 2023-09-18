@@ -31,7 +31,7 @@ class EmpresaServiceTest {
 
     @Test
     void testListarTodasEmpresas() throws SQLException {
-        List<Empresa> empresasMock = new ArrayList<>();
+        List<Empresa> empresasMock = new ArrayList<>()
         empresasMock.add(new Empresa(
                 "empresa 1",
                 "12345",
@@ -40,7 +40,7 @@ class EmpresaServiceTest {
                 "brasil",
                 "54321",
                 "12345"
-        ));
+        ))
         empresasMock.add(new Empresa(
                 "empresa 2",
                 "54321",
@@ -48,19 +48,19 @@ class EmpresaServiceTest {
                 "empresa 2 descrição",
                 "argentina",
                 "98765",
-                "34534"));
+                "34534"))
 
-        when(empresaDao.listarTodasEmpresas()).thenReturn(empresasMock);
+        when(empresaDao.listarTodasEmpresas()).thenReturn(empresasMock)
 
-        List<Empresa> result = empresaService.listarTodasEmpresas();
+        List<Empresa> result = empresaService.listarTodasEmpresas()
 
-        verify(empresaDao).listarTodasEmpresas();
-        assert empresasMock == result;
+        verify(empresaDao).listarTodasEmpresas()
+        assert empresasMock == result
     }
 
     @Test
     void testObterEmpresaPorId() throws SQLException {
-        Integer idEmpresa = 1;
+        Integer idEmpresa = 1
         Empresa empresaMock = new Empresa(
                 "empresa 2",
                 "54321",
@@ -68,14 +68,14 @@ class EmpresaServiceTest {
                 "empresa 2 descrição",
                 "argentina",
                 "98765",
-                "34534");
+                "34534")
 
-        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock);
+        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock)
 
-        Empresa result = empresaService.obterEmpresaPorId(idEmpresa);
+        Empresa result = empresaService.obterEmpresaPorId(idEmpresa)
 
-        verify(empresaDao).buscarEmpresaPorId(idEmpresa);
-        assert empresaMock == result;
+        verify(empresaDao).buscarEmpresaPorId(idEmpresa)
+        assert empresaMock == result
     }
 
     @Test
@@ -87,16 +87,16 @@ class EmpresaServiceTest {
                 "empresa 2 descrição",
                 "argentina",
                 "98765",
-                "34534");
+                "34534")
 
-        empresaService.adicionarEmpresa(empresaMock);
+        empresaService.adicionarEmpresa(empresaMock)
 
-        verify(empresaDao).adicionarEmpresa(empresaMock);
+        verify(empresaDao).adicionarEmpresa(empresaMock)
     }
 
     @Test
     void testAtualizarEmpresa() throws SQLException {
-        Integer idEmpresa = 1;
+        Integer idEmpresa = 1
         Empresa empresaMock = new Empresa(
                 "empresa 2",
                 "54321",
@@ -104,20 +104,20 @@ class EmpresaServiceTest {
                 "empresa 2 descrição",
                 "argentina",
                 "98765",
-                "34534");
-        empresaMock.setId(idEmpresa);
+                "34534")
+        empresaMock.setId(idEmpresa)
 
-        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock);
+        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock)
 
-        empresaService.atualizarEmpresa(empresaMock);
+        empresaService.atualizarEmpresa(empresaMock)
 
-        verify(empresaDao).buscarEmpresaPorId(idEmpresa);
-        verify(empresaDao).atualizarEmpresa(empresaMock);
+        verify(empresaDao).buscarEmpresaPorId(idEmpresa)
+        verify(empresaDao).atualizarEmpresa(empresaMock)
     }
 
     @Test
     void testExcluirEmpresa() throws SQLException {
-        Integer idEmpresa = 1;
+        Integer idEmpresa = 1
         Empresa empresaMock = new Empresa(
                 "empresa 2",
                 "54321",
@@ -126,21 +126,21 @@ class EmpresaServiceTest {
                 "argentina",
                 "98765",
                 "34534"
-        );
-        empresaMock.setId(idEmpresa);
+        )
+        empresaMock.setId(idEmpresa)
 
-        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock);
+        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock)
 
-        empresaService.excluirEmpresa(idEmpresa);
+        empresaService.excluirEmpresa(idEmpresa)
 
-        verify(empresaDao).buscarEmpresaPorId(idEmpresa);
-        verify(empresaDao).excluirEmpresa(idEmpresa);
+        verify(empresaDao).buscarEmpresaPorId(idEmpresa)
+        verify(empresaDao).excluirEmpresa(idEmpresa)
     }
 
     @Test
     void testCurtirCandidato_ComSucesso() throws SQLException {
-        Integer idCandidato = 1;
-        Integer idEmpresa = 2;
+        Integer idCandidato = 1
+        Integer idEmpresa = 2
 
         Candidato candidato = new Candidato(
                 "João",
@@ -153,7 +153,7 @@ class EmpresaServiceTest {
                 "Descrição do candidato",
                 "senha123"
         )
-        candidato.setId(idCandidato);
+        candidato.setId(idCandidato)
 
         Empresa empresa = new Empresa(
                 "empresa 2",
@@ -162,14 +162,14 @@ class EmpresaServiceTest {
                 "empresa 2 descrição",
                 "argentina",
                 "98765",
-                "34534");
-        empresa.setId(idEmpresa);
+                "34534")
+        empresa.setId(idEmpresa)
 
-        when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidato);
-        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresa);
+        when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
+        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresa)
 
-        empresaService.curtirCandidato(idCandidato, idEmpresa);
+        empresaService.curtirCandidato(idCandidato, idEmpresa)
 
-        verify(curtidaDao).curtirCandidato(idCandidato, idEmpresa);
+        verify(curtidaDao).curtirCandidato(idCandidato, idEmpresa)
     }
 }

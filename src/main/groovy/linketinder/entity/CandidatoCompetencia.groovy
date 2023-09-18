@@ -2,10 +2,10 @@ package linketinder.entity
 
 class CandidatoCompetencia {
 
-    Integer id;
-    Integer idCandidato;
-    Integer idCompetencia;
-    String nivel;
+    Integer id
+    Integer idCandidato
+    Integer idCompetencia
+    String nivel
 
     CandidatoCompetencia(Integer idCandidato, Integer idCompetencia, String nivel) {
         this.idCandidato = idCandidato

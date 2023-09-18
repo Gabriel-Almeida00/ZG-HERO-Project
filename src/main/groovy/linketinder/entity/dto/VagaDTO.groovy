@@ -47,10 +47,6 @@ class VagaDTO {
         return cidade
     }
 
-    void setCidade(String cidade) {
-        this.cidade = cidade
-    }
-
     String getDescricao() {
         return descricao
     }
@@ -63,16 +59,8 @@ class VagaDTO {
         return formacaoMinima
     }
 
-    void setFormacaoMinima(String formacaoMinima) {
-        this.formacaoMinima = formacaoMinima
-    }
-
     String getExperienciaMinima() {
         return experienciaMinima
-    }
-
-    void setExperienciaMinima(String experienciaMinima) {
-        this.experienciaMinima = experienciaMinima
     }
 
     List<CompetenciaDTO> getCompetencias() {

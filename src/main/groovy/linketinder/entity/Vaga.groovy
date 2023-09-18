@@ -74,24 +74,12 @@ class Vaga {
         return cidade
     }
 
-    void setCidade(String cidade) {
-        this.cidade = cidade
-    }
-
     String getFormacaoMinima() {
         return formacaoMinima
     }
 
-    void setFormacaoMinima(String formacaoMinima) {
-        this.formacaoMinima = formacaoMinima
-    }
-
     String getExperienciaMinima() {
         return experienciaMinima
-    }
-
-    void setExperienciaMinima(String experienciaMinima) {
-        this.experienciaMinima = experienciaMinima
     }
 
     List<VagaCompetencia> getCompetencias() {

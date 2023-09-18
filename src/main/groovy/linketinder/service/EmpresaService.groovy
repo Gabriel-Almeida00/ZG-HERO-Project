@@ -27,28 +27,28 @@ class EmpresaService implements IEmpresa {
     @Override
     List<Empresa> listarTodasEmpresas() {
         try {
-            return empresaDao.listarTodasEmpresas();
+            return empresaDao.listarTodasEmpresas()
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
     Empresa obterEmpresaPorId(Integer id) {
         try {
-            return empresaDao.buscarEmpresaPorId(id);
+            return empresaDao.buscarEmpresaPorId(id)
         }
         catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
     void adicionarEmpresa(Empresa empresa) {
         try {
-            empresaDao.adicionarEmpresa(empresa);
+            empresaDao.adicionarEmpresa(empresa)
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -59,9 +59,9 @@ class EmpresaService implements IEmpresa {
             if(idEmpresa == null){
                 throw new EmpresasNotFoundException("Empresa não encontrada com ID: " + empresa.getId())
             }
-            empresaDao.atualizarEmpresa(empresa);
+            empresaDao.atualizarEmpresa(empresa)
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e);
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -72,9 +72,9 @@ class EmpresaService implements IEmpresa {
             if(idEmpresa == null){
                 throw new EmpresasNotFoundException("Empresa não encontrada com ID: " + id)
             }
-            empresaDao.excluirEmpresa(id);
+            empresaDao.excluirEmpresa(id)
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e)
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -94,7 +94,7 @@ class EmpresaService implements IEmpresa {
            curtidaDao.curtirCandidato(idCandidato, idEmpresa)
 
        }catch (SQLException e){
-           throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage(), e)
+           throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
        }
     }
 }
