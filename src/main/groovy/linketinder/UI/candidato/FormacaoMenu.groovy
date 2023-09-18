@@ -64,7 +64,7 @@ class FormacaoMenu {
         }
     }
 
-     Formacao criarFormacao(Reader reader){
+    Formacao criarFormacao(Reader reader) {
         println "Digite o id do candidato: "
         Integer idCandidato = Integer.parseInt(reader.readLine())
 
@@ -75,7 +75,7 @@ class FormacaoMenu {
         String curso = reader.readLine()
 
         println "Digite o nivel da formação: "
-        String nivel = reader.readLine()
+        Integer nivel = Integer.parseInt(reader.readLine())
 
         println "Digite o ano de conclusao da formação: "
         String anoConclusao = reader.readLine()
@@ -89,12 +89,12 @@ class FormacaoMenu {
         )
     }
 
-    void adicionarFormacao(Reader reader){
+    void adicionarFormacao(Reader reader) {
         Formacao formacao = criarFormacao(reader)
         service.adicionarFormacao(formacao)
     }
 
-    void atualizarFormacao(Reader reader){
+    void atualizarFormacao(Reader reader) {
         println "Digite o id da formação que deseja atualizar: "
         Integer id = Integer.parseInt(reader.readLine())
 
@@ -104,7 +104,7 @@ class FormacaoMenu {
         service.atualizarFormacao(formacao)
     }
 
-    void exluirFormacao(Reader reader){
+    void exluirFormacao(Reader reader) {
         println "Digite o id da formação que deseja excluir: "
         Integer id = Integer.parseInt(reader.readLine())
 
@@ -112,7 +112,7 @@ class FormacaoMenu {
         service.excluirFormacao(id)
     }
 
-    void listarFormacaoDoCandidato(Reader reader){
+    void listarFormacaoDoCandidato(Reader reader) {
         println "Digite o id da candidato: "
         Integer id = Integer.parseInt(reader.readLine())
 

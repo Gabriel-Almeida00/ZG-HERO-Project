@@ -17,12 +17,12 @@ class FormacaoDao implements IFormacaoDao {
     }
 
     void adicionarFormacao(Formacao formacao) throws SQLException {
-        String sql = "INSERT INTO formacoes (idCandidato, instituicao, curso, nivel, anoConclusao) VALUES (?, ?, ?, ?, ?)"
+        String sql = "INSERT INTO formacoes (idCandidato, instituicao, curso, idNivelFormacao, anoConclusao) VALUES (?, ?, ?, ?, ?)"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, formacao.getIdCandidato())
             statement.setString(2, formacao.getInstituicao())
             statement.setString(3, formacao.getCurso())
-            statement.setString(4, formacao.getNivel())
+            statement.setInt(4, formacao.getNivel())
             statement.setString(5, formacao.getAnoConclusao())
 
             statement.executeUpdate()
@@ -30,11 +30,11 @@ class FormacaoDao implements IFormacaoDao {
     }
 
     void atualizarFormacao(Formacao formacao) throws SQLException {
-        String sql = "UPDATE formacoes SET instituicao = ?, curso = ?, nivel = ?, anoConclusao = ? WHERE id = ?"
+        String sql = "UPDATE formacoes SET instituicao = ?, curso = ?, idNivelFormacao = ?, anoConclusao = ? WHERE id = ?"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setString(1, formacao.getInstituicao())
             statement.setString(2, formacao.getCurso())
-            statement.setString(3, formacao.getNivel())
+            statement.setInt(3, formacao.getNivel())
             statement.setString(4, formacao.getAnoConclusao())
             statement.setInt(5, formacao.getId())
 
@@ -60,7 +60,7 @@ class FormacaoDao implements IFormacaoDao {
                     Integer id = resultSet.getInt("id")
                     String instituicao = resultSet.getString("instituicao")
                     String curso = resultSet.getString("curso")
-                    String nivel = resultSet.getString("nivel")
+                    Integer nivel = resultSet.getInt("idNivelFormacao")
                     String anoConclusao = resultSet.getString("anoConclusao")
 
                     Formacao formacao = new Formacao(idCandidato, instituicao, curso, nivel, anoConclusao)
@@ -74,7 +74,7 @@ class FormacaoDao implements IFormacaoDao {
 
     @Override
     Formacao buscarFormacaoPorId(Integer idFormacao) throws SQLException {
-        String sql = "SELECT id, idCandidato, instituicao, curso, nivel, anoConclusao FROM formacoes WHERE id = ?"
+        String sql = "SELECT id, idCandidato, instituicao, curso, idNivelFormacao, anoConclusao FROM formacoes WHERE id = ?"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idFormacao)
@@ -85,7 +85,7 @@ class FormacaoDao implements IFormacaoDao {
                     Integer idCandidato = resultSet.getInt("idCandidato")
                     String instituicao = resultSet.getString("instituicao")
                     String curso = resultSet.getString("curso")
-                    String nivel = resultSet.getString("nivel")
+                    Integer nivel = resultSet.getInt("idNivelFormacao")
                     String anoConclusao = resultSet.getString("anoConclusao")
 
                     Formacao formacao = new Formacao(idCandidato, instituicao, curso, nivel, anoConclusao)

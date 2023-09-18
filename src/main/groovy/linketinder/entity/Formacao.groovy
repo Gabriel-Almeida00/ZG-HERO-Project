@@ -9,10 +9,10 @@ class Formacao {
     Integer idCandidato
     String instituicao
     String curso
-    NivelFormacao nivel
+    Integer nivel
     String anoConclusao
 
-    Formacao(Integer idCandidato, String instituicao, String curso, NivelFormacao nivel, String anoConclusao) {
+    Formacao(Integer idCandidato, String instituicao, String curso, Integer nivel, String anoConclusao) {
         this.idCandidato = idCandidato
         this.instituicao = instituicao
         this.curso = curso
@@ -44,11 +44,11 @@ class Formacao {
         return curso
     }
 
-    String getNivel() {
+    Integer getNivel() {
         return nivel
     }
 
-    void setNivel(NivelFormacao nivel) {
+    void setNivel(Integer nivel) {
         this.nivel = nivel
     }
 
