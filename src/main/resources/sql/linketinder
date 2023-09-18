@@ -76,6 +76,7 @@ CREATE TABLE formacoes (
   idCandidato int NOT NULL REFERENCES candidatos (id),
   instituicao varchar NOT NULL,
   curso varchar NOT NULL,
+  anoConclusao varchar NOT NULL,
   idNivelFormacao int NOT NULL REFERENCES nivel_formacao (id)
 );
 
@@ -101,6 +102,13 @@ CREATE TABLE curtidas (
   idEmpresa int REFERENCES empresas (id),
   idStatus int REFERENCES curtidas_status (id)
 );
+
+-- Inserir valores na tabela curtidas_status
+INSERT INTO curtidas_status (status)
+VALUES
+    ('AGUARDO'),
+    ('MATCH'),
+    ('NO_MATCH');
 
 -- Inserir valores na tabela nivel_formacao
 INSERT INTO nivel_formacao (nivel)

@@ -57,11 +57,11 @@ class CandidatoDao implements ICandidatoDao {
                 "    c.id, " +
                 "    c.descricao, " +
                 "    ARRAY_AGG(DISTINCT comp.nome) AS competencias, " +
-                "    ARRAY_AGG(DISTINCT cc.nivel) AS niveis_competencias, " +
+                "    ARRAY_AGG(DISTINCT cc.idNivelCompetencia) AS niveis_competencias, " +
                 "    ARRAY_AGG(DISTINCT f.curso) AS formacoes, " +
                 "    ARRAY_AGG(DISTINCT f.anoConclusao) AS anos_formacoes, " +
                 "    ARRAY_AGG(DISTINCT e.cargo) AS cargos_experiencias, " +
-                "    ARRAY_AGG(DISTINCT e.nivel) AS niveis_experiencias " +
+                "    ARRAY_AGG(DISTINCT e.idNivelExperiencia) AS niveis_experiencias " +
                 "FROM " +
                 "    candidatos c " +
                 "LEFT JOIN " +

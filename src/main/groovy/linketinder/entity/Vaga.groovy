@@ -1,5 +1,8 @@
 package linketinder.entity
 
+import linketinder.entity.enums.NivelExperiencia
+import linketinder.entity.enums.NivelFormacao
+
 class Vaga {
 
     Integer id
@@ -7,8 +10,8 @@ class Vaga {
     String nome
     String descricao
     String cidade
-    String formacaoMinima
-    String experienciaMinima
+    NivelFormacao formacaoMinima
+    NivelExperiencia experienciaMinima
     List<VagaCompetencia> competencias
     List<VagaCurtida> curtida
 
@@ -17,8 +20,8 @@ class Vaga {
          String nome,
          String descricao,
          String cidade,
-         String formacaoMinima,
-         String experienciaMinima
+         NivelFormacao formacaoMinima,
+         NivelExperiencia experienciaMinima
          ) {
         this.idEmpresa = idEmpresa
         this.nome = nome
