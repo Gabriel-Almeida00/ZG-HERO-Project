@@ -5,9 +5,9 @@ class VagaCompetencia {
     Integer id
     Integer idVaga
     Integer idCompetencia
-    NivelCompetencia nivel
+    Integer nivel
 
-    VagaCompetencia(Integer idVaga, Integer idCompetencia, NivelCompetencia nivel) {
+    VagaCompetencia(Integer idVaga, Integer idCompetencia, Integer nivel) {
         this.idVaga = idVaga
         this.idCompetencia = idCompetencia
         this.nivel = nivel
@@ -37,11 +37,11 @@ class VagaCompetencia {
         this.idCompetencia = idCompetencia
     }
 
-    String getNivel() {
+    Integer getNivel() {
         return nivel
     }
 
-    void setNivel(NivelCompetencia nivel) {
+    void setNivel(Integer nivel) {
         this.nivel = nivel
     }
 }

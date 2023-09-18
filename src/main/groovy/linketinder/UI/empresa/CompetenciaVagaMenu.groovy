@@ -65,7 +65,7 @@ class CompetenciaVagaMenu {
         Integer idCompetencia = Integer.parseInt(reader.readLine())
 
         println "Digite o nível da competencia: "
-        String nivel = reader.readLine()
+        Integer nivel = Integer.parseInt(reader.readLine())
 
         return new VagaCompetencia(
                 idVaga,

@@ -5,7 +5,7 @@ class CompetenciaDTO {
     String nome
     Integer nivel
 
-    CompetenciaDTO(String nome, String nivel) {
+    CompetenciaDTO(String nome, Integer nivel) {
         this.nome = nome
         this.nivel = nivel
     }
