@@ -10,8 +10,8 @@ class Vaga {
     String nome
     String descricao
     String cidade
-    NivelFormacao formacaoMinima
-    NivelExperiencia experienciaMinima
+    Integer formacaoMinima
+    Integer experienciaMinima
     List<VagaCompetencia> competencias
     List<VagaCurtida> curtida
 
@@ -20,8 +20,8 @@ class Vaga {
          String nome,
          String descricao,
          String cidade,
-         NivelFormacao formacaoMinima,
-         NivelExperiencia experienciaMinima
+         Integer formacaoMinima,
+         Integer experienciaMinima
          ) {
         this.idEmpresa = idEmpresa
         this.nome = nome
@@ -77,11 +77,11 @@ class Vaga {
         return cidade
     }
 
-    String getFormacaoMinima() {
+    Integer getFormacaoMinima() {
         return formacaoMinima
     }
 
-    String getExperienciaMinima() {
+    Integer getExperienciaMinima() {
         return experienciaMinima
     }
 

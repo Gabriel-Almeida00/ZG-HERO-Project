@@ -60,7 +60,7 @@ class VagaMenu {
         }
     }
 
-    Vaga criarVaga(Reader reader){
+    Vaga criarVaga(Reader reader) {
         println "Digite o id da empresa: "
         Integer idEmpresa = Integer.parseInt(reader.readLine())
 
@@ -74,12 +74,12 @@ class VagaMenu {
         String cidade = reader.readLine()
 
         println "Digite a formação exigida da vaga: "
-        String formacaoMinima = reader.readLine()
+        Integer formacaoMinima = Integer.parseInt(reader.readLine())
 
         println "Digite a experiencia exigida da vaga"
-        String experienciaMinima = reader.readLine()
+        Integer experienciaMinima = Integer.parseInt(reader.readLine())
 
-        return  new Vaga(
+        return new Vaga(
                 idEmpresa,
                 nome,
                 descricao,
@@ -89,10 +89,10 @@ class VagaMenu {
         )
     }
 
-    void listarVagas(){
+    void listarVagas() {
         List<VagaDTO> vagas = vagaService.listarTodasVagas()
 
-        vagas.each {vaga ->
+        vagas.each { vaga ->
             println "==========="
             println "Id: ${vaga.id}"
             println "Nome :${vaga.nome}"
@@ -104,13 +104,13 @@ class VagaMenu {
         }
     }
 
-    void listarVagasDaEmpresa(Reader reader){
+    void listarVagasDaEmpresa(Reader reader) {
         println "Digite o id da empresa: "
         Integer id = Integer.parseInt(reader.readLine())
 
         List<VagaDTO> vagas = vagaService.listarVagasDaEmpresa(id)
 
-        vagas.each {vaga ->
+        vagas.each { vaga ->
             println "==========="
             println "Id: ${vaga.id}"
             println "Nome :${vaga.nome}"
@@ -122,12 +122,12 @@ class VagaMenu {
         }
     }
 
-    void adicionarVaga(Reader reader){
+    void adicionarVaga(Reader reader) {
         Vaga vaga = criarVaga(reader)
         vagaService.adicionarVaga(vaga)
     }
 
-    void atualizarVaga(Reader reader){
+    void atualizarVaga(Reader reader) {
         println "Digite o id da vaga: "
         Integer id = Integer.parseInt(reader.readLine())
 
@@ -137,7 +137,7 @@ class VagaMenu {
         vagaService.atualizarVaga(vaga)
     }
 
-    void excluirVaga(Reader reader){
+    void excluirVaga(Reader reader) {
         println "Digite o id da vaga: "
         Integer id = Integer.parseInt(reader.readLine())
 

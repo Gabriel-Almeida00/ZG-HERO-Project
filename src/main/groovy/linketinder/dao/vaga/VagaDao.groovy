@@ -28,10 +28,10 @@ class VagaDao implements IVagaDao{
                 "    v.nome AS nome_vaga," +
                 "    v.descricao," +
                 "    v.cidade," +
-                "    v.formacaoMinima," +
-                "    v.experienciaMinina," +
-                "    c.nome AS nome_competencia," +
-                "    vc.nivel" +
+                "    v.idNivelFormacao," +
+                "    v.idNivelExperiencia," +
+                "    c.nome AS nome_competencia, " +
+                "    vc.idNivelCompetencia " +
                 " FROM " +
                 "    vagas v" +
                 " INNER JOIN" +
@@ -55,8 +55,8 @@ class VagaDao implements IVagaDao{
                             nomeVaga,
                             resultSet.getString("cidade"),
                             resultSet.getString("descricao"),
-                            resultSet.getString("formacaoMinima"),
-                            resultSet.getString("experienciaMinina"),
+                            resultSet.getInt("idNivelFormacao"),
+                            resultSet.getInt("idNivelExperiencia"),
                             new ArrayList<>()
                     )
                     vagaDTOMap.put(idVaga, vagaDTO)
@@ -64,7 +64,7 @@ class VagaDao implements IVagaDao{
 
                 CompetenciaDTO competenciaDTO = new CompetenciaDTO(
                         resultSet.getString("nome_competencia"),
-                        resultSet.getString("nivel")
+                        resultSet.getInt("idNivelCompetencia")
                 )
 
                 vagaDTO.getCompetencias().add(competenciaDTO)
@@ -85,8 +85,8 @@ class VagaDao implements IVagaDao{
                 "    v.nome AS nome_vaga," +
                 "    v.descricao," +
                 "    v.cidade," +
-                "    v.formacaoMinima," +
-                "    v.experienciaMinina" +
+                "    v.idNivelFormacao," +
+                "    v.idNivelExperiencia" +
                 " FROM " +
                 "    vagas v" +
                 " JOIN" +
@@ -113,8 +113,8 @@ class VagaDao implements IVagaDao{
                                 nomeVaga,
                                 resultSet.getString("cidade"),
                                 resultSet.getString("descricao"),
-                                resultSet.getString("formacaoMinima"),
-                                resultSet.getString("experienciaMinina"),
+                                resultSet.getInt("idNivelFormacao"),
+                                resultSet.getInt("idNivelExperiencia"),
                                 new ArrayList<>()
                         )
                         vagaDTOMap.put(idVaga, vagaDTO)
@@ -130,7 +130,7 @@ class VagaDao implements IVagaDao{
 
     @Override
     Vaga buscarVagaPorId(Integer idVaga) throws SQLException {
-        String sql = "SELECT idEmpresa, nome, descricao, cidade, formacaoMinima, experienciaMinina FROM vagas WHERE id = ?"
+        String sql = "SELECT idEmpresa, nome, descricao, cidade, idNivelFormacao, idNivelExperiencia FROM vagas WHERE id = ?"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idVaga)
@@ -141,8 +141,8 @@ class VagaDao implements IVagaDao{
                     String nome = resultSet.getString("nome")
                     String descricao = resultSet.getString("descricao")
                     String cidade = resultSet.getString("cidade")
-                    String formacaoMinima = resultSet.getString("formacaoMinima")
-                    String experienciaMinima = resultSet.getString("experienciaMinina")
+                    Integer formacaoMinima = resultSet.getInt("idNivelFormacao")
+                    Integer experienciaMinima = resultSet.getInt("idNivelExperiencia")
 
                     Vaga vaga = new Vaga(idEmpresa, nome, descricao, cidade, formacaoMinima, experienciaMinima)
                     vaga.setId(idVaga)
@@ -157,7 +157,7 @@ class VagaDao implements IVagaDao{
 
     @Override
     void adicionarVaga(Vaga vaga) throws SQLException {
-        String sql = "INSERT INTO vagas (idEmpresa, nome, descricao, cidade, formacaoMinima, experienciaMinina) " +
+        String sql = "INSERT INTO vagas (idEmpresa, nome, descricao, cidade, idNivelFormacao, idNivelExperiencia) " +
                 "VALUES (?, ?, ?, ?, ?, ?)"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
@@ -165,8 +165,8 @@ class VagaDao implements IVagaDao{
             statement.setString(2, vaga.getNome())
             statement.setString(3, vaga.getDescricao())
             statement.setString(4, vaga.getCidade())
-            statement.setString(5, vaga.getFormacaoMinima())
-            statement.setString(6, vaga.getExperienciaMinima())
+            statement.setInt(5, vaga.getFormacaoMinima())
+            statement.setInt(6, vaga.getExperienciaMinima())
 
             statement.executeUpdate()
         }
@@ -175,7 +175,7 @@ class VagaDao implements IVagaDao{
 
     @Override
     void atualizarVaga(Vaga vaga) throws SQLException {
-        String sql = "UPDATE vagas SET idEmpresa = ?, nome = ?, descricao = ?, cidade = ?, formacaoMinima = ?, experienciaMinina = ? " +
+        String sql = "UPDATE vagas SET idEmpresa = ?, nome = ?, descricao = ?, cidade = ?, idNivelFormacao = ?, idNivelExperiencia = ? " +
                 "WHERE id = ?"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
@@ -183,8 +183,8 @@ class VagaDao implements IVagaDao{
             statement.setString(2, vaga.getNome())
             statement.setString(3, vaga.getDescricao())
             statement.setString(4, vaga.getCidade())
-            statement.setString(5, vaga.getFormacaoMinima())
-            statement.setString(6, vaga.getExperienciaMinima())
+            statement.setInt(5, vaga.getFormacaoMinima())
+            statement.setInt(6, vaga.getExperienciaMinima())
             statement.setInt(7, vaga.getId())
 
             statement.executeUpdate()

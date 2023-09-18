@@ -5,8 +5,8 @@ class VagaDTO {
     String nome
     String cidade
     String descricao
-    String formacaoMinima
-    String experienciaMinima
+    Integer formacaoMinima
+    Integer experienciaMinima
     List<CompetenciaDTO> competencias
 
     VagaDTO(
@@ -14,8 +14,8 @@ class VagaDTO {
             String nome,
             String cidade,
             String descricao,
-            String formacaoMinima,
-            String experienciaMinima,
+            Integer formacaoMinima,
+            Integer experienciaMinima,
             List<CompetenciaDTO> competencias
     ) {
         this.id = id
@@ -55,11 +55,11 @@ class VagaDTO {
         this.descricao = descricao
     }
 
-    String getFormacaoMinima() {
+    Integer getFormacaoMinima() {
         return formacaoMinima
     }
 
-    String getExperienciaMinima() {
+    Integer getExperienciaMinima() {
         return experienciaMinima
     }
 

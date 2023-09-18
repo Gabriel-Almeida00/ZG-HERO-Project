@@ -3,7 +3,7 @@ package linketinder.entity.dto
 class CompetenciaDTO {
     Integer id
     String nome
-    String nivel
+    Integer nivel
 
     CompetenciaDTO(String nome, String nivel) {
         this.nome = nome
@@ -18,7 +18,7 @@ class CompetenciaDTO {
         this.nome = nome
     }
 
-    String getNivel() {
+    Integer getNivel() {
         return nivel
     }
 
@@ -30,7 +30,7 @@ class CompetenciaDTO {
         this.id = id
     }
 
-    void setNivel(String nivel) {
+    void setNivel(Integer nivel) {
         this.nivel = nivel
     }
 
