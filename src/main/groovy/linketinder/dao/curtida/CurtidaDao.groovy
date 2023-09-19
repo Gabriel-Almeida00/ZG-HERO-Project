@@ -28,6 +28,41 @@ class CurtidaDao implements ICurtidaDao {
         }
     }
 
+    @Override
+    Integer verificaCurtidaDaEmpresa(Integer idEmpresa, Integer idCandidato) {
+        String sql = "SELECT idEmpresa FROM curtidas WHERE idEmpresa=? AND idCandidato=? AND idStatus=1"
+
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, idEmpresa)
+            statement.setInt(2, idCandidato)
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int empresaQueCurtiuId = resultSet.getInt("idEmpresa")
+                    return empresaQueCurtiuId
+                }
+            }
+        }
+        return null
+    }
+
+    @Override
+    void AtualizarCurtidaComIdVaga(Integer idVaga, Integer idEmpresa, Integer idCandidato ) {
+        String sql = " UPDATE curtidas SET idStatus = 2 , idVaga =? WHERE idEmpresa =? AND idCandidato =?"
+
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idVaga)
+            statement.setInt(2, idEmpresa)
+            statement.setInt(3, idCandidato)
+
+            statement.executeUpdate()
+        }
+    }
+
+    @Override
     List<EmpresaDTO> listarEmpresasQueCurtiramCandidato(Integer idCandidato) throws SQLException {
         List<EmpresaDTO> empresasCurtidasDTO = new ArrayList<>()
 
@@ -70,6 +105,40 @@ class CurtidaDao implements ICurtidaDao {
     }
 
     @Override
+    Integer verificaCurtidaDoCandidato( Integer idCandidato) {
+        String sql = "SELECT idVaga FROM curtidas WHERE idCandidato=? AND idStatus=1"
+
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, idCandidato)
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int vagaCurtida = resultSet.getInt("idVaga")
+                    return vagaCurtida
+                }
+            }
+        }
+        return null
+    }
+
+    @Override
+    void AtualizarCurtidaComIdEmpresa(Integer idVaga, Integer idEmpresa, Integer idCandidato ) {
+        String sql = " UPDATE curtidas SET idStatus = 2 , idEmpresa =? WHERE idVaga =? AND idCandidato =?"
+
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idEmpresa)
+            statement.setInt(2, idVaga)
+            statement.setInt(3, idCandidato)
+
+            statement.executeUpdate()
+        }
+    }
+
+
+    @Override
     List<CandidatoQueCurtiuVagaDTO> listarCandidatosQueCurtiramVaga(Integer idVaga) throws SQLException {
         List<CandidatoQueCurtiuVagaDTO> candidatosCurtiramDTO = new ArrayList<>();
 
@@ -87,20 +156,20 @@ class CurtidaDao implements ICurtidaDao {
                 "    competencias comp ON cc.idCompetencia = comp.id " +
                 "WHERE " +
                 "    ct.idVaga = ? " +
-                "GROUP BY c.id, c.descricao";
+                "GROUP BY c.id, c.descricao"
 
-        try (Connection connection = databaseConnection.getConnection();
+        try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setInt(1, idVaga);
+            statement.setInt(1, idVaga)
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Integer idCandidato = resultSet.getInt("id_candidato");
-                    String descricao = resultSet.getString("descricao_candidato");
-                    String nomesCompetencia = resultSet.getString("nomes_competencia");
+                    Integer idCandidato = resultSet.getInt("id_candidato")
+                    String descricao = resultSet.getString("descricao_candidato")
+                    String nomesCompetencia = resultSet.getString("nomes_competencia")
 
-                    List<String> nomesCompetenciaList = Arrays.asList(nomesCompetencia.split(", "));
+                    List<String> nomesCompetenciaList = Arrays.asList(nomesCompetencia.split(", "))
 
                     CandidatoQueCurtiuVagaDTO candidatoDTO = new CandidatoQueCurtiuVagaDTO(
                             idCandidato,
