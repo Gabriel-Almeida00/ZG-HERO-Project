@@ -1,6 +1,7 @@
 package linketinder.UI.empresa
 
-
+import linketinder.dao.curtida.CurtidaDao
+import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaCompetenciaDao
@@ -8,6 +9,7 @@ import linketinder.dao.vaga.VagaDao
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Vaga
+import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.entity.dto.VagaDTO
 import linketinder.service.VagaService
 
@@ -20,8 +22,9 @@ class VagaMenu {
         IDatabaseConnection databaseConnection = new DatabaseConnection()
         IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(databaseConnection)
         IVagaDao vagaDao = new VagaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
 
-        vagaService = new VagaService(vagaDao, vagaCompetenciaDao)
+        vagaService = new VagaService(vagaDao, vagaCompetenciaDao, curtidaDao)
         competenciaVagaMenu = new CompetenciaVagaMenu()
     }
 
@@ -33,7 +36,8 @@ class VagaMenu {
             println "3. Atualizar Vaga"
             println "4. Deletar Vaga"
             println "5. Gerenciar Competencias da vaga"
-            println "6. Voltar"
+            println "6. Listar Candidatos que curtiram vaga"
+            println "7. Voltar"
 
             int opcao = Integer.parseInt(reader.readLine())
             switch (opcao) {
@@ -53,6 +57,9 @@ class VagaMenu {
                     competenciaVagaMenu.exibirMenuVaga(reader)
                     break
                 case 6:
+                    listarCandidatosQueCurtiramVaga(reader)
+                    break
+                case 7:
                     return
                 default:
                     println "Opção inválida. Tente novamente."
@@ -143,4 +150,20 @@ class VagaMenu {
 
         vagaService.excluirVaga(id)
     }
+
+   void listarCandidatosQueCurtiramVaga(Reader reader){
+       println "Digite o id da vaga: "
+       Integer id = Integer.parseInt(reader.readLine())
+
+       List<CandidatoQueCurtiuVagaDTO> candidatos = vagaService.listarCandidatosQueCurtiramVaga(id)
+       candidatos.forEach { candidato ->
+           println("==============")
+           println("ID: ${candidato.idCandidato}")
+           println("Descrição: ${candidato.descricao}")
+
+           candidato.nomes.forEach { competencia ->
+               println("Competencias:  $competencia")
+           }
+       }
+   }
 }

@@ -1,10 +1,12 @@
 package linketinder.service
 
-
+import linketinder.dao.curtida.CurtidaDao
+import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.entity.Vaga
 import linketinder.entity.VagaCompetencia
+import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.entity.dto.VagaDTO
 import org.junit.jupiter.api.BeforeEach
@@ -18,13 +20,15 @@ class VagaServiceTest {
 
     private IVagaDao vagaDao
     private IVagaCompetenciaDao vagaCompetenciaDao
+    private ICurtidaDao curtidaDao
     private VagaService service
 
     @BeforeEach
     void setup() {
         vagaDao = mock(IVagaDao.class)
         vagaCompetenciaDao = mock(IVagaCompetenciaDao.class)
-        service = new VagaService(vagaDao, vagaCompetenciaDao)
+        curtidaDao = mock(ICurtidaDao.class)
+        service = new VagaService(vagaDao, vagaCompetenciaDao, curtidaDao)
     }
 
     @Test
@@ -229,5 +233,32 @@ class VagaServiceTest {
         verify(vagaCompetenciaDao).listarCompetenciasPorVaga(idVaga)
         assert vagaCompetenciaListMock.size() == result.size()
         assert vagaCompetenciaListMock == result
+    }
+
+    @Test
+     void testListarCandidatosQueCurtiramVaga() throws SQLException {
+        int idVaga = 1
+        Vaga vaga = new Vaga(
+                2,
+                "ibm",
+                "ibm descrição",
+                "RJ",
+                1,
+                2
+        )
+        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vaga)
+
+        List<CandidatoQueCurtiuVagaDTO> resultadosEsperados = Arrays.asList(
+                new CandidatoQueCurtiuVagaDTO(1, "Descrição Candidato 1", Arrays.asList("Java", "Python")),
+                new CandidatoQueCurtiuVagaDTO(2, "Descrição Candidato 2", Arrays.asList("Groovy", "Python"))
+        );
+        when(curtidaDao.listarCandidatosQueCurtiramVaga(idVaga)).thenReturn(resultadosEsperados);
+
+        List<CandidatoQueCurtiuVagaDTO> resultado = service.listarCandidatosQueCurtiramVaga(idVaga);
+
+        assert resultadosEsperados == resultado
+
+        verify(vagaDao, times(1)).buscarVagaPorId(idVaga);
+        verify(curtidaDao, times(1)).listarCandidatosQueCurtiramVaga(idVaga);
     }
 }

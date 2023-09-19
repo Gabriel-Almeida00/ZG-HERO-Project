@@ -3,10 +3,12 @@ package linketinder.service
 
 import linketinder.Exception.DataBaseException
 import linketinder.Exception.VagaNotFoundException
+import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.entity.Vaga
 import linketinder.entity.VagaCompetencia
+import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.entity.dto.VagaDTO
 
@@ -16,10 +18,12 @@ class VagaService implements IVagaService {
 
     private IVagaDao vagaDao
     private IVagaCompetenciaDao vagaCompetenciaDao
+    private ICurtidaDao curtidaDao
 
-    VagaService(IVagaDao vagaDao, IVagaCompetenciaDao vagaCompetenciaDao) {
+    VagaService(IVagaDao vagaDao, IVagaCompetenciaDao vagaCompetenciaDao, ICurtidaDao curtidaDao) {
         this.vagaDao = vagaDao
         this.vagaCompetenciaDao = vagaCompetenciaDao
+        this.curtidaDao = curtidaDao
     }
 
     @Override
@@ -83,6 +87,7 @@ class VagaService implements IVagaService {
         }
     }
 
+
     @Override
     void adicionarVagaCompetencia(VagaCompetencia vagaCompetencia) {
         try {
@@ -118,6 +123,20 @@ class VagaService implements IVagaService {
                 throw new VagaNotFoundException("Vaga não encontrada com ID: " + idVaga)
             }
             List<CompetenciaDTO> vagaCompetenciaList = vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga)
+            return vagaCompetenciaList
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        }
+    }
+
+    @Override
+    List<CandidatoQueCurtiuVagaDTO> listarCandidatosQueCurtiramVaga(Integer idVaga) {
+        try {
+            Vaga vaga = vagaDao.buscarVagaPorId(idVaga)
+            if (vaga == null) {
+                throw new VagaNotFoundException("Vaga não encontrada com ID: " + idVaga)
+            }
+            List<CandidatoQueCurtiuVagaDTO> vagaCompetenciaList = curtidaDao.listarCandidatosQueCurtiramVaga(idVaga)
             return vagaCompetenciaList
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())

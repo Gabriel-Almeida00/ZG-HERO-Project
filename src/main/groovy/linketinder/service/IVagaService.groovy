@@ -3,6 +3,7 @@ package linketinder.service
 
 import linketinder.entity.Vaga
 import linketinder.entity.VagaCompetencia
+import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.entity.dto.VagaDTO
 
@@ -21,4 +22,6 @@ interface IVagaService {
     void atualizarNivelVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException;
     void excluirVagaCompetencia(Integer idVagaCompetencia) throws SQLException;
     List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) throws SQLException;
+
+    List<CandidatoQueCurtiuVagaDTO> listarCandidatosQueCurtiramVaga(Integer idVaga)
 }

@@ -97,4 +97,6 @@ class EmpresaService implements IEmpresa {
            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
        }
     }
+
+
 }

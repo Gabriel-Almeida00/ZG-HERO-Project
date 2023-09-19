@@ -2,8 +2,12 @@ package linketinder.dao.curtida
 
 
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.Empresa
+import linketinder.entity.dto.CandidatoDTO
+import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
+import linketinder.entity.dto.CompetenciaDTO
 import linketinder.entity.dto.EmpresaDTO
+import linketinder.entity.dto.ExperienciaDTO
+import linketinder.entity.dto.FormacaoDTO
 
 import java.sql.Connection
 import java.sql.PreparedStatement
@@ -33,9 +37,9 @@ class CurtidaDao implements ICurtidaDao {
         List<EmpresaDTO> empresasCurtidasDTO = new ArrayList<>()
 
         String sql = "SELECT e.id, e.pais, e.descricao " +
-                "FROM empresas e " +
-                "INNER JOIN curtidas c ON e.id = c.idEmpresa " +
-                "WHERE c.idCandidato = ?"
+                        "FROM empresas e " +
+                        "INNER JOIN curtidas c ON e.id = c.idEmpresa " +
+                        "WHERE c.idCandidato = ?"
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -68,5 +72,52 @@ class CurtidaDao implements ICurtidaDao {
             statement.setInt(2, idEmpresa)
             statement.executeUpdate()
         }
+    }
+
+    @Override
+    List<CandidatoQueCurtiuVagaDTO> listarCandidatosQueCurtiramVaga(Integer idVaga) throws SQLException {
+        List<CandidatoQueCurtiuVagaDTO> candidatosCurtiramDTO = new ArrayList<>();
+
+        String sql = "SELECT " +
+                "    c.id AS id_candidato, " +
+                "    c.descricao AS descricao_candidato, " +
+                "    STRING_AGG(comp.nome, ', ') AS nomes_competencia " +
+                "FROM " +
+                "    candidatos c " +
+                "INNER JOIN " +
+                "    curtidas ct ON c.id = ct.idCandidato " +
+                "LEFT JOIN " +
+                "    candidato_competencia cc ON c.id = cc.idCandidato " +
+                "LEFT JOIN " +
+                "    competencias comp ON cc.idCompetencia = comp.id " +
+                "WHERE " +
+                "    ct.idVaga = ? " +
+                "GROUP BY c.id, c.descricao";
+
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, idVaga);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Integer idCandidato = resultSet.getInt("id_candidato");
+                    String descricao = resultSet.getString("descricao_candidato");
+                    String nomesCompetencia = resultSet.getString("nomes_competencia");
+
+                    List<String> nomesCompetenciaList = Arrays.asList(nomesCompetencia.split(", "));
+
+                    CandidatoQueCurtiuVagaDTO candidatoDTO = new CandidatoQueCurtiuVagaDTO(
+                            idCandidato,
+                            descricao,
+                            nomesCompetenciaList
+                    );
+
+                    candidatosCurtiramDTO.add(candidatoDTO);
+                }
+            }
+        }
+
+        return candidatosCurtiramDTO;
     }
 }

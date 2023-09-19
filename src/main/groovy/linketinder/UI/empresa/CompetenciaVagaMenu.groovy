@@ -1,6 +1,8 @@
 package linketinder.UI.empresa
 
 import linketinder.UI.competencia.CompetenciaMenu
+import linketinder.dao.curtida.CurtidaDao
+import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaCompetenciaDao
@@ -20,9 +22,10 @@ class CompetenciaVagaMenu {
         IDatabaseConnection databaseConnection = new DatabaseConnection()
         IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(databaseConnection)
         IVagaDao vagaDao = new VagaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
 
         competenciaMenu = new CompetenciaMenu()
-        vagaService = new VagaService(vagaDao, vagaCompetenciaDao)
+        vagaService = new VagaService(vagaDao, vagaCompetenciaDao, curtidaDao)
     }
 
     void exibirMenuVaga(Reader reader) {
