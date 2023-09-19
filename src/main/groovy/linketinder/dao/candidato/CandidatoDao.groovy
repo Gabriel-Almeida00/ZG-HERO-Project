@@ -8,6 +8,7 @@ import linketinder.entity.dto.CompetenciaDTO
 import linketinder.entity.dto.ExperienciaDTO
 import linketinder.entity.dto.FormacaoDTO
 
+import java.lang.reflect.Array
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
@@ -52,67 +53,37 @@ class CandidatoDao implements ICandidatoDao {
 
     @Override
     List<CandidatoDTO> listarCandidatos() {
-        List<CandidatoDTO> candidatosDTO = new ArrayList<>()
+        List<CandidatoDTO> candidatosDTO = new ArrayList<>();
+
         String sql = "SELECT " +
                 "    c.id, " +
+                "    c.nome, " +
                 "    c.descricao, " +
-                "    ARRAY_AGG(DISTINCT comp.nome) AS competencias, " +
-                "    ARRAY_AGG(DISTINCT cc.idNivelCompetencia) AS niveis_competencias, " +
-                "    ARRAY_AGG(DISTINCT f.curso) AS formacoes, " +
-                "    ARRAY_AGG(DISTINCT f.anoConclusao) AS anos_formacoes, " +
-                "    ARRAY_AGG(DISTINCT e.cargo) AS cargos_experiencias, " +
-                "    ARRAY_AGG(DISTINCT e.idNivelExperiencia) AS niveis_experiencias " +
+                "    ARRAY_AGG(DISTINCT comp.nome) AS competencias " +
                 "FROM " +
                 "    candidatos c " +
                 "LEFT JOIN " +
                 "    candidato_competencia cc ON c.id = cc.idCandidato " +
                 "LEFT JOIN " +
                 "    competencias comp ON cc.idCompetencia = comp.id " +
-                "LEFT JOIN " +
-                "    formacoes f ON c.id = f.idCandidato " +
-                "LEFT JOIN " +
-                "    experiencias e ON c.id = e.idCandidato " +
-                "GROUP BY " +
-                "    c.id, c.descricao;"
+                "GROUP BY c.id, c.nome, c.descricao;"
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
 
-            Map<Integer, CandidatoDTO> candidatosMap = new HashMap<>()
-
             while (resultSet.next()) {
                 int candidatoId = resultSet.getInt("id")
+                String nome = resultSet.getString("nome")
                 String descricao = resultSet.getString("descricao")
+                String nomesCompetencia = resultSet.getString("competencias");
 
-                CandidatoDTO candidatoDTO = candidatosMap.getOrDefault(candidatoId, new CandidatoDTO(candidatoId, descricao, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()))
+                List<String> nomesCompetenciaList = Arrays.asList(nomesCompetencia.split(", "));
 
-                Integer nivelCompetencia = resultSet.getInt("niveis_competencias")
-                String nomeCompetencia = resultSet.getString("competencias")
-                if (nomeCompetencia != null) {
-                    candidatoDTO.getCompetencias().add(new CompetenciaDTO(nomeCompetencia, nivelCompetencia))
-                }
+                CandidatoDTO candidatoDTO = new CandidatoDTO(candidatoId, nome, descricao, nomesCompetenciaList)
 
-                String cursoFormacao = resultSet.getString("formacoes")
-                String anoConclusao = resultSet.getString("anos_formacoes")
-                if (cursoFormacao != null) {
-                    candidatoDTO.getFormacoes().add(new FormacaoDTO(cursoFormacao, anoConclusao))
-                } else {
-                    candidatoDTO.getFormacoes().add(new FormacaoDTO("", ""))
-                }
-
-                String cargoExperiencia = resultSet.getString("cargos_experiencias")
-                String nivelExperiencia = resultSet.getString("niveis_experiencias")
-                if (cargoExperiencia != null) {
-                    candidatoDTO.getExperiencias().add(new ExperienciaDTO(cargoExperiencia, nivelExperiencia))
-                } else {
-                    candidatoDTO.getExperiencias().add(new ExperienciaDTO("", ""))
-                }
-
-                candidatosMap.put(candidatoId, candidatoDTO)
+                candidatosDTO.add(candidatoDTO)
             }
-
-            candidatosDTO.addAll(candidatosMap.values())
         }
         return candidatosDTO
     }

@@ -12,6 +12,7 @@ import linketinder.entity.dto.VagaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+import java.lang.reflect.Array
 import java.sql.SQLException
 
 import static org.mockito.Mockito.*
@@ -218,11 +219,11 @@ class VagaServiceTest {
         List<CompetenciaDTO> vagaCompetenciaListMock = new ArrayList<>()
         vagaCompetenciaListMock.add(new CompetenciaDTO(
                 "java",
-                1
+                Arrays.asList(1)
         ))
         vagaCompetenciaListMock.add(new CompetenciaDTO(
                 "groovy",
-                2
+                Arrays.asList(1)
         ))
 
         when(vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga)).thenReturn(vagaCompetenciaListMock)

@@ -172,22 +172,13 @@ class CandidatoMenu {
         candidatos.each { candidato ->
             println "======================="
             println "ID: ${candidato.id}"
+            println "Nome: ${candidato.nome}"
             println "Descrição:"
             println "  - ${candidato.descricao}"
 
-            println "Formações:"
-            candidato.formacoes.each { formacao ->
-                println "  - ${formacao.curso} - (${formacao.anoConclusao})"
-            }
-
-            println "Experiências:"
-            candidato.experiencias.each { experiencia ->
-                println "  - ${experiencia.cargo} - ${experiencia.nivel}"
-            }
-
             println "Competências:"
             candidato.competencias.each { competencia ->
-                println "  - ${competencia.nome} - ${competencia.nivel}"
+                println "  - ${competencia}"
             }
         }
         println ""

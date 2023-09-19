@@ -1,13 +1,8 @@
 package linketinder.dao.curtida
 
-
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.dto.CandidatoDTO
 import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
-import linketinder.entity.dto.CompetenciaDTO
 import linketinder.entity.dto.EmpresaDTO
-import linketinder.entity.dto.ExperienciaDTO
-import linketinder.entity.dto.FormacaoDTO
 
 import java.sql.Connection
 import java.sql.PreparedStatement
