@@ -88,13 +88,6 @@ CREATE TABLE experiencias (
   idNivelExperiencia int NOT NULL REFERENCES nivel_experiencia (id)
 );
 
-CREATE TABLE matches (
-  id serial PRIMARY KEY,
-  idCandidato int NOT NULL REFERENCES candidatos (id),
-  idVaga int NOT NULL REFERENCES vagas (id),
-  idEmpresa int NOT NULL REFERENCES empresas (id)
-);
-
 CREATE TABLE curtidas (
   id serial PRIMARY KEY,
   idCandidato int NOT NULL REFERENCES candidatos (id),
