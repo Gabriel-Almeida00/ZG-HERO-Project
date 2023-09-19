@@ -11,6 +11,7 @@ import linketinder.dao.vaga.IVagaDao
 import linketinder.entity.*
 import linketinder.entity.dto.CandidatoDTO
 import linketinder.entity.dto.CompetenciaDTO
+import linketinder.entity.dto.EmpresaDTO
 
 import java.sql.SQLException
 
@@ -258,6 +259,20 @@ class CandidatoService implements ICandidatoService {
             curtidaDao.curtirVaga(idCandidato, idVaga)
 
         } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        }
+    }
+
+    @Override
+    List<EmpresaDTO> listarEmpresasQueCurtiramCandidato(Integer idCandidato){
+        try{
+            Candidato id = candidatoDao.obterCandidatoPorId(idCandidato)
+
+            if(id == null){
+                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
+            }
+            curtidaDao.listarEmpresasQueCurtiramCandidato(idCandidato)
+        }catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }

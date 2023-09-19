@@ -3,11 +3,16 @@ package linketinder.entity.dto
 import linketinder.entity.Empresa
 
 class EmpresaDTO {
-    String estado
+    Integer id
+    String pais
     String descricaoEmpresa
 
-    EmpresaDTO(Empresa empresa) {
-        this.estado = empresa.getEstado()
-        this.descricaoEmpresa = empresa.getDescricaoEmpresa()
+    EmpresaDTO(String pais, String descricaoEmpresa) {
+        this.pais = pais
+        this.descricaoEmpresa = descricaoEmpresa
+    }
+
+    void setId(Integer id) {
+        this.id = id
     }
 }

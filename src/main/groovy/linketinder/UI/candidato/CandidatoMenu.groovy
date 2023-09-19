@@ -13,6 +13,7 @@ import linketinder.db.IDatabaseConnection
 import linketinder.entity.Candidato
 import linketinder.entity.VagaCurtida
 import linketinder.entity.dto.CandidatoDTO
+import linketinder.entity.dto.EmpresaDTO
 import linketinder.entity.dto.VagaCurtidaDTO
 import linketinder.service.CandidatoService
 import linketinder.service.MatchService
@@ -57,7 +58,8 @@ class CandidatoMenu {
             println "6. Gerenciar experiencias do candidato"
             println "7. Gerenciar formações do candidato"
             println "8. Curtir Vaga"
-            println "9. Voltar"
+            println "9. Listar empresas que curtiram candidato"
+            println "10. Voltar"
 
             int opcao = Integer.parseInt(reader.readLine())
             switch (opcao) {
@@ -86,6 +88,9 @@ class CandidatoMenu {
                     curtirVaga(reader)
                     break
                 case 9:
+                    listarEmpresasQueCurtiramCandidato(reader)
+                    break
+                case 10:
                     return
                 default:
                     println "Opção inválida. Tente novamente."
@@ -204,19 +209,33 @@ class CandidatoMenu {
         verificaMatch(idCandidato, idVaga)
     }
 
-    void verificaMatch(Integer idCandidato,Integer idVaga){
+    void listarEmpresasQueCurtiramCandidato(Reader reader) {
+        println("Digite o id do candidato: ")
+        Integer id = Integer.parseInt(reader.readLine())
+        List<EmpresaDTO> empresas = candidatoService.listarEmpresasQueCurtiramCandidato(id)
+
+        empresas.forEach { empresa ->
+            println("==========")
+            println("Empresas: ")
+            println("Descrição:  ${empresa.descricaoEmpresa}")
+            println("País:  ${empresa.pais}")
+            println()
+        }
+    }
+
+    void verificaMatch(Integer idCandidato, Integer idVaga) {
         List<VagaCurtidaDTO> matchs = matchService.encontrarMatchesPelaVaga(idCandidato, idVaga)
 
-        matchs.each {match ->
+        matchs.each { match ->
             println "============================"
             println "DEU MATCH"
-            println  "A seguinte empresa curtiu seu perfil: "
+            println "A seguinte empresa curtiu seu perfil: "
             println "Nome :  ${match.nomeEmpresa}"
-            println  "Descrição: ${match.descricaoEmpresa}"
-            println  "Vaga que o candidato curitu: "
-            println  "Nome: ${match.nomeVaga}"
-            println  "Descrição: ${match.descricaoVaga}"
-            println  ""
+            println "Descrição: ${match.descricaoEmpresa}"
+            println "Vaga que o candidato curitu: "
+            println "Nome: ${match.nomeVaga}"
+            println "Descrição: ${match.descricaoVaga}"
+            println ""
         }
     }
 }

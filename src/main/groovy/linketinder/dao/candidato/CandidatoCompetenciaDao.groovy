@@ -1,10 +1,8 @@
 package linketinder.dao.candidato
 
-
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCompetencia
 import linketinder.entity.Competencias
-import linketinder.entity.NivelCompetencia
 import linketinder.entity.dto.CompetenciaDTO
 
 import java.sql.Connection

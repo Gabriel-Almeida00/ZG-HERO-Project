@@ -10,6 +10,7 @@ import linketinder.dao.vaga.IVagaDao
 import linketinder.entity.*
 import linketinder.entity.dto.CandidatoDTO
 import linketinder.entity.dto.CompetenciaDTO
+import linketinder.entity.dto.EmpresaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -408,5 +409,39 @@ class CandidatoServiceTest {
         candidatoService.curtirVaga(idCandidato, idVaga)
 
         verify(curtidaDao).curtirVaga(idCandidato, idVaga)
+    }
+
+    @Test
+    void testListarEmpresasQueCurtiramCandidato(){
+        Integer id = 1
+        Candidato candidato = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
+        )
+        candidato.setId(id)
+
+        List<EmpresaDTO> empresas = new ArrayList<>();
+        empresas.add(new EmpresaDTO("São Paulo", "Empresa A"));
+        empresas.add(new EmpresaDTO("Rio de Janeiro", "Empresa B"));
+
+        when(candidatoDaoMock.obterCandidatoPorId(id)).thenReturn(candidato);
+
+        when(curtidaDao.listarEmpresasQueCurtiramCandidato(id)).thenReturn(empresas)
+
+        List<EmpresaDTO> empresasDTO = candidatoService.listarEmpresasQueCurtiramCandidato(id);
+
+
+        verify(candidatoDaoMock).obterCandidatoPorId(id)
+
+        verify(curtidaDao).listarEmpresasQueCurtiramCandidato(1);
+
+        assert empresas == empresasDTO
     }
 }
