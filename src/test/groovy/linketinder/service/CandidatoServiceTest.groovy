@@ -162,8 +162,8 @@ class CandidatoServiceTest {
         candidatoMock.setId(idCandidato)
 
         List<CompetenciaDTO> competenciasMock = new ArrayList<>()
-        competenciasMock.add(new CompetenciaDTO("Java", "Avançado"))
-        competenciasMock.add(new CompetenciaDTO("SQL", "Intermediário"))
+        competenciasMock.add(new CompetenciaDTO("Java", 1))
+        competenciasMock.add(new CompetenciaDTO("SQL", 2))
 
         when(candidatoDaoMock.obterCandidatoPorId(candidatoMock.getId())).thenReturn(candidatoMock)
 
@@ -181,7 +181,7 @@ class CandidatoServiceTest {
     void testAdicionarCandidatoCompetencia() throws SQLException {
         Integer idCandidato = 1
         Integer idCompetencia = 2
-        String nivel = "Avançado"
+        Integer nivel = 3
 
         CandidatoCompetencia candidatoCompetencia = new CandidatoCompetencia(idCandidato, idCompetencia, nivel)
 
@@ -196,12 +196,12 @@ class CandidatoServiceTest {
     void testAtualizarNivelCompetenciaCandidato() throws SQLException {
         Integer id = 1
         Integer idCompetencia = 1
-        String novoNivel = "Intermediário"
+        Integer novoNivel = 2
 
         CandidatoCompetencia candidatoCompetencia = new CandidatoCompetencia(1, idCompetencia, novoNivel)
         candidatoCompetencia.setId(id)
 
-        CompetenciaDTO competenciasMock = new CompetenciaDTO("Java", "Avançado")
+        CompetenciaDTO competenciasMock = new CompetenciaDTO("Java", 1)
         competenciasMock.setId(idCompetencia)
 
         doNothing().when(candidatoCompetenciaDao).atualizarNivelCompetenciaCandidato(candidatoCompetencia)
@@ -215,7 +215,7 @@ class CandidatoServiceTest {
     void testExcluirCompetenciaCandidato() throws SQLException {
         Integer idCompetencia = 2
 
-        CompetenciaDTO competenciasMock = new CompetenciaDTO("Java", "Avançado")
+        CompetenciaDTO competenciasMock = new CompetenciaDTO("Java", 1)
         competenciasMock.setId(idCompetencia)
 
         doNothing().when(candidatoCompetenciaDao).excluirCompetenciaCandidato(idCompetencia)
@@ -280,7 +280,7 @@ class CandidatoServiceTest {
                 idCandidato,
                 "dev junior",
                 "tech global",
-                "junior"
+                1
         )
 
         when(experienciaDao.buscarExperienciaPorId(idExperiencia)).thenReturn(experienciaMock)
@@ -296,7 +296,7 @@ class CandidatoServiceTest {
                 1,
                 "Instituição",
                 "Curso",
-                "Nível",
+                2,
                 "2023")
 
         doNothing().when(formacaoDao).adicionarFormacao(formacao)
@@ -312,7 +312,7 @@ class CandidatoServiceTest {
                 1,
                 "Instituição",
                 "Curso",
-                "Nível",
+                1,
                 "2023")
 
         doNothing().when(formacaoDao).atualizarFormacao(formacao)
@@ -331,7 +331,7 @@ class CandidatoServiceTest {
                 idCandidato,
                 "fatec",
                 "análise e desenvolvimento de sistemas",
-                "tecnologo",
+                1,
                 "2025"
         )
 
@@ -361,8 +361,8 @@ class CandidatoServiceTest {
         candidatoMock.setId(idCandidato)
 
         List<Formacao> formacoes = new ArrayList<>()
-        formacoes.add(new Formacao(idCandidato, "Instituição 1", "Curso 1", "Nível 1", "Ano 2021"))
-        formacoes.add(new Formacao(idCandidato, "Instituição 2", "Curso 2", "Nível 2", "Ano 2022"))
+        formacoes.add(new Formacao(idCandidato, "Instituição 1", "Curso 1", 1, "Ano 2021"))
+        formacoes.add(new Formacao(idCandidato, "Instituição 2", "Curso 2", 2, "Ano 2022"))
 
         when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock)
         when(formacaoDao.listarFormacoesPorCandidato(idCandidato)).thenReturn(formacoes)
@@ -396,8 +396,8 @@ class CandidatoServiceTest {
                 "desenvolvedor",
                 "SP",
                 "tech descricao",
-                "graduação",
-                "nenhuma"
+                1,
+                2
         )
         vaga.setId(idVaga)
 

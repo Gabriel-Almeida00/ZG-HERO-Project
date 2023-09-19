@@ -36,8 +36,8 @@ class VagaServiceTest {
                 "desenvolvedor",
                 "SP",
                 "tech descricao",
-                "graduação",
-                "nenhuma",
+                1,
+                2,
                 new ArrayList<>()
         ))
         vagasMock.add(new VagaDTO(
@@ -45,8 +45,8 @@ class VagaServiceTest {
                 "desenvolvedor",
                 "SP",
                 "tech descricao",
-                "graduação",
-                "nenhuma",
+                2,
+                1,
                 new ArrayList<>()
         ))
 
@@ -68,8 +68,8 @@ class VagaServiceTest {
                 "desenvolvedor",
                 "SP",
                 "tech descricao",
-                "graduação",
-                "nenhuma",
+                1,
+                2,
                 new ArrayList<>()
         ))
         vagasMock.add(new VagaDTO(
@@ -77,8 +77,8 @@ class VagaServiceTest {
                 "desenvolvedor",
                 "SP",
                 "tech descricao",
-                "graduação",
-                "nenhuma",
+                1,
+                2,
                 new ArrayList<>()
         ))
 
@@ -100,8 +100,8 @@ class VagaServiceTest {
                 "ibm",
                 "ibm descrição",
                 "RJ",
-                "ensino médio",
-                "nenhuma"
+                1,
+                2
         )
         when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock)
 
@@ -118,8 +118,8 @@ class VagaServiceTest {
                 "ibm",
                 "ibm descrição",
                 "RJ",
-                "ensino médio",
-                "nenhuma"
+                1,
+                2
         )
 
         service.adicionarVaga(vaga)
@@ -134,8 +134,8 @@ class VagaServiceTest {
                 "ibm",
                 "ibm descrição",
                 "RJ",
-                "ensino médio",
-                "nenhuma")
+                1,
+                3)
         vaga.setId(1)
 
         when(vagaDao.buscarVagaPorId(vaga.getId())).thenReturn(vaga)
@@ -154,8 +154,8 @@ class VagaServiceTest {
                 "ibm",
                 "ibm descrição",
                 "RJ",
-                "ensino médio",
-                "nenhuma")
+                1,
+                1)
         when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock)
 
         service.excluirVaga(idVaga)
@@ -165,7 +165,7 @@ class VagaServiceTest {
 
     @Test
     void testAdicionarVagaCompetencia() {
-        VagaCompetencia vagaCompetenciaMock = new VagaCompetencia(1, 2, "Avançado")
+        VagaCompetencia vagaCompetenciaMock = new VagaCompetencia(1, 2, 1)
 
         doNothing().when(vagaCompetenciaDao).adicionarVagaCompetencia(vagaCompetenciaMock)
 
@@ -176,7 +176,7 @@ class VagaServiceTest {
 
     @Test
     void testAtualizarNivelVagaCompetencia() {
-        VagaCompetencia vagaCompetenciaMock = new VagaCompetencia(1, 2, "Intermediário")
+        VagaCompetencia vagaCompetenciaMock = new VagaCompetencia(1, 2, 2)
 
         doNothing().when(vagaCompetenciaDao).atualizarNivelVagaCompetencia(vagaCompetenciaMock)
 
@@ -205,8 +205,8 @@ class VagaServiceTest {
                 "ibm",
                 "ibm descrição",
                 "RJ",
-                "ensino médio",
-                "nenhuma"
+                1,
+                2
         )
 
         when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock)
@@ -214,11 +214,11 @@ class VagaServiceTest {
         List<CompetenciaDTO> vagaCompetenciaListMock = new ArrayList<>()
         vagaCompetenciaListMock.add(new CompetenciaDTO(
                 "java",
-                "Intermediário"
+                1
         ))
         vagaCompetenciaListMock.add(new CompetenciaDTO(
                 "groovy",
-                "avançado"
+                2
         ))
 
         when(vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga)).thenReturn(vagaCompetenciaListMock)
