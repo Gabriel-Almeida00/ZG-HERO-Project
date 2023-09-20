@@ -3,7 +3,6 @@ package linketinder.dao.vaga
 
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Vaga
-import linketinder.entity.dto.CompetenciaDTO
 import linketinder.entity.dto.VagaDTO
 
 import java.sql.Connection
@@ -54,7 +53,7 @@ class VagaDao implements IVagaDao {
     Integer obterIdEmpresaPorIdVaga(Integer idVaga) {
         String sql = "SELECT idEmpresa FROM vagas WHERE id = ?"
 
-        try (Connection connection = databaseConnection.getConnection();
+        try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, idVaga)
@@ -71,7 +70,7 @@ class VagaDao implements IVagaDao {
 
     @Override
     List<VagaDTO> listarVagasDaEmpresa(int idEmpresa) throws SQLException {
-        List<VagaDTO> vagaDTOs = new ArrayList<>();
+        List<VagaDTO> vagaDTOs = new ArrayList<>()
 
         String sql = "SELECT " +
                 "    v.id AS id_vaga, " +
@@ -87,35 +86,35 @@ class VagaDao implements IVagaDao {
                 "WHERE " +
                 "    v.idEmpresa = ? " +
                 "GROUP BY " +
-                "    v.id, v.nome, v.descricao;";
+                "    v.id, v.nome, v.descricao;"
 
-        try (Connection connection = databaseConnection.getConnection();
+        try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setInt(1, idEmpresa);
+            statement.setInt(1, idEmpresa)
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Integer idVaga = resultSet.getInt("id_vaga");
-                    String nomeVaga = resultSet.getString("nome_vaga");
-                    String descricao = resultSet.getString("descricao");
-                    String nomesCompetencia = resultSet.getString("nomes_competencia");
+                    Integer idVaga = resultSet.getInt("id_vaga")
+                    String nomeVaga = resultSet.getString("nome_vaga")
+                    String descricao = resultSet.getString("descricao")
+                    String nomesCompetencia = resultSet.getString("nomes_competencia")
 
-                    List<String> nomeCompetencia = Arrays.asList(nomesCompetencia.split(", "));
+                    List<String> nomeCompetencia = nomesCompetencia != null ? Arrays.asList(nomesCompetencia.split(", ")) : Collections.emptyList()
 
                     VagaDTO vagaDTO = new VagaDTO(
                             idVaga,
                             nomeVaga,
                             descricao,
                             nomeCompetencia
-                    );
+                    )
 
-                    vagaDTOs.add(vagaDTO);
+                    vagaDTOs.add(vagaDTO)
                 }
             }
         }
 
-        return vagaDTOs;
+        return vagaDTOs
     }
 
     @Override
