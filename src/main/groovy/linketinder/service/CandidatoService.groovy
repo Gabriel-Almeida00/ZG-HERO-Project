@@ -256,7 +256,15 @@ class CandidatoService implements ICandidatoService {
                 throw new VagaNotFoundException("Vaga não encontrada com ID: " + idVaga)
             }
 
-            curtidaDao.curtirVaga(idCandidato, idVaga)
+            Integer idEmpresa = vagaDao.obterIdEmpresaPorIdVaga(idVaga)
+            Integer empresaQueCurtiu = curtidaDao.verificaCurtidaDaEmpresa(idEmpresa, idCandidato)
+
+            if(empresaQueCurtiu == null){
+                curtidaDao.curtirVaga(idCandidato, idVaga)
+            }
+            else {
+                curtidaDao.AtualizarCurtidaComIdVaga(idVaga, idEmpresa, idCandidato)
+            }
 
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())

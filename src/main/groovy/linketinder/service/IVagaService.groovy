@@ -13,6 +13,8 @@ interface IVagaService {
     List<VagaDTO> listarTodasVagas() throws SQLException;
     List<VagaDTO> listarVagasDaEmpresa(int idEmpresa) throws SQLException;
 
+    Integer obterIdEmpresaPorIdVaga(Integer idVaga)
+
     Vaga buscarVagaPorId(Integer idVaga) throws SQLException;
     void adicionarVaga(Vaga vaga) throws SQLException;
     void atualizarVaga(Vaga vaga) throws SQLException;

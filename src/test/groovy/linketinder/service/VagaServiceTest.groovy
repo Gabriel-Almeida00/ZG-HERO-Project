@@ -262,4 +262,27 @@ class VagaServiceTest {
         verify(vagaDao, times(1)).buscarVagaPorId(idVaga);
         verify(curtidaDao, times(1)).listarCandidatosQueCurtiramVaga(idVaga);
     }
+
+    @Test
+     void testObterIdEmpresaPorIdVaga() throws SQLException {
+        int idVagaExistente = 1
+        int idEmpresaEsperado = 10
+
+        Vaga vaga = new Vaga(
+                idEmpresaEsperado,
+                "ibm",
+                "ibm descrição",
+                "RJ",
+                1,
+                2
+        )
+        vaga.setId(idVagaExistente)
+
+        when(vagaDao.buscarVagaPorId(idVagaExistente)).thenReturn(vaga)
+        when(vagaDao.obterIdEmpresaPorIdVaga(idVagaExistente)).thenReturn(idEmpresaEsperado)
+
+        Integer idEmpresa = vagaDao.obterIdEmpresaPorIdVaga(idVagaExistente)
+
+        assert idEmpresaEsperado == idEmpresa
+    }
 }

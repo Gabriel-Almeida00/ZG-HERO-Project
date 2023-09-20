@@ -45,6 +45,19 @@ class VagaService implements IVagaService {
     }
 
     @Override
+    Integer obterIdEmpresaPorIdVaga(Integer idVaga) {
+        try{
+            Vaga id = vagaDao.buscarVagaPorId(idVaga)
+            if(id == null){
+                throw new VagaNotFoundException("Vaga não encontrada com ID :" + idVaga)
+            }
+            return vagaDao.obterIdEmpresaPorIdVaga(idVaga)
+        }catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        }
+    }
+
+    @Override
     Vaga buscarVagaPorId(Integer idVaga) {
         try {
             return vagaDao.buscarVagaPorId(idVaga)

@@ -77,6 +77,25 @@ class VagaDao implements IVagaDao{
     }
 
     @Override
+    Integer obterIdEmpresaPorIdVaga(Integer idVaga) {
+        String sql = "SELECT idEmpresa FROM vagas WHERE id = ?"
+
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, idVaga)
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("idEmpresa")
+                }
+            }
+        }
+
+        return null
+    }
+
+    @Override
     List<VagaDTO> listarVagasDaEmpresa(int idEmpresa) throws SQLException {
         List<VagaDTO> vagaDTOs = new ArrayList<>()
 

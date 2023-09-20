@@ -376,8 +376,8 @@ class CandidatoServiceTest {
 
     @Test
     void testCurtirVaga_ComSucesso() throws SQLException {
-        Integer idCandidato = 2
-        Integer idVaga = 2
+        Integer idCandidato = 2;
+        Integer idVaga = 2;
 
         Candidato candidato = new Candidato(
                 "João",
@@ -389,8 +389,8 @@ class CandidatoServiceTest {
                 "12345-678",
                 "Descrição do candidato",
                 "senha123"
-        )
-        candidato.setId(idCandidato)
+        );
+        candidato.setId(idCandidato);
 
         Vaga vaga = new Vaga(
                 2,
@@ -399,17 +399,57 @@ class CandidatoServiceTest {
                 "tech descricao",
                 1,
                 2
-        )
+        );
+        vaga.setId(idVaga);
+
+        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidato);
+        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vaga);
+        when(curtidaDao.verificaCurtidaDaEmpresa(anyInt(), anyInt())).thenReturn(null);
+
+        candidatoService.curtirVaga(idCandidato, idVaga);
+
+        verify(curtidaDao).curtirVaga(idCandidato, idVaga);
+    }
+
+    @Test
+    void testAtualizarCurtida_ComSucesso() throws SQLException {
+        Integer idCandidato = 2;
+        Integer idVaga = 2;
+        Integer empresaId = 1
+
+        Candidato candidato = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
+        );
+        candidato.setId(idCandidato);
+
+        Vaga vaga = new Vaga(
+                empresaId,
+                "desenvolvedor",
+                "SP",
+                "tech descricao",
+                1,
+                2
+        );
         vaga.setId(idVaga)
 
-        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
-        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vaga)
+        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidato);
+        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vaga);
+        when(curtidaDao.verificaCurtidaDaEmpresa(anyInt(), anyInt())).thenReturn(empresaId);
 
+        curtidaDao.AtualizarCurtidaComIdVaga(  idVaga,empresaId, idCandidato);
 
-        candidatoService.curtirVaga(idCandidato, idVaga)
-
-        verify(curtidaDao).curtirVaga(idCandidato, idVaga)
+        verify(curtidaDao).AtualizarCurtidaComIdVaga(idVaga, empresaId, idCandidato);
     }
+
+
 
     @Test
     void testListarEmpresasQueCurtiramCandidato(){
