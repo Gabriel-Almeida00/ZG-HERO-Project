@@ -1,5 +1,7 @@
 package linketinder.dao.candidato
 
+import linketinder.config.Config
+import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Candidato
 import linketinder.entity.dto.CandidatoDTO
@@ -10,10 +12,11 @@ import java.sql.ResultSet
 
 class CandidatoDao implements ICandidatoDao {
 
-    private final IDatabaseConnection databaseConnection
+    private IDatabaseConnection databaseConnection
 
-    CandidatoDao(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection
+    CandidatoDao() {
+        Config config = new Config()
+        databaseConnection = new DatabaseConnection(config)
     }
 
     @Override
@@ -100,7 +103,6 @@ class CandidatoDao implements ICandidatoDao {
             statement.executeUpdate()
         }
     }
-
 
 
     @Override

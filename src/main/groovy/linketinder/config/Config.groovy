@@ -3,17 +3,33 @@ package linketinder.config
 import groovy.json.JsonSlurper
 
 class Config {
-    static String SENHA
+    private String urlDB
+    private String userDB
+    private String senhaDB
 
-    static {
+    Config() {
         try {
             File configFile = new File("config.json")
             JsonSlurper jsonSlurper = new JsonSlurper()
-
             Object configData = jsonSlurper.parse(configFile)
-            SENHA = configData.senha
+
+            urlDB = configData.url
+            userDB = configData.user
+            senhaDB = configData.senha
         } catch (Exception e) {
             println("Erro ao ler o arquivo de configuração: ${e.message}")
         }
+    }
+
+    String getUrlDB() {
+        return urlDB
+    }
+
+    String getUserDB() {
+        return userDB
+    }
+
+    String getSenhaDB() {
+        return senhaDB
     }
 }

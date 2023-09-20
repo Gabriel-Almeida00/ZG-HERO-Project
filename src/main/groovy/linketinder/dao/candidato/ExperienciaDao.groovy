@@ -1,6 +1,7 @@
 package linketinder.dao.candidato
 
-
+import linketinder.config.Config
+import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Experiencia
 
@@ -10,10 +11,11 @@ import java.sql.SQLException
 
 class ExperienciaDao implements IExperienciaDao {
 
-    private final IDatabaseConnection databaseConnection
+    private  IDatabaseConnection databaseConnection
 
-    ExperienciaDao(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection
+    ExperienciaDao() {
+        Config config = new Config()
+        databaseConnection = new DatabaseConnection(config)
     }
 
     @Override

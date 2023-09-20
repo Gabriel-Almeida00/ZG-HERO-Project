@@ -1,6 +1,7 @@
 package linketinder.dao.empresa
 
-
+import linketinder.config.Config
+import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Empresa
 
@@ -10,10 +11,11 @@ import java.sql.SQLException
 
 class EmpresaDao implements IEmpresaDao {
 
-    private final IDatabaseConnection databaseConnection
+    private  IDatabaseConnection databaseConnection
 
-    EmpresaDao(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection
+    EmpresaDao() {
+        Config config = new Config()
+        databaseConnection = new DatabaseConnection(config)
     }
 
     @Override

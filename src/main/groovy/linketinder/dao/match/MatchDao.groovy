@@ -1,6 +1,7 @@
 package linketinder.dao.match
 
-
+import linketinder.config.Config
+import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.dto.MatchCandidatoDTO
 import linketinder.entity.dto.MatchEmpresaDTO
@@ -14,8 +15,9 @@ class MatchDao implements IMatchDao {
 
     private IDatabaseConnection databaseConnection
 
-    MatchDao(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection
+    MatchDao() {
+        Config config = new Config()
+        databaseConnection = new DatabaseConnection(config)
     }
 
     @Override

@@ -9,8 +9,6 @@ import linketinder.dao.empresa.EmpresaDao
 import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.match.IMatchDao
 import linketinder.dao.match.MatchDao
-import linketinder.db.DatabaseConnection
-import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCurtido
 import linketinder.entity.Empresa
 import linketinder.entity.dto.MatchCandidatoDTO
@@ -25,11 +23,10 @@ class EmpresaMenu {
     CandidatoMenu candidatoMenu
 
     EmpresaMenu() {
-        IDatabaseConnection databaseConnection = new DatabaseConnection()
-        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
-        ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
-        IMatchDao matchDao = new MatchDao(databaseConnection)
+        IEmpresaDao empresaDao = new EmpresaDao()
+        ICandidatoDao candidatoDao = new CandidatoDao()
+        ICurtidaDao curtidaDao = new CurtidaDao()
+        IMatchDao matchDao = new MatchDao()
 
 
         empresaService = new EmpresaService(empresaDao, candidatoDao, curtidaDao)

@@ -1,6 +1,7 @@
 package linketinder.dao.vaga
 
-
+import linketinder.config.Config
+import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Vaga
 import linketinder.entity.dto.VagaDTO
@@ -12,10 +13,11 @@ import java.sql.SQLException
 
 class VagaDao implements IVagaDao {
 
-    private final IDatabaseConnection databaseConnection
+    private  IDatabaseConnection databaseConnection
 
-    VagaDao(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection
+    VagaDao() {
+        Config config = new Config()
+        databaseConnection = new DatabaseConnection(config)
     }
 
     @Override

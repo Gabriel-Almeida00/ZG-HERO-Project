@@ -1,5 +1,7 @@
 package linketinder.dao.candidato
 
+import linketinder.config.Config
+import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCompetencia
 import linketinder.entity.dto.CompetenciaDTO
@@ -11,10 +13,11 @@ import java.sql.SQLException
 
 class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
 
-    private final IDatabaseConnection databaseConnection
+    private  IDatabaseConnection databaseConnection
 
-    CandidatoCompetenciaDao(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection
+    CandidatoCompetenciaDao() {
+        Config config = new Config()
+        databaseConnection = new DatabaseConnection(config)
     }
 
     @Override

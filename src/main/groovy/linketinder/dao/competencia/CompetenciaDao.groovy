@@ -1,6 +1,7 @@
 package linketinder.dao.competencia
 
-
+import linketinder.config.Config
+import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Competencia
 
@@ -11,10 +12,11 @@ import java.sql.SQLException
 
 class CompetenciaDao implements ICompetenciaDao {
 
-    private final IDatabaseConnection databaseConnection
+    private  IDatabaseConnection databaseConnection
 
-    CompetenciaDao(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection
+    CompetenciaDao() {
+        Config config = new Config()
+        databaseConnection = new DatabaseConnection(config)
     }
 
     void adicionarCompetencia(Competencia competencia) throws SQLException {

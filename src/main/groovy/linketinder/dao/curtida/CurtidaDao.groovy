@@ -1,5 +1,7 @@
 package linketinder.dao.curtida
 
+import linketinder.config.Config
+import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.entity.dto.EmpresaDTO
@@ -13,8 +15,9 @@ class CurtidaDao implements ICurtidaDao {
 
     private IDatabaseConnection databaseConnection
 
-    CurtidaDao(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection
+    CurtidaDao( ) {
+        Config config = new Config()
+        databaseConnection = new DatabaseConnection(config)
     }
 
     @Override

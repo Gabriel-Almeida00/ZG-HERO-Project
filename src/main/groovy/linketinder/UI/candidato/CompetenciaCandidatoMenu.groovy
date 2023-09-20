@@ -6,8 +6,6 @@ import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaDao
-import linketinder.db.DatabaseConnection
-import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCompetencia
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.service.CandidatoService
@@ -18,13 +16,12 @@ class CompetenciaCandidatoMenu {
     CompetenciaMenu competenciaMenu
 
     CompetenciaCandidatoMenu() {
-        IDatabaseConnection databaseConnection = new DatabaseConnection()
-        ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection)
-        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection)
-        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection)
-        IVagaDao vagaDao = new VagaDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
+        ICandidatoDao candidatoDao = new CandidatoDao()
+        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao()
+        IExperienciaDao experienciaDao = new ExperienciaDao()
+        IFormacaoDao formacaoDao = new FormacaoDao()
+        IVagaDao vagaDao = new VagaDao()
+        ICurtidaDao curtidaDao = new CurtidaDao()
 
         competenciaMenu = new CompetenciaMenu()
 

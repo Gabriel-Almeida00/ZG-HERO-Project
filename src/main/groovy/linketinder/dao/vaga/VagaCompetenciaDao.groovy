@@ -1,6 +1,7 @@
 package linketinder.dao.vaga
 
-
+import linketinder.config.Config
+import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.VagaCompetencia
 import linketinder.entity.dto.CompetenciaDTO
@@ -13,8 +14,9 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao{
 
     private IDatabaseConnection databaseConnection
 
-     VagaCompetenciaDao(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection
+     VagaCompetenciaDao() {
+         Config config = new Config()
+         databaseConnection = new DatabaseConnection(config)
     }
 
     @Override

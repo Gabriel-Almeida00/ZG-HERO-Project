@@ -1,6 +1,7 @@
 package linketinder.dao.candidato
 
-
+import linketinder.config.Config
+import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Formacao
 
@@ -10,10 +11,11 @@ import java.sql.SQLException
 
 class FormacaoDao implements IFormacaoDao {
 
-    private final IDatabaseConnection databaseConnection
+    private IDatabaseConnection databaseConnection
 
-    FormacaoDao(IDatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection
+    FormacaoDao() {
+        Config config = new Config()
+        databaseConnection = new DatabaseConnection(config)
     }
 
     void adicionarFormacao(Formacao formacao) throws SQLException {

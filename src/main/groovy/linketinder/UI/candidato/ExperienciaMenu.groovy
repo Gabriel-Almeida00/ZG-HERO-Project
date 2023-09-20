@@ -1,35 +1,25 @@
 package linketinder.UI.candidato
 
-import linketinder.dao.candidato.CandidatoCompetenciaDao
-import linketinder.dao.candidato.CandidatoDao
-import linketinder.dao.candidato.ExperienciaDao
-import linketinder.dao.candidato.FormacaoDao
-import linketinder.dao.candidato.ICandidatoCompetenciaDao
-import linketinder.dao.candidato.ICandidatoDao
-import linketinder.dao.candidato.IExperienciaDao
-import linketinder.dao.candidato.IFormacaoDao
+
+import linketinder.dao.candidato.*
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaDao
-import linketinder.db.DatabaseConnection
-import linketinder.db.IDatabaseConnection
 import linketinder.entity.Experiencia
 import linketinder.service.CandidatoService
-
 
 class ExperienciaMenu {
 
     CandidatoService service
 
     ExperienciaMenu() {
-        IDatabaseConnection databaseConnection = new DatabaseConnection()
-        ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection)
-        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection)
-        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection)
-        IVagaDao vagaDao = new VagaDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
+        ICandidatoDao candidatoDao = new CandidatoDao()
+        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao()
+        IExperienciaDao experienciaDao = new ExperienciaDao()
+        IFormacaoDao formacaoDao = new FormacaoDao()
+        IVagaDao vagaDao = new VagaDao()
+        ICurtidaDao curtidaDao = new CurtidaDao()
 
         service = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao, vagaDao, curtidaDao)
     }

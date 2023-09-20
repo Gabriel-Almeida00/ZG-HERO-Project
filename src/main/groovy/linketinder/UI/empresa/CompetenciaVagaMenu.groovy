@@ -7,8 +7,6 @@ import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaCompetenciaDao
 import linketinder.dao.vaga.VagaDao
-import linketinder.db.DatabaseConnection
-import linketinder.db.IDatabaseConnection
 import linketinder.entity.VagaCompetencia
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.service.VagaService
@@ -19,10 +17,9 @@ class CompetenciaVagaMenu {
     CompetenciaMenu competenciaMenu
 
     CompetenciaVagaMenu() {
-        IDatabaseConnection databaseConnection = new DatabaseConnection()
-        IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(databaseConnection)
-        IVagaDao vagaDao = new VagaDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
+        IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao()
+        IVagaDao vagaDao = new VagaDao()
+        ICurtidaDao curtidaDao = new CurtidaDao()
 
         competenciaMenu = new CompetenciaMenu()
         vagaService = new VagaService(vagaDao, vagaCompetenciaDao, curtidaDao)
