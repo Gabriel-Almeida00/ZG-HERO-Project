@@ -1,8 +1,5 @@
 package linketinder.entity
 
-import linketinder.entity.enums.NivelExperiencia
-
-
 class Experiencia {
 
     Integer id

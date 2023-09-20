@@ -1,8 +1,5 @@
 package linketinder.entity
 
-import linketinder.entity.enums.NivelFormacao
-
-
 class Formacao {
 
     Integer id

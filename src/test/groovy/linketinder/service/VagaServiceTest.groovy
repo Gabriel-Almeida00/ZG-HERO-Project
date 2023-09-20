@@ -1,6 +1,6 @@
 package linketinder.service
 
-import linketinder.dao.curtida.CurtidaDao
+
 import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao
@@ -12,7 +12,6 @@ import linketinder.entity.dto.VagaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-import java.lang.reflect.Array
 import java.sql.SQLException
 
 import static org.mockito.Mockito.*
@@ -39,19 +38,13 @@ class VagaServiceTest {
         vagasMock.add(new VagaDTO(
                 1,
                 "desenvolvedor",
-                "SP",
                 "tech descricao",
-                1,
-                2,
                 new ArrayList<>()
         ))
         vagasMock.add(new VagaDTO(
                 2,
                 "desenvolvedor",
-                "SP",
                 "tech descricao",
-                2,
-                1,
                 new ArrayList<>()
         ))
 
@@ -71,19 +64,13 @@ class VagaServiceTest {
         vagasMock.add(new VagaDTO(
                 1,
                 "desenvolvedor",
-                "SP",
                 "tech descricao",
-                1,
-                2,
                 new ArrayList<>()
         ))
         vagasMock.add(new VagaDTO(
                 2,
                 "desenvolvedor",
-                "SP",
                 "tech descricao",
-                1,
-                2,
                 new ArrayList<>()
         ))
 
@@ -252,15 +239,15 @@ class VagaServiceTest {
         List<CandidatoQueCurtiuVagaDTO> resultadosEsperados = Arrays.asList(
                 new CandidatoQueCurtiuVagaDTO(1, "Descrição Candidato 1", Arrays.asList("Java", "Python")),
                 new CandidatoQueCurtiuVagaDTO(2, "Descrição Candidato 2", Arrays.asList("Groovy", "Python"))
-        );
-        when(curtidaDao.listarCandidatosQueCurtiramVaga(idVaga)).thenReturn(resultadosEsperados);
+        )
+        when(curtidaDao.listarCandidatosQueCurtiramVaga(idVaga)).thenReturn(resultadosEsperados)
 
-        List<CandidatoQueCurtiuVagaDTO> resultado = service.listarCandidatosQueCurtiramVaga(idVaga);
+        List<CandidatoQueCurtiuVagaDTO> resultado = service.listarCandidatosQueCurtiramVaga(idVaga)
 
         assert resultadosEsperados == resultado
 
-        verify(vagaDao, times(1)).buscarVagaPorId(idVaga);
-        verify(curtidaDao, times(1)).listarCandidatosQueCurtiramVaga(idVaga);
+        verify(vagaDao, times(1)).buscarVagaPorId(idVaga)
+        verify(curtidaDao, times(1)).listarCandidatosQueCurtiramVaga(idVaga)
     }
 
     @Test

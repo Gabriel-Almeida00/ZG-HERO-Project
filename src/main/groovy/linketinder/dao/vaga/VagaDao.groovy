@@ -100,7 +100,7 @@ class VagaDao implements IVagaDao {
                     String descricao = resultSet.getString("descricao")
                     String nomesCompetencia = resultSet.getString("nomes_competencia")
 
-                    List<String> nomeCompetencia = nomesCompetencia != null ? Arrays.asList(nomesCompetencia.split(", ")) : Collections.emptyList()
+                    List<String> nomeCompetencia = nomesCompetencia != null ? Arrays.asList(nomesCompetencia.split(", ")) : Collections.emptyList() as List<String>
 
                     VagaDTO vagaDTO = new VagaDTO(
                             idVaga,

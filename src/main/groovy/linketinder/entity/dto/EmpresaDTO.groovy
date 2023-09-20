@@ -1,6 +1,5 @@
 package linketinder.entity.dto
 
-import linketinder.entity.Empresa
 
 class EmpresaDTO {
     Integer id

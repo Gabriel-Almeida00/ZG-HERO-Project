@@ -4,7 +4,6 @@ package linketinder.dao.match
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.dto.MatchCandidatoDTO
 import linketinder.entity.dto.MatchEmpresaDTO
-import linketinder.entity.dto.VagaCurtidaDTO
 
 import java.sql.Connection
 import java.sql.PreparedStatement
@@ -60,7 +59,7 @@ class MatchDao implements IMatchDao {
                             idVaga,
                             nomeVaga,
                             descricaoVaga
-                    );
+                    )
                     matches.add(matchDTO)
                 }
             }

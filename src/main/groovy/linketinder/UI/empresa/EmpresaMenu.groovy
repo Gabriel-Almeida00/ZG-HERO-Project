@@ -14,7 +14,6 @@ import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCurtido
 import linketinder.entity.Empresa
 import linketinder.entity.dto.MatchCandidatoDTO
-import linketinder.entity.dto.MatchEmpresaDTO
 import linketinder.service.EmpresaService
 import linketinder.service.MatchService
 

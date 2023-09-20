@@ -6,7 +6,6 @@ import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.empresa.IEmpresaDao
 import linketinder.entity.Candidato
 import linketinder.entity.Empresa
-import linketinder.entity.Vaga
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -164,7 +163,7 @@ class EmpresaServiceTest {
                 "Brasil",
                 "12345-678",
                 "senha123"
-        );
+        )
         empresa.setId(idEmpresa)
 
         when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
@@ -178,9 +177,9 @@ class EmpresaServiceTest {
 
     @Test
     void testCurtirCandidato_AtualizarCurtida() throws SQLException {
-        Integer idCandidato = 2;
-        Integer idEmpresa = 4;
-        Integer idVaga = 7;
+        Integer idCandidato = 2
+        Integer idEmpresa = 4
+        Integer idVaga = 7
 
         Candidato candidato = new Candidato(
                 "João",
@@ -192,8 +191,8 @@ class EmpresaServiceTest {
                 "12345-678",
                 "Descrição do candidato",
                 "senha123"
-        );
-        candidato.setId(idCandidato);
+        )
+        candidato.setId(idCandidato)
 
         Empresa empresa = new Empresa(
                 "Empresa XYZ",
@@ -203,16 +202,16 @@ class EmpresaServiceTest {
                 "Brasil",
                 "12345-678",
                 "senha123"
-        );
-        empresa.setId(idEmpresa);
+        )
+        empresa.setId(idEmpresa)
 
-        when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidato);
-        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresa);
-        when(curtidaDao.verificaCurtidaDoCandidato(idCandidato)).thenReturn(idVaga);
+        when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
+        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresa)
+        when(curtidaDao.verificaCurtidaDoCandidato(idCandidato)).thenReturn(idVaga)
 
-        empresaService.curtirCandidato(idCandidato, idEmpresa);
+        empresaService.curtirCandidato(idCandidato, idEmpresa)
 
-        verify(curtidaDao).AtualizarCurtidaComIdEmpresa(idVaga, idEmpresa, idCandidato);
+        verify(curtidaDao).AtualizarCurtidaComIdEmpresa(idVaga, idEmpresa, idCandidato)
     }
 }
 

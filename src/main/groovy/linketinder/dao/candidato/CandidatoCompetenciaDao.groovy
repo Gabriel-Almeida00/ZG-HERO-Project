@@ -2,7 +2,6 @@ package linketinder.dao.candidato
 
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCompetencia
-import linketinder.entity.Competencias
 import linketinder.entity.dto.CompetenciaDTO
 
 import java.sql.Connection
@@ -78,27 +77,6 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
             deleteStatement.setInt(1, id)
             deleteStatement.executeUpdate()
         }
-    }
-
-    @Override
-    Competencias buscarCompetenciaPorId(Integer idCompetencia) throws SQLException {
-        String sql = "SELECT id, nome, idNivelCompetencia FROM competencias WHERE id = ?"
-
-        try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
-            statement.setInt(1, idCompetencia)
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    String nome = resultSet.getString("nome")
-                    Integer id = resultSet.getInt("id")
-
-                    Competencias competencias = new Competencias(nome)
-                    competencias.setId(id)
-                    return competencias
-                }
-            }
-        }
-        return null
     }
 
 }

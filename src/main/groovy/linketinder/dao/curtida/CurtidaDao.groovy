@@ -32,7 +32,7 @@ class CurtidaDao implements ICurtidaDao {
     Integer verificaCurtidaDaEmpresa(Integer idEmpresa, Integer idCandidato) {
         String sql = "SELECT idEmpresa FROM curtidas WHERE idEmpresa=? AND idCandidato=? AND idStatus=1"
 
-        try (Connection connection = databaseConnection.getConnection();
+        try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, idEmpresa)
@@ -52,7 +52,7 @@ class CurtidaDao implements ICurtidaDao {
     void AtualizarCurtidaComIdVaga(Integer idVaga, Integer idEmpresa, Integer idCandidato ) {
         String sql = " UPDATE curtidas SET idStatus = 2 , idVaga =? WHERE idEmpresa =? AND idCandidato =?"
 
-        try (Connection connection = databaseConnection.getConnection();
+        try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idVaga)
             statement.setInt(2, idEmpresa)
@@ -127,7 +127,7 @@ class CurtidaDao implements ICurtidaDao {
     void AtualizarCurtidaComIdEmpresa(Integer idVaga, Integer idEmpresa, Integer idCandidato ) {
         String sql = " UPDATE curtidas SET idStatus = 2 , idEmpresa =? WHERE idVaga =? AND idCandidato =?"
 
-        try (Connection connection = databaseConnection.getConnection();
+        try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idEmpresa)
             statement.setInt(2, idVaga)
@@ -140,7 +140,7 @@ class CurtidaDao implements ICurtidaDao {
 
     @Override
     List<CandidatoQueCurtiuVagaDTO> listarCandidatosQueCurtiramVaga(Integer idVaga) throws SQLException {
-        List<CandidatoQueCurtiuVagaDTO> candidatosCurtiramDTO = new ArrayList<>();
+        List<CandidatoQueCurtiuVagaDTO> candidatosCurtiramDTO = new ArrayList<>()
 
         String sql = "SELECT " +
                 "    c.id AS id_candidato, " +
@@ -175,13 +175,13 @@ class CurtidaDao implements ICurtidaDao {
                             idCandidato,
                             descricao,
                             nomesCompetenciaList
-                    );
+                    )
 
-                    candidatosCurtiramDTO.add(candidatoDTO);
+                    candidatosCurtiramDTO.add(candidatoDTO)
                 }
             }
         }
 
-        return candidatosCurtiramDTO;
+        return candidatosCurtiramDTO
     }
 }

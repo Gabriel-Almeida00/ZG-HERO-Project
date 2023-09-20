@@ -13,19 +13,4 @@ class VagaCurtidaDTO {
         this.descricaoVaga = descricaoVaga
     }
 
-    String getNomeEmpresa() {
-        return nomeEmpresa
-    }
-
-    String getDescricaoEmpresa() {
-        return descricaoEmpresa
-    }
-
-    String getNomeVaga() {
-        return nomeVaga
-    }
-
-    String getDescricaoVaga() {
-        return descricaoVaga
-    }
 }

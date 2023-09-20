@@ -9,13 +9,4 @@ class CompetenciaDTO {
         this.nome = nome
         this.nivel = nivel
     }
-
-    @Override
-    public String toString() {
-        return "CompetenciaDTO{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", nivel=" + nivel +
-                '}';
-    }
 }

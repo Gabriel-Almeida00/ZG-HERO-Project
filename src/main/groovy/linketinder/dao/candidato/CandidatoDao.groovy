@@ -1,14 +1,9 @@
 package linketinder.dao.candidato
 
-
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Candidato
 import linketinder.entity.dto.CandidatoDTO
-import linketinder.entity.dto.CompetenciaDTO
-import linketinder.entity.dto.ExperienciaDTO
-import linketinder.entity.dto.FormacaoDTO
 
-import java.lang.reflect.Array
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
@@ -53,7 +48,7 @@ class CandidatoDao implements ICandidatoDao {
 
     @Override
     List<CandidatoDTO> listarCandidatos() {
-        List<CandidatoDTO> candidatosDTO = new ArrayList<>();
+        List<CandidatoDTO> candidatosDTO = new ArrayList<>()
 
         String sql = "SELECT " +
                 "    c.id, " +
@@ -76,9 +71,9 @@ class CandidatoDao implements ICandidatoDao {
                 int candidatoId = resultSet.getInt("id")
                 String nome = resultSet.getString("nome")
                 String descricao = resultSet.getString("descricao")
-                String nomesCompetencia = resultSet.getString("competencias");
+                String nomesCompetencia = resultSet.getString("competencias")
 
-                List<String> nomesCompetenciaList = Arrays.asList(nomesCompetencia.split(", "));
+                List<String> nomesCompetenciaList = Arrays.asList(nomesCompetencia.split(", "))
 
                 CandidatoDTO candidatoDTO = new CandidatoDTO(candidatoId, nome, descricao, nomesCompetenciaList)
 

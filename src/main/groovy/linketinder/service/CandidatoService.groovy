@@ -109,14 +109,6 @@ class CandidatoService implements ICandidatoService {
         }
     }
 
-    Competencias buscarCompetenciaPorId(Integer idCompetencia) {
-        try {
-            return candidatoCompetenciaDao.buscarCompetenciaPorId(idCompetencia)
-        } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
-    }
-
 
     @Override
     void adicionarCandidatoCompetencia(CandidatoCompetencia candidatoCompetencia) {

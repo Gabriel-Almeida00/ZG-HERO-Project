@@ -40,8 +40,4 @@ class VagaDTO {
     List<String> getNomeCompetencia() {
         return nomeCompetencia
     }
-
-    void setNomeCompetencia(List<String> nomeCompetencia) {
-        this.nomeCompetencia = nomeCompetencia
-    }
 }

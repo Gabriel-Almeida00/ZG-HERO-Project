@@ -15,7 +15,6 @@ import linketinder.entity.VagaCurtida
 import linketinder.entity.dto.CandidatoDTO
 import linketinder.entity.dto.EmpresaDTO
 import linketinder.entity.dto.MatchEmpresaDTO
-import linketinder.entity.dto.VagaCurtidaDTO
 import linketinder.service.CandidatoService
 import linketinder.service.MatchService
 

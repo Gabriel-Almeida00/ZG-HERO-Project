@@ -5,7 +5,6 @@ import linketinder.Exception.DataBaseException
 import linketinder.dao.match.IMatchDao
 import linketinder.entity.dto.MatchCandidatoDTO
 import linketinder.entity.dto.MatchEmpresaDTO
-import linketinder.entity.dto.VagaCurtidaDTO
 
 import java.sql.SQLException
 

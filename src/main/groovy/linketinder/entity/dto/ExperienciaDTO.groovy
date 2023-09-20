@@ -9,10 +9,6 @@ class ExperienciaDTO {
         this.nivel = nivel
     }
 
-    String getCargo() {
-        return cargo
-    }
-
     String getNivel() {
         return nivel
     }

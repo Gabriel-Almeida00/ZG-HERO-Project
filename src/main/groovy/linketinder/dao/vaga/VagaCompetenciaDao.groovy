@@ -70,6 +70,8 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao{
                     String nomeCompetencia = resultSet.getString("nomeCompetencia")
                     Integer nivel = resultSet.getInt("nivel")
 
+
+
                     CompetenciaDTO competencia = new CompetenciaDTO(nomeCompetencia, nivel)
                     competencia.setId(id)
                     vagaCompetencias.add(competencia)
