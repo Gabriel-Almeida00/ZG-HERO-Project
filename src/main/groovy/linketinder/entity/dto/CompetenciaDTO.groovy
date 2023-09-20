@@ -1,6 +1,9 @@
 package linketinder.entity.dto
 
 class CompetenciaDTO {
+    void setId(Integer id) {
+        this.id = id
+    }
     private Integer id
     private String nome
     private String nivel

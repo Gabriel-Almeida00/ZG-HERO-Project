@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*
 
 class CandidatoServiceTest {
 
-    private ICandidatoDao candidatoDaoMock
+    private ICandidatoDao candidatoDao
     private ICandidatoCompetenciaDao candidatoCompetenciaDao
     private IExperienciaDao experienciaDao
     private IFormacaoDao formacaoDao
@@ -30,7 +30,7 @@ class CandidatoServiceTest {
 
     @BeforeEach
     void setup() {
-        candidatoDaoMock = mock(ICandidatoDao.class)
+        candidatoDao = mock(ICandidatoDao.class)
         candidatoCompetenciaDao = mock(ICandidatoCompetenciaDao.class)
         experienciaDao = mock(IExperienciaDao.class)
         formacaoDao = mock(IFormacaoDao.class)
@@ -38,7 +38,7 @@ class CandidatoServiceTest {
         curtidaDao = mock((ICurtidaDao.class))
 
         candidatoService = new CandidatoService(
-                candidatoDaoMock,
+                candidatoDao,
                 candidatoCompetenciaDao,
                 experienciaDao,
                 formacaoDao,
@@ -51,13 +51,13 @@ class CandidatoServiceTest {
     void testListarCandidatos() throws SQLException {
         List<CandidatoDTO> candidatosMock = new ArrayList<>()
 
-        when(candidatoDaoMock.listarCandidatos()).thenReturn(candidatosMock)
+        when(candidatoDao.listarCandidatos()).thenReturn(candidatosMock)
 
         List<CandidatoDTO> resultado = candidatoService.listarCandidatos()
 
         assert candidatosMock == resultado
 
-        verify(candidatoDaoMock).listarCandidatos()
+        verify(candidatoDao).listarCandidatos()
     }
 
     @Test
@@ -74,11 +74,11 @@ class CandidatoServiceTest {
                 "Descrição do candidato",
                 "senha123"
         )
-        when(candidatoDaoMock.obterCandidatoPorId(candidatoId)).thenReturn(candidatoMock)
+        when(candidatoDao.obterCandidatoPorId(candidatoId)).thenReturn(candidatoMock)
 
         Candidato result = candidatoService.obterCandidatoPorId(candidatoId)
 
-        verify(candidatoDaoMock).obterCandidatoPorId(candidatoId)
+        verify(candidatoDao).obterCandidatoPorId(candidatoId)
         assert candidatoMock == result
     }
 
@@ -98,7 +98,7 @@ class CandidatoServiceTest {
 
         candidatoService.cadastrarCandidato(candidatoMock)
 
-        verify(candidatoDaoMock).adicionarCandidato(candidatoMock)
+        verify(candidatoDao).adicionarCandidato(candidatoMock)
     }
 
     @Test
@@ -119,7 +119,7 @@ class CandidatoServiceTest {
 
         candidatoService.atualizarCandidato(candidatoMock)
 
-        verify(candidatoDaoMock).atualizarCandidato(candidatoMock)
+        verify(candidatoDao).atualizarCandidato(candidatoMock)
     }
 
     @Test
@@ -138,12 +138,12 @@ class CandidatoServiceTest {
         Integer idCandidato = 1
         candidatoMock.setId(idCandidato)
 
-        when(candidatoDaoMock.obterCandidatoPorId(idCandidato))
+        when(candidatoDao.obterCandidatoPorId(idCandidato))
                 .thenReturn(candidatoMock)
 
         candidatoService.deletarCandidato(idCandidato)
 
-        verify(candidatoDaoMock).deletarCandidato(idCandidato)
+        verify(candidatoDao).deletarCandidato(idCandidato)
     }
 
     @Test
@@ -166,7 +166,7 @@ class CandidatoServiceTest {
         competenciasMock.add(new CompetenciaDTO(1,"Java", "Intermediároo"))
         competenciasMock.add(new CompetenciaDTO(2,"SQL", "Avançado"))
 
-        when(candidatoDaoMock.obterCandidatoPorId(candidatoMock.getId())).thenReturn(candidatoMock)
+        when(candidatoDao.obterCandidatoPorId(candidatoMock.getId())).thenReturn(candidatoMock)
 
         when(candidatoCompetenciaDao.listarCompetenciasPorCandidato(candidatoMock.getId())).thenReturn(competenciasMock)
 
@@ -266,7 +266,7 @@ class CandidatoServiceTest {
         List<Experiencia> experienciasMock = new ArrayList<>()
 
         when(experienciaDao.listarExperienciasPorCandidato(idCandidato)).thenReturn(experienciasMock)
-        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock)
+        when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock)
 
         List<Experiencia> result = candidatoService.listarExperienciasPorCandidato(idCandidato)
 
@@ -365,7 +365,7 @@ class CandidatoServiceTest {
         formacoes.add(new Formacao(idCandidato, "Instituição 1", "Curso 1", 1, "Ano 2021"))
         formacoes.add(new Formacao(idCandidato, "Instituição 2", "Curso 2", 2, "Ano 2022"))
 
-        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock)
+        when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidatoMock)
         when(formacaoDao.listarFormacoesPorCandidato(idCandidato)).thenReturn(formacoes)
 
         List<Formacao> result = candidatoService.listarFormacoesPorCandidato(idCandidato)
@@ -402,7 +402,7 @@ class CandidatoServiceTest {
         )
         vaga.setId(idVaga)
 
-        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
+        when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
         when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vaga)
         when(curtidaDao.verificaCurtidaDaEmpresa(anyInt(), anyInt())).thenReturn(null)
 
@@ -440,7 +440,7 @@ class CandidatoServiceTest {
         )
         vaga.setId(idVaga)
 
-        when(candidatoDaoMock.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
+        when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
         when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vaga)
         when(curtidaDao.verificaCurtidaDaEmpresa(anyInt(), anyInt())).thenReturn(empresaId)
 
@@ -471,14 +471,14 @@ class CandidatoServiceTest {
         empresas.add(new EmpresaDTO("São Paulo", "Empresa A"))
         empresas.add(new EmpresaDTO("Rio de Janeiro", "Empresa B"))
 
-        when(candidatoDaoMock.obterCandidatoPorId(id)).thenReturn(candidato)
+        when(candidatoDao.obterCandidatoPorId(id)).thenReturn(candidato)
 
         when(curtidaDao.listarEmpresasQueCurtiramCandidato(id)).thenReturn(empresas)
 
         List<EmpresaDTO> empresasDTO = candidatoService.listarEmpresasQueCurtiramCandidato(id)
 
 
-        verify(candidatoDaoMock).obterCandidatoPorId(id)
+        verify(candidatoDao).obterCandidatoPorId(id)
 
         verify(curtidaDao).listarEmpresasQueCurtiramCandidato(1)
 
