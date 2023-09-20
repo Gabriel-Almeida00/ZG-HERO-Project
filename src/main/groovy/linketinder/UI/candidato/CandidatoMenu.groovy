@@ -193,11 +193,12 @@ class CandidatoMenu {
 
     void curtirVaga(Reader reader) {
         vagaMenu.listarVagas()
+
         VagaCurtida vagaCurtida = criarVagaCurtida(reader)
         Integer idCandidato = vagaCurtida.getIdCandidata()
         Integer idVaga = vagaCurtida.getIdVaga()
+
         candidatoService.curtirVaga(idCandidato, idVaga)
-        verificaMatch(idCandidato, idVaga)
     }
 
     void listarEmpresasQueCurtiramCandidato(Reader reader) {

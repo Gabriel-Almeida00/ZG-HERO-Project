@@ -11,7 +11,7 @@ import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
 
-class VagaDao implements IVagaDao{
+class VagaDao implements IVagaDao {
 
     private final IDatabaseConnection databaseConnection
 
@@ -20,60 +20,34 @@ class VagaDao implements IVagaDao{
     }
 
     @Override
-    List<VagaDTO> listarTodasVagas() throws SQLException {
-        List<VagaDTO> vagaDTOs = new ArrayList<>()
+    List<VagaDTO> listarTodasVagas() {
+        String sql = "SELECT v.id AS id_vaga, v.nome AS nome_vaga, v.descricao AS descricao_vaga, " +
+                "STRING_AGG(comp.nome, ', ') AS nomes_competencia " +
+                "FROM vagas v " +
+                "INNER JOIN vaga_competencia cv ON v.id = cv.idVaga " +
+                "INNER JOIN competencias comp ON cv.idCompetencia = comp.id " +
+                "GROUP BY v.id, v.nome, v.descricao"
 
-        String sql = "SELECT" +
-                "    v.id AS id_vaga," +
-                "    v.nome AS nome_vaga," +
-                "    v.descricao," +
-                "    v.cidade," +
-                "    v.idNivelFormacao," +
-                "    v.idNivelExperiencia," +
-                "    c.nome AS nome_competencia, " +
-                "    vc.idNivelCompetencia " +
-                " FROM " +
-                "    vagas v" +
-                " INNER JOIN" +
-                "    vaga_competencia vc ON v.id = vc.idVaga" +
-                " INNER JOIN" +
-                "    competencias c ON vc.idCompetencia = c.id;"
+        List<VagaDTO> vagas = new ArrayList<>()
 
-        try (PreparedStatement statement = databaseConnection.prepareStatement(sql)
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
 
-            Map<Integer, VagaDTO> vagaDTOMap = new HashMap<>()
-
             while (resultSet.next()) {
-                Integer idVaga = resultSet.getInt("id_vaga")
-                String nomeVaga = resultSet.getString("nome_vaga")
+                Integer id = resultSet.getInt("id_vaga")
+                String nome = resultSet.getString("nome_vaga")
+                String descricao = resultSet.getString("descricao_vaga")
+                String nomesCompetencia = resultSet.getString("nomes_competencia")
 
-                VagaDTO vagaDTO = vagaDTOMap.get(idVaga)
-                if (vagaDTO == null) {
-                    vagaDTO = new VagaDTO(
-                            idVaga,
-                            nomeVaga,
-                            resultSet.getString("cidade"),
-                            resultSet.getString("descricao"),
-                            resultSet.getInt("idNivelFormacao"),
-                            resultSet.getInt("idNivelExperiencia"),
-                            new ArrayList<>()
-                    )
-                    vagaDTOMap.put(idVaga, vagaDTO)
-                }
+                List<String> nomeCompetencia = Arrays.asList(nomesCompetencia.split(", "))
 
-                CompetenciaDTO competenciaDTO = new CompetenciaDTO(
-                        resultSet.getString("nome_competencia"),
-                        resultSet.getInt("idNivelCompetencia")
-                )
-
-                vagaDTO.getCompetencias().add(competenciaDTO)
+                VagaDTO vagaDTO = new VagaDTO(id, nome, descricao, nomeCompetencia)
+                vagas.add(vagaDTO)
             }
 
-            vagaDTOs.addAll(vagaDTOMap.values())
         }
-
-        return vagaDTOs
+        return vagas
     }
 
     @Override
@@ -97,54 +71,51 @@ class VagaDao implements IVagaDao{
 
     @Override
     List<VagaDTO> listarVagasDaEmpresa(int idEmpresa) throws SQLException {
-        List<VagaDTO> vagaDTOs = new ArrayList<>()
+        List<VagaDTO> vagaDTOs = new ArrayList<>();
 
         String sql = "SELECT " +
-                "    v.id AS id_vaga," +
-                "    v.nome AS nome_vaga," +
-                "    v.descricao," +
-                "    v.cidade," +
-                "    v.idNivelFormacao," +
-                "    v.idNivelExperiencia" +
-                " FROM " +
-                "    vagas v" +
-                " JOIN" +
-                "    empresas e ON v.idEmpresa = e.id" +
-                " WHERE" +
-                "    v.idEmpresa = ?"
+                "    v.id AS id_vaga, " +
+                "    v.nome AS nome_vaga, " +
+                "    v.descricao, " +
+                "    STRING_AGG(comp.nome, ', ') AS nomes_competencia " +
+                "FROM " +
+                "    vagas v " +
+                "LEFT JOIN " +
+                "    vaga_competencia cv ON v.id = cv.idVaga " +
+                "LEFT JOIN " +
+                "    competencias comp ON cv.idCompetencia = comp.id " +
+                "WHERE " +
+                "    v.idEmpresa = ? " +
+                "GROUP BY " +
+                "    v.id, v.nome, v.descricao;";
 
-        try (Connection connection = databaseConnection.getConnection()
+        try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setInt(1, idEmpresa)
+            statement.setInt(1, idEmpresa);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                Map<Integer, VagaDTO> vagaDTOMap = new HashMap<>()
-
                 while (resultSet.next()) {
-                    Integer idVaga = resultSet.getInt("id_vaga")
-                    String nomeVaga = resultSet.getString("nome_vaga")
+                    Integer idVaga = resultSet.getInt("id_vaga");
+                    String nomeVaga = resultSet.getString("nome_vaga");
+                    String descricao = resultSet.getString("descricao");
+                    String nomesCompetencia = resultSet.getString("nomes_competencia");
 
-                    VagaDTO vagaDTO = vagaDTOMap.get(idVaga)
-                    if (vagaDTO == null) {
-                        vagaDTO = new VagaDTO(
-                                idVaga,
-                                nomeVaga,
-                                resultSet.getString("cidade"),
-                                resultSet.getString("descricao"),
-                                resultSet.getInt("idNivelFormacao"),
-                                resultSet.getInt("idNivelExperiencia"),
-                                new ArrayList<>()
-                        )
-                        vagaDTOMap.put(idVaga, vagaDTO)
-                    }
+                    List<String> nomeCompetencia = Arrays.asList(nomesCompetencia.split(", "));
 
-                    vagaDTOs.add(vagaDTO)
+                    VagaDTO vagaDTO = new VagaDTO(
+                            idVaga,
+                            nomeVaga,
+                            descricao,
+                            nomeCompetencia
+                    );
+
+                    vagaDTOs.add(vagaDTO);
                 }
             }
         }
 
-        return vagaDTOs
+        return vagaDTOs;
     }
 
     @Override

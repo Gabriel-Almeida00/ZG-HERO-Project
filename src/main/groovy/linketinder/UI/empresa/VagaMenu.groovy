@@ -104,9 +104,11 @@ class VagaMenu {
             println "Id: ${vaga.id}"
             println "Nome :${vaga.nome}"
             println "Descrição: ${vaga.descricao}"
-            println "Cidade: ${vaga.cidade}"
-            println "Requisito de Experiencia: ${vaga.experienciaMinima}"
-            println "Requisito de Formação: ${vaga.formacaoMinima}"
+            println "Competências:"
+
+            vaga.nomeCompetencia.each { competencia ->
+                println "  - ${competencia}"
+            }
             println()
         }
     }
@@ -122,9 +124,11 @@ class VagaMenu {
             println "Id: ${vaga.id}"
             println "Nome :${vaga.nome}"
             println "Descrição: ${vaga.descricao}"
-            println "Cidade: ${vaga.cidade}"
-            println "Requisito de Experiencia: ${vaga.experienciaMinima}"
-            println "Requisito de Formação: ${vaga.formacaoMinima}"
+
+            println "Competências:"
+            vaga.nomeCompetencia.each {competenca ->
+                println(" - ${competenca}")
+            }
             println()
         }
     }
