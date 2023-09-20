@@ -5,6 +5,7 @@ import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Formacao
 
+import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -52,25 +53,34 @@ class FormacaoDao implements IFormacaoDao {
         }
     }
 
+
+    @Override
     List<Formacao> listarFormacoesPorCandidato(Integer idCandidato) throws SQLException {
-        List<Formacao> formacoesList = new ArrayList<>()
         String sql = "SELECT * FROM formacoes WHERE idCandidato = ?"
-        try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
+
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idCandidato)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Integer id = resultSet.getInt("id")
-                    String instituicao = resultSet.getString("instituicao")
-                    String curso = resultSet.getString("curso")
-                    Integer nivel = resultSet.getInt("idNivelFormacao")
-                    String anoConclusao = resultSet.getString("anoConclusao")
-
-                    Formacao formacao = new Formacao(idCandidato, instituicao, curso, nivel, anoConclusao)
-                    formacao.setId(id)
-                    formacoesList.add(formacao)
-                }
+                return extrairFormacoes(idCandidato, resultSet)
             }
+        }
+    }
+
+    private List<Formacao> extrairFormacoes(Integer idCandidato, ResultSet resultSet) throws SQLException {
+        List<Formacao> formacoesList = new ArrayList<>()
+
+        while (resultSet.next()) {
+            Integer id = resultSet.getInt("id")
+            String instituicao = resultSet.getString("instituicao")
+            String curso = resultSet.getString("curso")
+            Integer nivel = resultSet.getInt("idNivelFormacao")
+            String anoConclusao = resultSet.getString("anoConclusao")
+
+            Formacao formacao = new Formacao(idCandidato, instituicao, curso, nivel, anoConclusao)
+            formacao.setId(id)
+            formacoesList.add(formacao)
         }
         return formacoesList
     }
@@ -79,25 +89,31 @@ class FormacaoDao implements IFormacaoDao {
     Formacao buscarFormacaoPorId(Integer idFormacao) throws SQLException {
         String sql = "SELECT id, idCandidato, instituicao, curso, idNivelFormacao, anoConclusao FROM formacoes WHERE id = ?"
 
-        try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idFormacao)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Integer id = resultSet.getInt("id")
-                    Integer idCandidato = resultSet.getInt("idCandidato")
-                    String instituicao = resultSet.getString("instituicao")
-                    String curso = resultSet.getString("curso")
-                    Integer nivel = resultSet.getInt("idNivelFormacao")
-                    String anoConclusao = resultSet.getString("anoConclusao")
-
-                    Formacao formacao = new Formacao(idCandidato, instituicao, curso, nivel, anoConclusao)
-                    formacao.setId(id)
-                    return formacao
-                }
+                return criarFormacaoAPartirDoResultSet(resultSet)
             }
         }
-        return null
+    }
+
+    private Formacao criarFormacaoAPartirDoResultSet(ResultSet resultSet) throws SQLException {
+        if (resultSet.next()) {
+            Integer id = resultSet.getInt("id")
+            Integer idCandidato = resultSet.getInt("idCandidato")
+            String instituicao = resultSet.getString("instituicao")
+            String curso = resultSet.getString("curso")
+            Integer nivel = resultSet.getInt("idNivelFormacao")
+            String anoConclusao = resultSet.getString("anoConclusao")
+
+            Formacao formacao = new Formacao(idCandidato, instituicao, curso, nivel, anoConclusao)
+            formacao.setId(id)
+            return formacao
+        } else {
+            return null
+        }
     }
 }
 
