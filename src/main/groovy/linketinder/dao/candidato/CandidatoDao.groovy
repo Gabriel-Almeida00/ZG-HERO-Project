@@ -21,7 +21,6 @@ class CandidatoDao implements ICandidatoDao {
 
     @Override
     Candidato obterCandidatoPorId(Integer id) {
-        Candidato candidato = null
         String sql = "SELECT * FROM candidatos WHERE id = ?"
 
         try (Connection connection = databaseConnection.getConnection()
@@ -29,30 +28,32 @@ class CandidatoDao implements ICandidatoDao {
             statement.setInt(1, id)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    candidato = new Candidato(
-                            resultSet.getString("nome"),
-                            resultSet.getString("sobrenome"),
-                            resultSet.getDate("dataNascimento"),
-                            resultSet.getString("email"),
-                            resultSet.getString("cpf"),
-                            resultSet.getString("pais"),
-                            resultSet.getString("cep"),
-                            resultSet.getString("descricao"),
-                            resultSet.getString("senha")
-                    )
-                    candidato.setId(resultSet.getInt("id"))
-                }
+                return retornarCandidatoResultSet(resultSet)
             }
         }
+    }
 
-        return candidato
+    private Candidato retornarCandidatoResultSet(ResultSet resultSet) {
+        if (resultSet.next()) {
+            Candidato candidato = new Candidato(
+                    resultSet.getString("nome"),
+                    resultSet.getString("sobrenome"),
+                    resultSet.getDate("dataNascimento"),
+                    resultSet.getString("email"),
+                    resultSet.getString("cpf"),
+                    resultSet.getString("pais"),
+                    resultSet.getString("cep"),
+                    resultSet.getString("descricao"),
+                    resultSet.getString("senha")
+            )
+            candidato.setId(resultSet.getInt("id"))
+            return candidato
+        }
+        return null
     }
 
     @Override
     List<CandidatoDTO> listarCandidatos() {
-        List<CandidatoDTO> candidatosDTO = new ArrayList<>()
-
         String sql = "SELECT " +
                 "    c.id, " +
                 "    c.nome, " +
@@ -66,26 +67,31 @@ class CandidatoDao implements ICandidatoDao {
                 "    competencias comp ON cc.idCompetencia = comp.id " +
                 "GROUP BY c.id, c.nome, c.descricao;"
 
-        try (Connection connection = databaseConnection.getConnection()
-             PreparedStatement statement = connection.prepareStatement(sql)
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
 
-            while (resultSet.next()) {
-                int candidatoId = resultSet.getInt("id")
-                String nome = resultSet.getString("nome")
-                String descricao = resultSet.getString("descricao")
-                String nomesCompetencia = resultSet.getString("competencias")
+            return extrairCandidatosDTO(resultSet);
+        }
+    }
 
-                List<String> nomesCompetenciaList = Arrays.asList(nomesCompetencia.split(", "))
+    private List<CandidatoDTO> extrairCandidatosDTO(ResultSet resultSet) {
+        List<CandidatoDTO> candidatosDTO = new ArrayList<>();
 
-                CandidatoDTO candidatoDTO = new CandidatoDTO(candidatoId, nome, descricao, nomesCompetenciaList)
+        while (resultSet.next()) {
+            int candidatoId = resultSet.getInt("id")
+            String nome = resultSet.getString("nome")
+            String descricao = resultSet.getString("descricao")
+            String nomesCompetencia = resultSet.getString("competencias")
 
-                candidatosDTO.add(candidatoDTO)
-            }
+            List<String> nomesCompetenciaList = Arrays.asList(nomesCompetencia.split(", "))
+
+            CandidatoDTO candidatoDTO = new CandidatoDTO(candidatoId, nome, descricao, nomesCompetenciaList)
+
+            candidatosDTO.add(candidatoDTO)
         }
         return candidatosDTO
     }
-
 
     @Override
     void adicionarCandidato(Candidato candidato) {

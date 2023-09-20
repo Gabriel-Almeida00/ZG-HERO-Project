@@ -22,12 +22,12 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
 
     @Override
     List<CompetenciaDTO> listarCompetenciasPorCandidato(Integer idCandidato) throws SQLException {
-        String sql = listarCompetenciasCandidatoQuery(idCandidato)
+        String sql = listarCompetenciasPorCandidatoQuery(idCandidato)
         List<CompetenciaDTO> competenciasList = mapearQueryParaCompetenciaDTO(sql)
         return competenciasList
     }
 
-    private String listarCompetenciasCandidatoQuery(Integer idCandidato) {
+    private String listarCompetenciasPorCandidatoQuery(Integer idCandidato) {
         return "SELECT cc.id AS id, c.nome AS nome, nc.nivel AS nivel_competencia " +
                 "FROM candidato_competencia cc " +
                 "JOIN competencias c ON cc.idCompetencia = c.id " +
@@ -55,15 +55,7 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
 
     @Override
     void adicionarCandidatoCompetencia(CandidatoCompetencia candidatoCompetencia) throws SQLException {
-        String sql = adicionarCandidatoCompetenciaQuery()
-        executarQueryAdicionarCandidatoCompetencia(sql, candidatoCompetencia)
-    }
-
-    private String adicionarCandidatoCompetenciaQuery() {
-        return "INSERT INTO candidato_competencia (idCandidato, idCompetencia, idNivelCompetencia) VALUES (?, ?, ?)"
-    }
-
-    private void executarQueryAdicionarCandidatoCompetencia(String sql, CandidatoCompetencia candidatoCompetencia) throws SQLException {
+        String sql = "INSERT INTO candidato_competencia (idCandidato, idCompetencia, idNivelCompetencia) VALUES (?, ?, ?)"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, candidatoCompetencia.getIdCandidato())
             statement.setInt(2, candidatoCompetencia.getIdCompetencia())
@@ -74,19 +66,13 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
     }
 
 
+
     @Override
     void atualizarNivelCompetenciaCandidato(CandidatoCompetencia candidatoCompetencia) throws SQLException {
-        String updateSql = queryAtualizaNivelCompetencia()
-        executarQueryAtualizaCompetencia(updateSql, candidatoCompetencia)
-    }
+        String updateSql = "UPDATE candidato_competencia SET idNivelCompetencia = ? WHERE id = ?"
 
-    private String queryAtualizaNivelCompetencia() {
-        return "UPDATE candidato_competencia SET idNivelCompetencia = ? WHERE id = ?"
-    }
-
-    private void executarQueryAtualizaCompetencia(String sql, CandidatoCompetencia candidatoCompetencia) throws SQLException {
         try (Connection connection = databaseConnection.getConnection()
-             PreparedStatement updateStatement = connection.prepareStatement(sql)) {
+             PreparedStatement updateStatement = connection.prepareStatement(updateSql)) {
 
             updateStatement.setInt(1, candidatoCompetencia.getNivel())
             updateStatement.setInt(2, candidatoCompetencia.getId())
@@ -97,19 +83,12 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
 
     @Override
     void excluirCompetenciaCandidato(Integer id) throws SQLException {
-        String deleteSql = excluirCompetenciaCandidatoQuery()
-        executarQueryExcluirCompetenciaCandidato(deleteSql, id)
-    }
+        String deleteSql = "DELETE FROM candidato_competencia WHERE id = ?"
 
-    private String excluirCompetenciaCandidatoQuery() {
-        return "DELETE FROM candidato_competencia WHERE id = ?"
-    }
-
-    private void executarQueryExcluirCompetenciaCandidato(String sql, Integer id) throws SQLException {
         try (Connection connection = databaseConnection.getConnection()
-             PreparedStatement deleteStatement = connection.prepareStatement(sql)) {
-
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteSql)) {
             deleteStatement.setInt(1, id)
+
             deleteStatement.executeUpdate()
         }
     }
