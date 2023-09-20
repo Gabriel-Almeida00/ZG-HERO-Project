@@ -2,7 +2,8 @@ package linketinder.dao.match
 
 
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.dto.CandidatoCurtidoDTO
+import linketinder.entity.dto.MatchCandidatoDTO
+import linketinder.entity.dto.MatchEmpresaDTO
 import linketinder.entity.dto.VagaCurtidaDTO
 
 import java.sql.Connection
@@ -18,31 +19,48 @@ class MatchDao implements IMatchDao {
         this.databaseConnection = databaseConnection
     }
 
-    List<VagaCurtidaDTO> encontrarMatchesPelaVaga(Integer idCandidato, Integer idVaga) throws SQLException {
-        String sql = "SELECT DISTINCT e.nome AS nome_empresa, " +
-                "e.descricao AS descricao_empresa, " +
-                "v.nome AS nome_vaga, " +
-                "v.descricao AS descricao_vaga " +
-                "FROM vagas_curtidas vc_candidato " +
-                "INNER JOIN vagas_curtidas vc_empresa ON vc_candidato.idCandidato = vc_empresa.idVaga " +
-                "INNER JOIN vagas v ON vc_candidato.idVaga = v.id " +
-                "INNER JOIN empresas e ON v.idEmpresa = e.id " +
-                "WHERE vc_candidato.idCandidato = ? " +
-                "AND vc_empresa.idVaga = ?"
+    @Override
+    List<MatchCandidatoDTO> encontrarMatchesPelaEmpresa(Integer idEmpresa) throws SQLException {
+        String sql = "SELECT " +
+                "    c.id AS id_candidato, " +
+                "    c.nome AS nome_candidato, " +
+                "    c.descricao AS descricao_candidato, " +
+                "    v.id AS id_vaga, " +
+                "    v.nome AS nome_vaga, " +
+                "    v.descricao AS descricao_vaga " +
+                "FROM " +
+                "    curtidas cu " +
+                "JOIN " +
+                "    candidatos c ON cu.idCandidato = c.id " +
+                "JOIN " +
+                "    vagas v ON cu.idVaga = v.id " +
+                "WHERE " +
+                "    cu.idEmpresa = ? " +
+                "    AND cu.idStatus = 2; "
 
-        List<VagaCurtidaDTO> matches = new ArrayList<>()
+        List<MatchCandidatoDTO> matches = new ArrayList<>()
 
-        try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
-            statement.setInt(1, idCandidato)
-            statement.setInt(2, idVaga)
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idEmpresa)
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    String nomeEmpresa = resultSet.getString("nome_empresa")
-                    String descricaoEmpresa = resultSet.getString("descricao_empresa")
+                    Integer idCandidato = resultSet.getInt("id_candidato")
+                    String nomeCandidato = resultSet.getString("nome_candidato")
+                    String descricaoCandidato = resultSet.getString("descricao_candidato")
+                    Integer idVaga = resultSet.getInt("id_vaga")
                     String nomeVaga = resultSet.getString("nome_vaga")
                     String descricaoVaga = resultSet.getString("descricao_vaga")
 
-                    VagaCurtidaDTO matchDTO = new VagaCurtidaDTO(nomeEmpresa, descricaoEmpresa, nomeVaga, descricaoVaga)
+                    MatchCandidatoDTO matchDTO = new MatchCandidatoDTO(
+                            idCandidato,
+                            nomeCandidato,
+                            descricaoCandidato,
+                            idVaga,
+                            nomeVaga,
+                            descricaoVaga
+                    );
                     matches.add(matchDTO)
                 }
             }
@@ -51,23 +69,25 @@ class MatchDao implements IMatchDao {
         return matches
     }
 
-    List<CandidatoCurtidoDTO> encontrarMatchesPeloCandidato(Integer idCandidato) throws SQLException {
-        List<CandidatoCurtidoDTO> resultados = new ArrayList<>()
+    @Override
+    List<MatchEmpresaDTO> encontrarMatchesPeloCandidato(Integer idCandidato) throws SQLException {
+        List<MatchEmpresaDTO> resultados = new ArrayList<>()
 
         String sql = "SELECT " +
-                "    c.nome AS nome_candidato, " +
-                "    c.descricao AS descricao_candidato, " +
+                "    e.id AS id_empresa, " +
+                "    e.nome AS nome_empresa, " +
+                "    e.descricao AS descricao_empresa, " +
+                "    v.id AS id_vaga, " +
                 "    v.nome AS nome_vaga, " +
                 "    v.descricao AS descricao_vaga " +
                 "FROM " +
-                "    candidatos c " +
-                "INNER JOIN " +
-                "    candidatos_curtidos cc ON c.id = cc.idCandidato " +
-                "INNER JOIN " +
-                "    vagas v ON cc.idEmpresa = v.idEmpresa " +
-                "              AND v.id IN (SELECT idVaga FROM vagas_curtidas WHERE idCandidato = c.id) " +
+                "    curtidas c " +
+                "JOIN " +
+                "    empresas e ON c.idEmpresa = e.id " +
+                "JOIN " +
+                "    vagas v ON c.idVaga = v.id " +
                 "WHERE " +
-                "    c.id = ?"
+                "    c.idCandidato = ? AND c.idStatus = 2"
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -75,13 +95,23 @@ class MatchDao implements IMatchDao {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    String nomeCandidato = resultSet.getString("nome_candidato")
-                    String descricaoCandidato = resultSet.getString("descricao_candidato")
+                    Integer idEmpresa = resultSet.getInt("id_empresa")
+                    String nomeEmpresa = resultSet.getString("nome_empresa")
+                    String descricaoEmpresa = resultSet.getString("descricao_empresa")
+                    Integer idVaga = resultSet.getInt("id_vaga")
                     String nomeVaga = resultSet.getString("nome_vaga")
                     String descricaoVaga = resultSet.getString("descricao_vaga")
 
-                    CandidatoCurtidoDTO candidatoCurtidoDTO = new CandidatoCurtidoDTO(nomeCandidato, descricaoCandidato, nomeVaga, descricaoVaga)
-                    resultados.add(candidatoCurtidoDTO)
+                    MatchEmpresaDTO match = new MatchEmpresaDTO(
+                            idEmpresa,
+                            nomeEmpresa,
+                            descricaoEmpresa,
+                            idVaga,
+                            nomeVaga,
+                            descricaoVaga
+                    )
+
+                    resultados.add(match)
                 }
             }
         }

@@ -3,7 +3,8 @@ package linketinder.service
 
 import linketinder.Exception.DataBaseException
 import linketinder.dao.match.IMatchDao
-import linketinder.entity.dto.CandidatoCurtidoDTO
+import linketinder.entity.dto.MatchCandidatoDTO
+import linketinder.entity.dto.MatchEmpresaDTO
 import linketinder.entity.dto.VagaCurtidaDTO
 
 import java.sql.SQLException
@@ -17,16 +18,16 @@ class MatchService implements IMatchService {
     }
 
     @Override
-    List<VagaCurtidaDTO> encontrarMatchesPelaVaga(Integer idCandidato, Integer idVaga) {
+    List<MatchCandidatoDTO> encontrarMatchesPelaEmpresa(Integer idEmpresa) {
        try{
-           matchDao.encontrarMatchesPelaVaga(idCandidato, idVaga)
+           matchDao.encontrarMatchesPelaEmpresa(idEmpresa)
        } catch (SQLException e){
            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
        }
     }
 
     @Override
-    List<CandidatoCurtidoDTO> encontrarMatchesPeloCandidato(Integer idCandidato) {
+    List<MatchEmpresaDTO> encontrarMatchesPeloCandidato(Integer idCandidato) {
         try{
             matchDao.encontrarMatchesPeloCandidato(idCandidato)
         } catch (SQLException e){

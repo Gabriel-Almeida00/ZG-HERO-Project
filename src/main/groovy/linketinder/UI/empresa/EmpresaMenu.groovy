@@ -13,7 +13,8 @@ import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCurtido
 import linketinder.entity.Empresa
-import linketinder.entity.dto.CandidatoCurtidoDTO
+import linketinder.entity.dto.MatchCandidatoDTO
+import linketinder.entity.dto.MatchEmpresaDTO
 import linketinder.service.EmpresaService
 import linketinder.service.MatchService
 
@@ -47,7 +48,8 @@ class EmpresaMenu {
             println "4. Deletar empresa"
             println "5. Gerenciar vagas da empresa"
             println "6. Curtir Candidato"
-            println "7. Voltar"
+            println "7. verificar match"
+            println "8. Voltar"
 
             int opcao = Integer.parseInt(reader.readLine())
             switch (opcao) {
@@ -70,6 +72,9 @@ class EmpresaMenu {
                     curtirCandidato(reader)
                     break
                 case 7:
+                    verificaMatch(reader)
+                    break
+                case 8:
                     return
                 default:
                     println "Opção inválida. Tente novamente."
@@ -164,8 +169,11 @@ class EmpresaMenu {
         empresaService.curtirCandidato(idCandidato, idEmpresa)
     }
 
-    void verificaMatch(Integer idCandidato){
-        List<CandidatoCurtidoDTO> matchs = matchService.encontrarMatchesPeloCandidato(idCandidato)
+    void verificaMatch(Reader reader){
+        println("Digite o id da vaga: ")
+        Integer  id = Integer.parseInt(reader.readLine())
+
+        List<MatchCandidatoDTO> matchs = matchService.encontrarMatchesPelaEmpresa(id)
 
         matchs.each {match ->
             println "============================"

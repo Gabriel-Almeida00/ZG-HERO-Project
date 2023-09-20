@@ -2,7 +2,8 @@ package linketinder.service
 
 
 import linketinder.dao.match.IMatchDao
-import linketinder.entity.dto.CandidatoCurtidoDTO
+import linketinder.entity.dto.MatchCandidatoDTO
+import linketinder.entity.dto.MatchEmpresaDTO
 import linketinder.entity.dto.VagaCurtidaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -25,29 +26,29 @@ class MatchServiceTest {
 
     @Test
      void testEncontrarMatchesPelaVaga() throws SQLException {
-        List<VagaCurtidaDTO> resultadosEsperados = new ArrayList<>()
-        resultadosEsperados.add(new VagaCurtidaDTO("Candidato1", "Descrição Candidato1", "Vaga1", "Descrição Vaga1"))
-        resultadosEsperados.add(new VagaCurtidaDTO("Candidato2", "Descrição Candidato2", "Vaga2", "Descrição Vaga2"))
+        List<MatchCandidatoDTO> resultadosEsperados = new ArrayList<>()
+        resultadosEsperados.add(new MatchCandidatoDTO(1,"Candidato1", "Descrição Candidato1",1, "Vaga1", "Descrição Vaga1"))
+        resultadosEsperados.add(new MatchCandidatoDTO(2,"Candidato2", "Descrição Candidato2",2, "Vaga2", "Descrição Vaga2"))
 
-        when(matchDao.encontrarMatchesPelaVaga(anyInt(), anyInt())).thenReturn(resultadosEsperados)
+        when(matchDao.encontrarMatchesPelaEmpresa(anyInt())).thenReturn(resultadosEsperados)
 
 
-        List<VagaCurtidaDTO> resultados = matchDao.encontrarMatchesPelaVaga(1, 2)
+        List<MatchCandidatoDTO> resultados = matchDao.encontrarMatchesPelaEmpresa(1)
 
         assert resultadosEsperados == resultados
 
-        verify(matchDao, times(1)).encontrarMatchesPelaVaga(1, 2)
+        verify(matchDao, times(1)).encontrarMatchesPelaEmpresa(1)
     }
 
     @Test
      void testEncontrarMatchesPeloCandidato() throws SQLException {
-        List<CandidatoCurtidoDTO> resultadosEsperados = new ArrayList<>()
-        resultadosEsperados.add(new CandidatoCurtidoDTO("Empresa1", "Descrição Empresa1", "Vaga1", "Descrição Vaga1"))
-        resultadosEsperados.add(new CandidatoCurtidoDTO("Empresa2", "Descrição Empresa2", "Vaga2", "Descrição Vaga2"))
+        List<MatchEmpresaDTO> resultadosEsperados = new ArrayList<>()
+        resultadosEsperados.add(new MatchEmpresaDTO(1,"empersa 1", "Descrição Empresa1",1, "Vaga1", "Descrição Vaga1"))
+        resultadosEsperados.add(new MatchEmpresaDTO(1,"Empresa2", "Descrição Empresa2",1 , "Vaga2", "Descrição Vaga2"))
 
         when(matchDao.encontrarMatchesPeloCandidato(anyInt())).thenReturn(resultadosEsperados)
 
-        List<CandidatoCurtidoDTO> resultados = matchDao.encontrarMatchesPeloCandidato(1)
+        List<MatchEmpresaDTO> resultados = matchDao.encontrarMatchesPeloCandidato(1)
 
         assert resultadosEsperados == resultados
 
