@@ -2,12 +2,12 @@ package linketinder.entity
 
 class Formacao {
 
-    Integer id
-    Integer idCandidato
-    String instituicao
-    String curso
-    Integer nivel
-    String anoConclusao
+    private Integer id
+    private Integer idCandidato
+    private String instituicao
+    private String curso
+    private Integer nivel
+    private String anoConclusao
 
     Formacao(Integer idCandidato, String instituicao, String curso, Integer nivel, String anoConclusao) {
         this.idCandidato = idCandidato

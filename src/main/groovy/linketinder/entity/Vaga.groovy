@@ -2,15 +2,15 @@ package linketinder.entity
 
 class Vaga {
 
-    Integer id
-    Integer idEmpresa
-    String nome
-    String descricao
-    String cidade
-    Integer formacaoMinima
-    Integer experienciaMinima
-    List<VagaCompetencia> competencias
-    List<VagaCurtida> curtida
+    private Integer id
+    private Integer idEmpresa
+    private String nome
+    private String descricao
+    private String cidade
+    private Integer formacaoMinima
+    private Integer experienciaMinima
+    private List<VagaCompetencia> competencias
+    private List<VagaCurtida> curtida
 
 
     Vaga(Integer idEmpresa,

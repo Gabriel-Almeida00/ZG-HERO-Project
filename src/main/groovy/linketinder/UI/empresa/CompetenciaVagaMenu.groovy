@@ -30,11 +30,11 @@ class CompetenciaVagaMenu {
 
     void exibirMenuVaga(Reader reader) {
         while (true) {
-            println "Menu Competencias da Vaga:"
-            println "1. Listar Competencias da Vaga"
-            println "2. Cadastrar Competencias da Vaga"
-            println "3. Atualizar Competencias da Vaga"
-            println "4. Deletar Competencias da Vaga"
+            println "Menu Competencia da Vaga:"
+            println "1. Listar Competencia da Vaga"
+            println "2. Cadastrar Competencia da Vaga"
+            println "3. Atualizar Competencia da Vaga"
+            println "4. Deletar Competencia da Vaga"
             println "5. voltar"
 
 
@@ -84,15 +84,15 @@ class CompetenciaVagaMenu {
 
         vagaCompetencias.each {competencia ->
             println "========================="
-            println "ID: ${competencia.id}"
-            println "Nome: ${competencia.nome}"
-            println "Nivel: ${competencia.nivel}"
+            println "ID: ${competencia.getId()}"
+            println "Nome: ${competencia.getNome()}"
+            println "Nivel: ${competencia.getNivel()}"
             println ""
         }
     }
 
     void adicionarCompetenciaVaga(Reader reader){
-        println "Competencias: "
+        println "Competencia: "
         competenciaMenu.listarCompetencias()
         VagaCompetencia vagaCompetencia = criarCompetenciaVaga(reader)
         vagaService.adicionarVagaCompetencia(vagaCompetencia)

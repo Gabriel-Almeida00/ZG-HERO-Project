@@ -1,9 +1,9 @@
 package linketinder.entity
 
 class VagaCurtida {
-    Integer id
-    Integer idCandidata
-    Integer idVaga
+    private Integer id
+    private Integer idCandidata
+    private Integer idVaga
 
     VagaCurtida(Integer idCandidata, Integer idVaga) {
         this.idCandidata = idCandidata

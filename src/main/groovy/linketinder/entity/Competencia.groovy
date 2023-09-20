@@ -1,11 +1,11 @@
 package linketinder.entity
 
-class Competencias {
+class Competencia {
 
     private Integer id
     private String nome
 
-    Competencias(String nome) {
+    Competencia(String nome) {
         this.nome = nome
 
     }

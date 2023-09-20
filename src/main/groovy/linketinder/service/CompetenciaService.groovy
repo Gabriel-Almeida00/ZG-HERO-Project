@@ -4,7 +4,7 @@ package linketinder.service
 import linketinder.Exception.CompetenciaNotFoundException
 import linketinder.Exception.DataBaseException
 import linketinder.dao.competencia.ICompetenciaDao
-import linketinder.entity.Competencias
+import linketinder.entity.Competencia
 
 import java.sql.SQLException
 
@@ -16,7 +16,7 @@ class CompetenciaService implements ICompetenciaService {
     }
 
     @Override
-    List<Competencias> listarCompetencias() {
+    List<Competencia> listarCompetencias() {
         try {
             return competenciaDao.listarTodasCompetencias()
         } catch (SQLException e) {
@@ -25,7 +25,7 @@ class CompetenciaService implements ICompetenciaService {
     }
 
     @Override
-    Competencias buscarCompetenciaPorId(Integer idCompetencia) {
+    Competencia buscarCompetenciaPorId(Integer idCompetencia) {
         try {
             return competenciaDao.buscarCompetenciaPorId(idCompetencia)
         } catch (SQLException e) {
@@ -34,7 +34,7 @@ class CompetenciaService implements ICompetenciaService {
     }
 
     @Override
-    void adicionarCompetencia(Competencias competencia) {
+    void adicionarCompetencia(Competencia competencia) {
         try {
             competenciaDao.adicionarCompetencia(competencia)
         } catch (SQLException e) {
@@ -43,9 +43,9 @@ class CompetenciaService implements ICompetenciaService {
     }
 
     @Override
-    void atualizarCompetencia(Competencias competencia) {
+    void atualizarCompetencia(Competencia competencia) {
         try {
-            Competencias existingCompetencia = competenciaDao.buscarCompetenciaPorId(competencia.getId())
+            Competencia existingCompetencia = competenciaDao.buscarCompetenciaPorId(competencia.getId())
             if (existingCompetencia == null) {
                 throw new CompetenciaNotFoundException("Competência não encontrada com ID: " + competencia.getId())
             }
@@ -58,7 +58,7 @@ class CompetenciaService implements ICompetenciaService {
     @Override
     void excluirCompetencia(Integer idCompetencia) {
         try {
-            Competencias existingCompetencia = competenciaDao.buscarCompetenciaPorId(idCompetencia)
+            Competencia existingCompetencia = competenciaDao.buscarCompetenciaPorId(idCompetencia)
             if (existingCompetencia == null) {
                 throw new CompetenciaNotFoundException("Competência não encontrada com ID: " + idCompetencia)
             }

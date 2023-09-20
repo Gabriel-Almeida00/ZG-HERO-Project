@@ -2,9 +2,9 @@ package linketinder.entity.dto
 
 
 class EmpresaDTO {
-    Integer id
-    String pais
-    String descricaoEmpresa
+    private Integer id
+    private String pais
+    private String descricaoEmpresa
 
     EmpresaDTO(String pais, String descricaoEmpresa) {
         this.pais = pais
@@ -13,5 +13,17 @@ class EmpresaDTO {
 
     void setId(Integer id) {
         this.id = id
+    }
+
+    Integer getId() {
+        return id
+    }
+
+    String getPais() {
+        return pais
+    }
+
+    String getDescricaoEmpresa() {
+        return descricaoEmpresa
     }
 }

@@ -33,7 +33,7 @@ class CompetenciaCandidatoMenu {
 
     void exibirMenuCandidato(Reader reader) {
         while (true) {
-            println "Menu Competencias do Candidato:"
+            println "Menu Competencia do Candidato:"
             println "1. Listar competencias do candidato"
             println "2. adicionar competencia"
             println "3. Atualizar competencia"
@@ -90,7 +90,7 @@ class CompetenciaCandidatoMenu {
     }
 
     void adicionarCompetenciaCandidato(Reader reader) {
-        println "Competencias :"
+        println "Competencia :"
         competenciaMenu.listarCompetencias()
         CandidatoCompetencia candidatoCompetencia = criarCompetenciaCandidato(reader)
         candidatoService.adicionarCandidatoCompetencia(candidatoCompetencia)

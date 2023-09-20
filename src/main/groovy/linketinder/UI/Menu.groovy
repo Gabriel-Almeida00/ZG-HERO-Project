@@ -21,7 +21,7 @@ class Menu {
             println "Menu :"
             println "1. Gerenciar candidatos"
             println "2. Gerenciar empresa"
-            println "3. Gerenciar Competencias"
+            println "3. Gerenciar Competencia"
             println "4. sair"
 
             int opcao = Integer.parseInt(reader.readLine())

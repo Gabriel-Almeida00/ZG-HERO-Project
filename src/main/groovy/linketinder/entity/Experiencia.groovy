@@ -2,11 +2,11 @@ package linketinder.entity
 
 class Experiencia {
 
-    Integer id
-    Integer idCandidato
-    String cargo
-    String empresa
-    Integer nivel
+    private Integer id
+    private Integer idCandidato
+    private String cargo
+    private String empresa
+    private Integer nivel
 
     Experiencia(Integer idCandidato, String cargo, String empresa, Integer nivel) {
         this.idCandidato = idCandidato

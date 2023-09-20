@@ -2,7 +2,7 @@ package linketinder.dao.competencia
 
 
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.Competencias
+import linketinder.entity.Competencia
 
 import java.sql.Connection
 import java.sql.PreparedStatement
@@ -17,7 +17,7 @@ class CompetenciaDao implements ICompetenciaDao {
         this.databaseConnection = databaseConnection
     }
 
-    void adicionarCompetencia(Competencias competencia) throws SQLException {
+    void adicionarCompetencia(Competencia competencia) throws SQLException {
         String sql = "INSERT INTO competencias (nome) VALUES (?)"
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -29,7 +29,7 @@ class CompetenciaDao implements ICompetenciaDao {
         }
     }
 
-    Competencias buscarCompetenciaPorId(Integer id) throws SQLException {
+    Competencia buscarCompetenciaPorId(Integer id) throws SQLException {
         String sql = "SELECT * FROM competencias WHERE id = ?"
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -40,7 +40,7 @@ class CompetenciaDao implements ICompetenciaDao {
                 if (resultSet.next()) {
                     String nome = resultSet.getString("nome")
 
-                    Competencias competencias = new Competencias(nome)
+                    Competencia competencias = new Competencia(nome)
                     competencias.setId(id)
                     return competencias
                 }
@@ -49,8 +49,8 @@ class CompetenciaDao implements ICompetenciaDao {
         return null
     }
 
-    List<Competencias> listarTodasCompetencias() throws SQLException {
-        List<Competencias> competencias = new ArrayList<>()
+    List<Competencia> listarTodasCompetencias() throws SQLException {
+        List<Competencia> competencias = new ArrayList<>()
         String sql = "SELECT * FROM competencias"
 
         try (Connection connection = databaseConnection.getConnection()
@@ -61,7 +61,7 @@ class CompetenciaDao implements ICompetenciaDao {
                 Integer id = resultSet.getInt("id")
                 String nome = resultSet.getString("nome")
 
-                Competencias competencia = new Competencias(nome)
+                Competencia competencia = new Competencia(nome)
                 competencia.setId(id)
                 competencias.add(competencia)
             }
@@ -69,7 +69,7 @@ class CompetenciaDao implements ICompetenciaDao {
         return competencias
     }
 
-    void atualizarCompetencia(Competencias competencia) throws SQLException {
+    void atualizarCompetencia(Competencia competencia) throws SQLException {
         String sql = "UPDATE competencias SET nome = ? WHERE id = ?"
 
         try (Connection connection = databaseConnection.getConnection()

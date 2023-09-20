@@ -55,6 +55,7 @@ class FormacaoDao implements IFormacaoDao {
         String sql = "SELECT * FROM formacoes WHERE idCandidato = ?"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idCandidato)
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Integer id = resultSet.getInt("id")

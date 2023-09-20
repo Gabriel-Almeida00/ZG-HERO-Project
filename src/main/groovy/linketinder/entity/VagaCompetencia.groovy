@@ -2,10 +2,10 @@ package linketinder.entity
 
 class VagaCompetencia {
 
-    Integer id
-    Integer idVaga
-    Integer idCompetencia
-    Integer nivel
+    private Integer id
+    private Integer idVaga
+    private Integer idCompetencia
+    private Integer nivel
 
     VagaCompetencia(Integer idVaga, Integer idCompetencia, Integer nivel) {
         this.idVaga = idVaga

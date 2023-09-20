@@ -35,7 +35,7 @@ class VagaMenu {
             println "2. Cadastrar Vaga"
             println "3. Atualizar Vaga"
             println "4. Deletar Vaga"
-            println "5. Gerenciar Competencias da vaga"
+            println "5. Gerenciar Competencia da vaga"
             println "6. Listar Candidatos que curtiram vaga"
             println "7. Voltar"
 
@@ -162,11 +162,11 @@ class VagaMenu {
        List<CandidatoQueCurtiuVagaDTO> candidatos = vagaService.listarCandidatosQueCurtiramVaga(id)
        candidatos.forEach { candidato ->
            println("==============")
-           println("ID: ${candidato.idCandidato}")
-           println("Descrição: ${candidato.descricao}")
+           println("ID: ${candidato.getIdCandidato()}")
+           println("Descrição: ${candidato.getDescricao()}")
 
            candidato.nomes.forEach { competencia ->
-               println("Competencias:  $competencia")
+               println("Competencia:  $competencia")
            }
        }
    }

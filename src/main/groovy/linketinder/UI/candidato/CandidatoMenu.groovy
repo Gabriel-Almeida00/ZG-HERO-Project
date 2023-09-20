@@ -54,7 +54,7 @@ class CandidatoMenu {
             println "2. Cadastrar candidato"
             println "3. Atualizar candidato"
             println "4. Deletar candidato"
-            println "5. Gerenciar Competencias do candidato"
+            println "5. Gerenciar Competencia do candidato"
             println "6. Gerenciar experiencias do candidato"
             println "7. Gerenciar formações do candidato"
             println "8. Curtir Vaga"
@@ -213,8 +213,8 @@ class CandidatoMenu {
         empresas.forEach { empresa ->
             println("==========")
             println("Empresas: ")
-            println("Descrição:  ${empresa.descricaoEmpresa}")
-            println("País:  ${empresa.pais}")
+            println("Descrição:  ${empresa.getDescricaoEmpresa()}")
+            println("País:  ${empresa.getPais()}")
             println()
         }
     }
@@ -228,11 +228,11 @@ class CandidatoMenu {
             println "============================"
             println "DEU MATCH"
             println "A seguinte empresa curtiu seu perfil: "
-            println "Nome :  ${match.nomeEmpresa}"
-            println "Descrição: ${match.descricaoEmpresa}"
+            println "Nome :  ${match.getNomeEmpresa()}"
+            println "Descrição: ${match.getDescricaoEmpresa()}"
             println "Vaga que o candidato curitu: "
-            println "Nome: ${match.nomeVaga}"
-            println "Descrição: ${match.descricaoVaga}"
+            println "Nome: ${match.getNomeVaga()}"
+            println "Descrição: ${match.getDescricaoVaga()}"
             println ""
         }
     }

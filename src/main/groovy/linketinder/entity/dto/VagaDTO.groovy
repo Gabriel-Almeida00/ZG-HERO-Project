@@ -1,10 +1,10 @@
 package linketinder.entity.dto
 
 class VagaDTO {
-    Integer id
-    String nome
-    String descricao
-    List<String> nomeCompetencia
+    private Integer id
+    private String nome
+    private String descricao
+    private List<String> nomeCompetencia
 
     VagaDTO(Integer id, String nome, String descricao, List<String> nomeCompetencia) {
         this.id = id

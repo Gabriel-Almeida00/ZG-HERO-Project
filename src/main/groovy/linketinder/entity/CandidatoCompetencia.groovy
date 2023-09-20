@@ -2,10 +2,10 @@ package linketinder.entity
 
 class CandidatoCompetencia {
 
-    Integer id
-    Integer idCandidato
-    Integer idCompetencia
-    Integer nivel
+    private Integer id
+    private Integer idCandidato
+    private Integer idCompetencia
+    private Integer nivel
 
 
 

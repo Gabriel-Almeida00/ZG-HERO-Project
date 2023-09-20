@@ -9,6 +9,7 @@ class Config {
         try {
             File configFile = new File("config.json")
             JsonSlurper jsonSlurper = new JsonSlurper()
+
             Object configData = jsonSlurper.parse(configFile)
             SENHA = configData.senha
         } catch (Exception e) {

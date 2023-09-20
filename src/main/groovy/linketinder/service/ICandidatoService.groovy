@@ -8,14 +8,12 @@ import linketinder.entity.dto.EmpresaDTO
 
 interface ICandidatoService {
     List<CandidatoDTO> listarCandidatos() ;
-
     Candidato obterCandidatoPorId(Integer idCandidato);
     void cadastrarCandidato(Candidato candidato);
     void atualizarCandidato(Candidato candidato);
     void deletarCandidato(Integer candidatoId);
 
     List<CompetenciaDTO> listarCompetenciasPorCandidato(Integer idCandidato)
-
     void adicionarCandidatoCompetencia(CandidatoCompetencia candidatoCompetencia);
     void atualizarNivelCompetenciaCandidato(CandidatoCompetencia candidatoCompetencia);
     void excluirCompetenciaCandidato(Integer id);

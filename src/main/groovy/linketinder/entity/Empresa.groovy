@@ -2,15 +2,15 @@ package linketinder.entity
 
 class Empresa {
 
-    Integer id
-    String nome
-    String cnpj
-    String email
-    String descricao
-    String pais
-    String cep
-    String senha
-    List<Vaga> vagas
+    private Integer id
+    private String nome
+    private String cnpj
+    private String email
+    private String descricao
+    private String pais
+    private String cep
+    private String senha
+    private List<Vaga> vagas
 
     Empresa(String nome,
             String cnpj,

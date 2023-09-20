@@ -178,11 +178,11 @@ class EmpresaMenu {
             println "============================"
             println "DEU MATCH"
             println  "O seguinte candidato curtiu uma de suas vagas: "
-            println "Nome :  ${match.nomeCandidato}"
-            println  "Descrição: ${match.descricaoCandidato}"
+            println "Nome :  ${match.getNomeCandidato()}"
+            println  "Descrição: ${match.getDescricaoCandidato()}"
             println  "Vaga que o candidato curitu: "
-            println  "Nome: ${match.nomeVaga}"
-            println  "Descrição: ${match.descricaoVaga}"
+            println  "Nome: ${match.getNomeVaga()}"
+            println  "Descrição: ${match.getDescricaoVaga()}"
             println  ""
         }
     }
