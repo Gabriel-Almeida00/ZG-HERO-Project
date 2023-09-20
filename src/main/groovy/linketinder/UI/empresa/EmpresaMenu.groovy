@@ -162,7 +162,6 @@ class EmpresaMenu {
         Integer idCandidato = candidatoCurtido.getIdCandidato()
         Integer idEmpresa = candidatoCurtido.getIdEmpresa()
         empresaService.curtirCandidato(idCandidato, idEmpresa)
-        verificaMatch(idCandidato)
     }
 
     void verificaMatch(Integer idCandidato){

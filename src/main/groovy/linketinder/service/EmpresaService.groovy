@@ -56,7 +56,7 @@ class EmpresaService implements IEmpresa {
     void atualizarEmpresa(Empresa empresa) {
         try {
             Empresa idEmpresa = empresaDao.buscarEmpresaPorId(empresa.getId())
-            if(idEmpresa == null){
+            if (idEmpresa == null) {
                 throw new EmpresasNotFoundException("Empresa não encontrada com ID: " + empresa.getId())
             }
             empresaDao.atualizarEmpresa(empresa)
@@ -69,7 +69,7 @@ class EmpresaService implements IEmpresa {
     void excluirEmpresa(Integer id) {
         try {
             Empresa idEmpresa = empresaDao.buscarEmpresaPorId(id)
-            if(idEmpresa == null){
+            if (idEmpresa == null) {
                 throw new EmpresasNotFoundException("Empresa não encontrada com ID: " + id)
             }
             empresaDao.excluirEmpresa(id)
@@ -80,23 +80,26 @@ class EmpresaService implements IEmpresa {
 
     @Override
     void curtirCandidato(Integer idCandidato, Integer idEmpresa) {
-       try{
-           Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato)
-           Empresa empresa = empresaDao.buscarEmpresaPorId(idEmpresa)
+        try {
+            Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato)
+            Empresa empresa = empresaDao.buscarEmpresaPorId(idEmpresa)
 
-           if (candidato == null) {
-               throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
-           }
-           if(empresa == null){
-               throw new EmpresasNotFoundException("Empresa não encontrada com ID: " + idEmpresa)
-           }
+            if (candidato == null) {
+                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
+            }
+            if (empresa == null) {
+                throw new EmpresasNotFoundException("Empresa não encontrada com ID: " + idEmpresa)
+            }
 
-           curtidaDao.curtirCandidato(idCandidato, idEmpresa)
+            Integer idVaga = curtidaDao.verificaCurtidaDoCandidato(idCandidato)
+            if (idVaga == null) {
+                curtidaDao.curtirCandidato(idCandidato, idEmpresa)
+            } else {
+                curtidaDao.AtualizarCurtidaComIdEmpresa(idVaga, idEmpresa, idCandidato)
+            }
 
-       }catch (SQLException e){
-           throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-       }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        }
     }
-
-
 }
