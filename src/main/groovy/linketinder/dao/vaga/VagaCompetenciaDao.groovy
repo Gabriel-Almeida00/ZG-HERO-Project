@@ -6,6 +6,7 @@ import linketinder.db.IDatabaseConnection
 import linketinder.entity.VagaCompetencia
 import linketinder.entity.dto.CompetenciaDTO
 
+import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -56,31 +57,35 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao{
     }
 
     @Override
-     List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) throws SQLException {
-        List<CompetenciaDTO> vagaCompetenciasList = new ArrayList<>()
-            String sql =
-                    "SELECT vc.id, c.nome AS nomeCompetencia, nc.nivel AS nivel " +
-                    "FROM vaga_competencia vc " +
-                    "     INNER JOIN competencias c ON vc.idCompetencia = c.id " +
-                    "     INNER JOIN nivel_competencia nc ON vc.idNivelCompetencia = nc.id " +
-                    "WHERE vc.idVaga =?;"
+    List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) throws SQLException {
+        String sql =
+                "SELECT vc.id, c.nome AS nomeCompetencia, nc.nivel AS nivel " +
+                        "FROM vaga_competencia vc " +
+                        "INNER JOIN competencias c ON vc.idCompetencia = c.id " +
+                        "INNER JOIN nivel_competencia nc ON vc.idNivelCompetencia = nc.id " +
+                        "WHERE vc.idVaga =?;"
 
-        try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idVaga)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Integer id = resultSet.getInt("id")
-                    String nomeCompetencia = resultSet.getString("nomeCompetencia")
-                    String nivel = resultSet.getString("nivel")
-
-
-                    CompetenciaDTO competencia = new CompetenciaDTO(id,nomeCompetencia, nivel)
-                    vagaCompetenciasList.add(competencia)
-                }
+                return extrairCompetencias(resultSet)
             }
         }
+    }
 
+    private List<CompetenciaDTO> extrairCompetencias(ResultSet resultSet) throws SQLException {
+        List<CompetenciaDTO> vagaCompetenciasList = new ArrayList<>()
+
+        while (resultSet.next()) {
+            Integer id = resultSet.getInt("id")
+            String nomeCompetencia = resultSet.getString("nomeCompetencia")
+            String nivel = resultSet.getString("nivel")
+
+            CompetenciaDTO competencia = new CompetenciaDTO(id, nomeCompetencia, nivel)
+            vagaCompetenciasList.add(competencia)
+        }
         return vagaCompetenciasList
     }
 }

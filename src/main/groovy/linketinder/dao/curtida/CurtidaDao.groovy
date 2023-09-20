@@ -41,11 +41,14 @@ class CurtidaDao implements ICurtidaDao {
             statement.setInt(1, idEmpresa)
             statement.setInt(2, idCandidato)
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    int empresaQueCurtiuId = resultSet.getInt("idEmpresa")
-                    return empresaQueCurtiuId
-                }
+            return obterIdEmpresaCurtiu(statement)
+        }
+    }
+
+    private Integer obterIdEmpresaCurtiu(PreparedStatement statement) throws SQLException {
+        try (ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt("idEmpresa")
             }
         }
         return null
@@ -67,31 +70,35 @@ class CurtidaDao implements ICurtidaDao {
 
     @Override
     List<EmpresaDTO> listarEmpresasQueCurtiramCandidato(Integer idCandidato) throws SQLException {
-        List<EmpresaDTO> empresasDtoList = new ArrayList<>()
-
         String sql = "SELECT e.id, e.pais, e.descricao " +
-                        "FROM empresas e " +
-                        "INNER JOIN curtidas c ON e.id = c.idEmpresa " +
-                        "WHERE c.idCandidato = ?"
+                "FROM empresas e " +
+                "INNER JOIN curtidas c ON e.id = c.idEmpresa " +
+                "WHERE c.idCandidato = ?"
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, idCandidato)
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Integer idEmpresa = resultSet.getInt("id")
-                    String pais = resultSet.getString("pais")
-                    String descricaoEmpresa = resultSet.getString("descricao")
+            List<EmpresaDTO> empresasDtoList = obterEmpresasCurtiramCandidato(statement)
+            return empresasDtoList
+        }
+    }
 
-                    EmpresaDTO empresa = new EmpresaDTO( pais, descricaoEmpresa)
-                    empresa.setId(idEmpresa)
-                    empresasDtoList.add(empresa)
-                }
+    private List<EmpresaDTO> obterEmpresasCurtiramCandidato(PreparedStatement statement) throws SQLException {
+        List<EmpresaDTO> empresasDtoList = new ArrayList<>()
+
+        try (ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                Integer idEmpresa = resultSet.getInt("id")
+                String pais = resultSet.getString("pais")
+                String descricaoEmpresa = resultSet.getString("descricao")
+
+                EmpresaDTO empresa = new EmpresaDTO(pais, descricaoEmpresa)
+                empresa.setId(idEmpresa)
+                empresasDtoList.add(empresa)
             }
         }
-
         return empresasDtoList
     }
 
@@ -108,7 +115,7 @@ class CurtidaDao implements ICurtidaDao {
     }
 
     @Override
-    Integer verificaCurtidaDoCandidato( Integer idCandidato) {
+    Integer verificaCurtidaDoCandidato(Integer idCandidato) {
         String sql = "SELECT idVaga FROM curtidas WHERE idCandidato=? AND idStatus=1"
 
         try (Connection connection = databaseConnection.getConnection()
@@ -116,11 +123,14 @@ class CurtidaDao implements ICurtidaDao {
 
             statement.setInt(1, idCandidato)
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    int vagaCurtida = resultSet.getInt("idVaga")
-                    return vagaCurtida
-                }
+            return obterVagaCurtida(statement)
+        }
+    }
+
+    private Integer obterVagaCurtida(PreparedStatement statement) throws SQLException {
+        try (ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt("idVaga")
             }
         }
         return null
@@ -143,8 +153,6 @@ class CurtidaDao implements ICurtidaDao {
 
     @Override
     List<CandidatoQueCurtiuVagaDTO> listarCandidatosQueCurtiramVaga(Integer idVaga) throws SQLException {
-        List<CandidatoQueCurtiuVagaDTO> candidatosList = new ArrayList<>()
-
         String sql = "SELECT " +
                 "    c.id AS id_candidato, " +
                 "    c.descricao AS descricao_candidato, " +
@@ -165,26 +173,29 @@ class CurtidaDao implements ICurtidaDao {
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, idVaga)
+            ResultSet resultSet = statement.executeQuery()
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Integer idCandidato = resultSet.getInt("id_candidato")
-                    String descricao = resultSet.getString("descricao_candidato")
-                    String nomesCompetencia = resultSet.getString("nomes_competencia")
-
-                    List<String> nomesCompetenciaList = Arrays.asList(nomesCompetencia.split(", "))
-
-                    CandidatoQueCurtiuVagaDTO candidatoDTO = new CandidatoQueCurtiuVagaDTO(
-                            idCandidato,
-                            descricao,
-                            nomesCompetenciaList
-                    )
-
-                    candidatosList.add(candidatoDTO)
-                }
-            }
+            return extrairCandidatosDTO(resultSet)
         }
+    }
 
+    private List<CandidatoQueCurtiuVagaDTO> extrairCandidatosDTO(ResultSet resultSet) throws SQLException {
+        List<CandidatoQueCurtiuVagaDTO> candidatosList = new ArrayList<>()
+
+        while (resultSet.next()) {
+            Integer idCandidato = resultSet.getInt("id_candidato")
+            String descricao = resultSet.getString("descricao_candidato")
+            String nomesCompetencia = resultSet.getString("nomes_competencia")
+
+            List<String> nomesCompetenciaList = Arrays.asList(nomesCompetencia.split(", "))
+
+            CandidatoQueCurtiuVagaDTO candidatoDTO = new CandidatoQueCurtiuVagaDTO(
+                    idCandidato,
+                    descricao,
+                    nomesCompetenciaList
+            )
+            candidatosList.add(candidatoDTO)
+        }
         return candidatosList
     }
 }

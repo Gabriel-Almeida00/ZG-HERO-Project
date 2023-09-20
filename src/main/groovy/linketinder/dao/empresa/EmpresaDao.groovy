@@ -20,29 +20,35 @@ class EmpresaDao implements IEmpresaDao {
 
     @Override
     List<Empresa> listarTodasEmpresas() throws SQLException {
-        List<Empresa> empresasList = new ArrayList<>()
         String sql = "SELECT * FROM empresas"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id")
-                String nome = resultSet.getString("nome")
-                String cnpj = resultSet.getString("cnpj")
-                String email = resultSet.getString("email")
-                String descricao = resultSet.getString("descricao")
-                String pais = resultSet.getString("pais")
-                String cep = resultSet.getString("cep")
-                String senha = resultSet.getString("senha")
 
-                Empresa empresa = new Empresa( nome, cnpj, email, descricao, pais, cep, senha)
-                empresa.setId(id)
-                empresasList.add(empresa)
-            }
+            return extrairEmpresas(resultSet)
         }
+    }
 
+    private List<Empresa> extrairEmpresas(ResultSet resultSet) throws SQLException {
+        List<Empresa> empresasList = new ArrayList<>()
+
+        while (resultSet.next()) {
+            Integer id = resultSet.getInt("id")
+            String nome = resultSet.getString("nome")
+            String cnpj = resultSet.getString("cnpj")
+            String email = resultSet.getString("email")
+            String descricao = resultSet.getString("descricao")
+            String pais = resultSet.getString("pais")
+            String cep = resultSet.getString("cep")
+            String senha = resultSet.getString("senha")
+
+            Empresa empresa = new Empresa(nome, cnpj, email, descricao, pais, cep, senha)
+            empresa.setId(id)
+            empresasList.add(empresa)
+        }
         return empresasList
     }
+
 
     @Override
     void adicionarEmpresa(Empresa empresa) throws SQLException {
@@ -98,24 +104,28 @@ class EmpresaDao implements IEmpresaDao {
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idEmpresa)
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Integer id = resultSet.getInt("id")
-                    String nome = resultSet.getString("nome")
-                    String cnpj = resultSet.getString("cnpj")
-                    String email = resultSet.getString("email")
-                    String descricao = resultSet.getString("descricao")
-                    String pais = resultSet.getString("pais")
-                    String cep = resultSet.getString("cep")
-                    String senha = resultSet.getString("senha")
-
-                    Empresa empresa = new Empresa(nome, cnpj, email, descricao, pais, cep, senha)
-                    empresa.setId(id)
-
-                    return empresa
-                } else {
-                    return null
-                }
+                return extrairEmpresa(resultSet)
             }
+        }
+    }
+
+    private Empresa extrairEmpresa(ResultSet resultSet) throws SQLException {
+        if (resultSet.next()) {
+            Integer id = resultSet.getInt("id")
+            String nome = resultSet.getString("nome")
+            String cnpj = resultSet.getString("cnpj")
+            String email = resultSet.getString("email")
+            String descricao = resultSet.getString("descricao")
+            String pais = resultSet.getString("pais")
+            String cep = resultSet.getString("cep")
+            String senha = resultSet.getString("senha")
+
+            Empresa empresa = new Empresa(nome, cnpj, email, descricao, pais, cep, senha)
+            empresa.setId(id)
+
+            return empresa
+        } else {
+            return null
         }
     }
 }

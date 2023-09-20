@@ -39,32 +39,36 @@ class MatchDao implements IMatchDao {
                 "    cu.idEmpresa = ? " +
                 "    AND cu.idStatus = 2; "
 
-        List<MatchCandidatoDTO> matchesList = new ArrayList<>()
-
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idEmpresa)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Integer idCandidato = resultSet.getInt("id_candidato")
-                    String nomeCandidato = resultSet.getString("nome_candidato")
-                    String descricaoCandidato = resultSet.getString("descricao_candidato")
-                    Integer idVaga = resultSet.getInt("id_vaga")
-                    String nomeVaga = resultSet.getString("nome_vaga")
-                    String descricaoVaga = resultSet.getString("descricao_vaga")
-
-                    MatchCandidatoDTO matchDTO = new MatchCandidatoDTO(
-                            idCandidato,
-                            nomeCandidato,
-                            descricaoCandidato,
-                            idVaga,
-                            nomeVaga,
-                            descricaoVaga
-                    )
-                    matchesList.add(matchDTO)
-                }
+                return extrairMatchesCandidato(resultSet)
             }
+        }
+    }
+
+    private List<MatchCandidatoDTO> extrairMatchesCandidato(ResultSet resultSet) throws SQLException {
+        List<MatchCandidatoDTO> matchesList = new ArrayList<>()
+
+        while (resultSet.next()) {
+            Integer idCandidato = resultSet.getInt("id_candidato")
+            String nomeCandidato = resultSet.getString("nome_candidato")
+            String descricaoCandidato = resultSet.getString("descricao_candidato")
+            Integer idVaga = resultSet.getInt("id_vaga")
+            String nomeVaga = resultSet.getString("nome_vaga")
+            String descricaoVaga = resultSet.getString("descricao_vaga")
+
+            MatchCandidatoDTO matchDTO = new MatchCandidatoDTO(
+                    idCandidato,
+                    nomeCandidato,
+                    descricaoCandidato,
+                    idVaga,
+                    nomeVaga,
+                    descricaoVaga
+            )
+            matchesList.add(matchDTO)
         }
 
         return matchesList
@@ -72,8 +76,6 @@ class MatchDao implements IMatchDao {
 
     @Override
     List<MatchEmpresaDTO> encontrarMatchesPeloCandidato(Integer idCandidato) throws SQLException {
-        List<MatchEmpresaDTO> matchesList = new ArrayList<>()
-
         String sql = "SELECT " +
                 "    e.id AS id_empresa, " +
                 "    e.nome AS nome_empresa, " +
@@ -95,28 +97,32 @@ class MatchDao implements IMatchDao {
             statement.setInt(1, idCandidato)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Integer idEmpresa = resultSet.getInt("id_empresa")
-                    String nomeEmpresa = resultSet.getString("nome_empresa")
-                    String descricaoEmpresa = resultSet.getString("descricao_empresa")
-                    Integer idVaga = resultSet.getInt("id_vaga")
-                    String nomeVaga = resultSet.getString("nome_vaga")
-                    String descricaoVaga = resultSet.getString("descricao_vaga")
-
-                    MatchEmpresaDTO match = new MatchEmpresaDTO(
-                            idEmpresa,
-                            nomeEmpresa,
-                            descricaoEmpresa,
-                            idVaga,
-                            nomeVaga,
-                            descricaoVaga
-                    )
-
-                    matchesList.add(match)
-                }
+                return extrairMatchesEmpresa(resultSet)
             }
         }
+    }
 
+    private List<MatchEmpresaDTO> extrairMatchesEmpresa(ResultSet resultSet) throws SQLException {
+        List<MatchEmpresaDTO> matchesList = new ArrayList<>()
+
+        while (resultSet.next()) {
+            Integer idEmpresa = resultSet.getInt("id_empresa")
+            String nomeEmpresa = resultSet.getString("nome_empresa")
+            String descricaoEmpresa = resultSet.getString("descricao_empresa")
+            Integer idVaga = resultSet.getInt("id_vaga")
+            String nomeVaga = resultSet.getString("nome_vaga")
+            String descricaoVaga = resultSet.getString("descricao_vaga")
+
+            MatchEmpresaDTO match = new MatchEmpresaDTO(
+                    idEmpresa,
+                    nomeEmpresa,
+                    descricaoEmpresa,
+                    idVaga,
+                    nomeVaga,
+                    descricaoVaga
+            )
+            matchesList.add(match)
+        }
         return matchesList
     }
 }
