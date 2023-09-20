@@ -23,51 +23,61 @@ class CompetenciaDao implements ICompetenciaDao {
         String sql = "INSERT INTO competencias (nome) VALUES (?)"
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
-
             statement.setString(1, competencia.getNome())
-
 
             statement.executeUpdate()
         }
     }
 
+    @Override
     Competencia buscarCompetenciaPorId(Integer id) throws SQLException {
-        String sql = "SELECT * FROM competencias WHERE id = ?"
+        String sql = "SELECT nome FROM competencias WHERE id = ?"
+
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
-
             statement.setInt(1, id)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    String nome = resultSet.getString("nome")
-
-                    Competencia competencias = new Competencia(nome)
-                    competencias.setId(id)
-                    return competencias
-                }
+                return criarCompetenciaAPartirDoResultSet(resultSet, id)
             }
         }
-        return null
     }
 
+    private Competencia criarCompetenciaAPartirDoResultSet(ResultSet resultSet, Integer id) throws SQLException {
+        if (resultSet.next()) {
+            String nome = resultSet.getString("nome")
+            Competencia competencia = new Competencia(nome)
+            competencia.setId(id)
+            return competencia
+        } else {
+            return null
+        }
+    }
+
+    @Override
     List<Competencia> listarTodasCompetencias() throws SQLException {
-        List<Competencia> competenciasList = new ArrayList<>()
-        String sql = "SELECT * FROM competencias"
+        String sql = "SELECT id, nome FROM competencias"
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
 
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id")
-                String nome = resultSet.getString("nome")
-
-                Competencia competencia = new Competencia(nome)
-                competencia.setId(id)
-                competenciasList.add(competencia)
-            }
+            return criarListaCompetenciasAPartirDoResultSet(resultSet)
         }
+    }
+
+    private List<Competencia> criarListaCompetenciasAPartirDoResultSet(ResultSet resultSet) throws SQLException {
+        List<Competencia> competenciasList = new ArrayList<>()
+
+        while (resultSet.next()) {
+            Integer id = resultSet.getInt("id")
+            String nome = resultSet.getString("nome")
+
+            Competencia competencia = new Competencia(nome)
+            competencia.setId(id)
+            competenciasList.add(competencia)
+        }
+
         return competenciasList
     }
 
