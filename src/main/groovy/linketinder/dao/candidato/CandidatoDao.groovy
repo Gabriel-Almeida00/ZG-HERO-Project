@@ -67,16 +67,16 @@ class CandidatoDao implements ICandidatoDao {
                 "    competencias comp ON cc.idCompetencia = comp.id " +
                 "GROUP BY c.id, c.nome, c.descricao;"
 
-        try (Connection connection = databaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
 
-            return extrairCandidatosDTO(resultSet);
+            return extrairCandidatosDTO(resultSet)
         }
     }
 
     private List<CandidatoDTO> extrairCandidatosDTO(ResultSet resultSet) {
-        List<CandidatoDTO> candidatosDTO = new ArrayList<>();
+        List<CandidatoDTO> candidatosDTO = new ArrayList<>()
 
         while (resultSet.next()) {
             int candidatoId = resultSet.getInt("id")

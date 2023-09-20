@@ -5,6 +5,7 @@ import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Experiencia
 
+import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -46,22 +47,31 @@ class ExperienciaDao implements IExperienciaDao {
 
     @Override
     List<Experiencia> listarExperienciasPorCandidato(Integer idCandidato) throws SQLException {
-        List<Experiencia> experienciasList = new ArrayList<>()
         String sql = "SELECT id, cargo, empresa, idNivelExperiencia FROM experiencias WHERE idCandidato=?"
-        try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
-            statement.setInt(1, idCandidato)
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    String cargo = resultSet.getString("cargo")
-                    String empresa = resultSet.getString("empresa")
-                    Integer nivel = resultSet.getInt("idNivelExperiencia")
-                    Integer id = resultSet.getInt("id")
 
-                    Experiencia experiencia = new Experiencia(idCandidato, cargo, empresa, nivel)
-                    experiencia.setId(id)
-                    experienciasList.add(experiencia)
-                }
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idCandidato)
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return extrairExperiencias(resultSet, idCandidato)
             }
+        }
+    }
+
+    private List<Experiencia> extrairExperiencias(ResultSet resultSet, Integer idCandidato) throws SQLException {
+        List<Experiencia> experienciasList = new ArrayList<>()
+
+        while (resultSet.next()) {
+            String cargo = resultSet.getString("cargo")
+            String empresa = resultSet.getString("empresa")
+            Integer nivel = resultSet.getInt("idNivelExperiencia")
+            Integer id = resultSet.getInt("id")
+
+            Experiencia experiencia = new Experiencia(idCandidato, cargo, empresa, nivel)
+            experiencia.setId(id)
+
+            experienciasList.add(experiencia)
         }
         return experienciasList
     }
@@ -77,23 +87,27 @@ class ExperienciaDao implements IExperienciaDao {
 
     @Override
     Experiencia buscarExperienciaPorId(Integer idExperiencia) throws SQLException {
-        String sql = "SELECT id, idCandidato, cargo, empresa, idNivelExperiencia FROM experiencias WHERE id = ?"
+        String sql = "SELECT idCandidato, cargo, empresa, idNivelExperiencia FROM experiencias WHERE id = ?"
 
-        try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idExperiencia)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Integer idCandidato = resultSet.getInt("idCandidato")
-                    String cargo = resultSet.getString("cargo")
-                    String empresa = resultSet.getString("empresa")
-                    Integer nivel = resultSet.getInt("idNivelExperiencia")
-
-                    return new Experiencia(idCandidato, cargo, empresa, nivel)
-                }
+                return extrairExperiencia(resultSet)
             }
         }
+    }
 
+    private Experiencia extrairExperiencia(ResultSet resultSet) throws SQLException {
+        if (resultSet.next()) {
+            Integer idCandidato = resultSet.getInt("idCandidato")
+            String cargo = resultSet.getString("cargo")
+            String empresa = resultSet.getString("empresa")
+            Integer nivel = resultSet.getInt("idNivelExperiencia")
+
+            return new Experiencia(idCandidato, cargo, empresa, nivel)
+        }
         return null
     }
 }
