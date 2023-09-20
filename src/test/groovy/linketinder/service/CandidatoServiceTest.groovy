@@ -163,8 +163,8 @@ class CandidatoServiceTest {
         candidatoMock.setId(idCandidato)
 
         List<CompetenciaDTO> competenciasMock = new ArrayList<>()
-        competenciasMock.add(new CompetenciaDTO("Java", Arrays.asList(1)))
-        competenciasMock.add(new CompetenciaDTO("SQL", Arrays.asList(2)))
+        competenciasMock.add(new CompetenciaDTO(1,"Java", "Intermediároo"))
+        competenciasMock.add(new CompetenciaDTO(2,"SQL", "Avançado"))
 
         when(candidatoDaoMock.obterCandidatoPorId(candidatoMock.getId())).thenReturn(candidatoMock)
 
@@ -202,7 +202,7 @@ class CandidatoServiceTest {
         CandidatoCompetencia candidatoCompetencia = new CandidatoCompetencia(1, idCompetencia, novoNivel)
         candidatoCompetencia.setId(id)
 
-        CompetenciaDTO competenciasMock = new CompetenciaDTO("Java", Arrays.asList(1))
+        CompetenciaDTO competenciasMock = new CompetenciaDTO(idCompetencia,"Java", "Avançado")
         competenciasMock.setId(idCompetencia)
 
         doNothing().when(candidatoCompetenciaDao).atualizarNivelCompetenciaCandidato(candidatoCompetencia)
@@ -216,7 +216,7 @@ class CandidatoServiceTest {
     void testExcluirCompetenciaCandidato() throws SQLException {
         Integer idCompetencia = 2
 
-        CompetenciaDTO competenciasMock = new CompetenciaDTO("Java",  Arrays.asList(1))
+        CompetenciaDTO competenciasMock = new CompetenciaDTO(idCompetencia,"Java",  "Básico")
         competenciasMock.setId(idCompetencia)
 
         doNothing().when(candidatoCompetenciaDao).excluirCompetenciaCandidato(idCompetencia)

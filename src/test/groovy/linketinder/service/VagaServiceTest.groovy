@@ -205,12 +205,14 @@ class VagaServiceTest {
 
         List<CompetenciaDTO> vagaCompetenciaListMock = new ArrayList<>()
         vagaCompetenciaListMock.add(new CompetenciaDTO(
+                1,
                 "java",
-                Arrays.asList(1)
+               "básico"
         ))
         vagaCompetenciaListMock.add(new CompetenciaDTO(
+                2,
                 "groovy",
-                Arrays.asList(1)
+                "avançado"
         ))
 
         when(vagaCompetenciaDao.listarCompetenciasPorVaga(idVaga)).thenReturn(vagaCompetenciaListMock)

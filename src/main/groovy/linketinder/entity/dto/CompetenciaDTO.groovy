@@ -3,9 +3,10 @@ package linketinder.entity.dto
 class CompetenciaDTO {
     Integer id
     String nome
-    List<Integer> nivel
+    String nivel
 
-    CompetenciaDTO(String nome, List<Integer> nivel) {
+    CompetenciaDTO(Integer id, String nome, String nivel) {
+        this.id = id
         this.nome = nome
         this.nivel = nivel
     }

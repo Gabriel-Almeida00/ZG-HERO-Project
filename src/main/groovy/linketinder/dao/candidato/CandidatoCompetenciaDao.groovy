@@ -20,7 +20,11 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
     @Override
     List<CompetenciaDTO> listarCompetenciasPorCandidato(Integer idCandidato) throws SQLException {
         List<CompetenciaDTO> competenciasList = new ArrayList<>()
-        String sql = "SELECT cc.id, c.nome, cc.idNivelCompetencia FROM candidato_competencia cc JOIN competencias c ON cc.idCompetencia = c.id WHERE cc.idCandidato = ?"
+        String sql = "SELECT cc.id AS id, c.nome AS nome, nc.nivel AS nivel_competencia " +
+                "FROM candidato_competencia cc " +
+                "JOIN competencias c ON cc.idCompetencia = c.id " +
+                "JOIN nivel_competencia nc ON cc.idNivelCompetencia = nc.id " +
+                "WHERE cc.idCandidato =?"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idCandidato)
@@ -29,10 +33,9 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
                 while (resultSet.next()) {
                     Integer id = resultSet.getInt("id")
                     String nome = resultSet.getString("nome")
-                    String nivel = resultSet.getString("idNivelCompetencia")
+                    String nivel = resultSet.getString("nivel_competencia")
 
-                    CompetenciaDTO competencias = new CompetenciaDTO(nome, nivel)
-                    competencias.setId(id)
+                    CompetenciaDTO competencias = new CompetenciaDTO(id,nome, nivel)
                     competenciasList.add(competencias)
                 }
             }
