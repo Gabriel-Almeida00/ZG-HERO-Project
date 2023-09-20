@@ -44,7 +44,7 @@ class ExperienciaDao implements IExperienciaDao {
 
     @Override
     List<Experiencia> listarExperienciasPorCandidato(Integer idCandidato) throws SQLException {
-        List<Experiencia> experiencias = new ArrayList<>()
+        List<Experiencia> experienciasList = new ArrayList<>()
         String sql = "SELECT id, cargo, empresa, idNivelExperiencia FROM experiencias WHERE idCandidato=?"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idCandidato)
@@ -57,11 +57,11 @@ class ExperienciaDao implements IExperienciaDao {
 
                     Experiencia experiencia = new Experiencia(idCandidato, cargo, empresa, nivel)
                     experiencia.setId(id)
-                    experiencias.add(experiencia)
+                    experienciasList.add(experiencia)
                 }
             }
         }
-        return experiencias
+        return experienciasList
     }
 
     @Override
@@ -85,7 +85,7 @@ class ExperienciaDao implements IExperienciaDao {
                     Integer idCandidato = resultSet.getInt("idCandidato")
                     String cargo = resultSet.getString("cargo")
                     String empresa = resultSet.getString("empresa")
-                    Integer nivel = resultSet.getString("idNivelExperiencia")
+                    Integer nivel = resultSet.getInt("idNivelExperiencia")
 
                     return new Experiencia(idCandidato, cargo, empresa, nivel)
                 }

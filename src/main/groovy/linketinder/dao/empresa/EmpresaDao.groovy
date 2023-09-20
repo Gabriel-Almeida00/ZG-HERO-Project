@@ -18,7 +18,7 @@ class EmpresaDao implements IEmpresaDao {
 
     @Override
     List<Empresa> listarTodasEmpresas() throws SQLException {
-        List<Empresa> empresas = new ArrayList<>()
+        List<Empresa> empresasList = new ArrayList<>()
         String sql = "SELECT * FROM empresas"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)
@@ -35,11 +35,11 @@ class EmpresaDao implements IEmpresaDao {
 
                 Empresa empresa = new Empresa( nome, cnpj, email, descricao, pais, cep, senha)
                 empresa.setId(id)
-                empresas.add(empresa)
+                empresasList.add(empresa)
             }
         }
 
-        return empresas
+        return empresasList
     }
 
     @Override

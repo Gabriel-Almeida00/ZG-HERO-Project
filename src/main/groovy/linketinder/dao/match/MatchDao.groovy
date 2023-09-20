@@ -37,7 +37,7 @@ class MatchDao implements IMatchDao {
                 "    cu.idEmpresa = ? " +
                 "    AND cu.idStatus = 2; "
 
-        List<MatchCandidatoDTO> matches = new ArrayList<>()
+        List<MatchCandidatoDTO> matchesList = new ArrayList<>()
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -60,17 +60,17 @@ class MatchDao implements IMatchDao {
                             nomeVaga,
                             descricaoVaga
                     )
-                    matches.add(matchDTO)
+                    matchesList.add(matchDTO)
                 }
             }
         }
 
-        return matches
+        return matchesList
     }
 
     @Override
     List<MatchEmpresaDTO> encontrarMatchesPeloCandidato(Integer idCandidato) throws SQLException {
-        List<MatchEmpresaDTO> resultados = new ArrayList<>()
+        List<MatchEmpresaDTO> matchesList = new ArrayList<>()
 
         String sql = "SELECT " +
                 "    e.id AS id_empresa, " +
@@ -110,11 +110,11 @@ class MatchDao implements IMatchDao {
                             descricaoVaga
                     )
 
-                    resultados.add(match)
+                    matchesList.add(match)
                 }
             }
         }
 
-        return resultados
+        return matchesList
     }
 }

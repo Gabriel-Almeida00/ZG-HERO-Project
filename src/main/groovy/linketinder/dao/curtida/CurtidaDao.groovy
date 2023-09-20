@@ -64,7 +64,7 @@ class CurtidaDao implements ICurtidaDao {
 
     @Override
     List<EmpresaDTO> listarEmpresasQueCurtiramCandidato(Integer idCandidato) throws SQLException {
-        List<EmpresaDTO> empresasCurtidasDTO = new ArrayList<>()
+        List<EmpresaDTO> empresasDtoList = new ArrayList<>()
 
         String sql = "SELECT e.id, e.pais, e.descricao " +
                         "FROM empresas e " +
@@ -84,12 +84,12 @@ class CurtidaDao implements ICurtidaDao {
 
                     EmpresaDTO empresa = new EmpresaDTO( pais, descricaoEmpresa)
                     empresa.setId(idEmpresa)
-                    empresasCurtidasDTO.add(empresa)
+                    empresasDtoList.add(empresa)
                 }
             }
         }
 
-        return empresasCurtidasDTO
+        return empresasDtoList
     }
 
 
@@ -140,7 +140,7 @@ class CurtidaDao implements ICurtidaDao {
 
     @Override
     List<CandidatoQueCurtiuVagaDTO> listarCandidatosQueCurtiramVaga(Integer idVaga) throws SQLException {
-        List<CandidatoQueCurtiuVagaDTO> candidatosCurtiramDTO = new ArrayList<>()
+        List<CandidatoQueCurtiuVagaDTO> candidatosList = new ArrayList<>()
 
         String sql = "SELECT " +
                 "    c.id AS id_candidato, " +
@@ -177,11 +177,11 @@ class CurtidaDao implements ICurtidaDao {
                             nomesCompetenciaList
                     )
 
-                    candidatosCurtiramDTO.add(candidatoDTO)
+                    candidatosList.add(candidatoDTO)
                 }
             }
         }
 
-        return candidatosCurtiramDTO
+        return candidatosList
     }
 }

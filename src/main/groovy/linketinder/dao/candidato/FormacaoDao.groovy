@@ -51,7 +51,7 @@ class FormacaoDao implements IFormacaoDao {
     }
 
     List<Formacao> listarFormacoesPorCandidato(Integer idCandidato) throws SQLException {
-        List<Formacao> formacoes = new ArrayList<>()
+        List<Formacao> formacoesList = new ArrayList<>()
         String sql = "SELECT * FROM formacoes WHERE idCandidato = ?"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idCandidato)
@@ -66,11 +66,11 @@ class FormacaoDao implements IFormacaoDao {
 
                     Formacao formacao = new Formacao(idCandidato, instituicao, curso, nivel, anoConclusao)
                     formacao.setId(id)
-                    formacoes.add(formacao)
+                    formacoesList.add(formacao)
                 }
             }
         }
-        return formacoes
+        return formacoesList
     }
 
     @Override

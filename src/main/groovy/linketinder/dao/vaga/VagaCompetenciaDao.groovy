@@ -55,7 +55,7 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao{
 
     @Override
      List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) throws SQLException {
-        List<CompetenciaDTO> vagaCompetencias = new ArrayList<>()
+        List<CompetenciaDTO> vagaCompetenciasList = new ArrayList<>()
             String sql =
                     "SELECT vc.id, c.nome AS nomeCompetencia, nc.nivel AS nivel " +
                     "FROM vaga_competencia vc " +
@@ -74,11 +74,11 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao{
 
 
                     CompetenciaDTO competencia = new CompetenciaDTO(id,nomeCompetencia, nivel)
-                    vagaCompetencias.add(competencia)
+                    vagaCompetenciasList.add(competencia)
                 }
             }
         }
 
-        return vagaCompetencias
+        return vagaCompetenciasList
     }
 }

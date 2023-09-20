@@ -50,7 +50,7 @@ class CompetenciaDao implements ICompetenciaDao {
     }
 
     List<Competencia> listarTodasCompetencias() throws SQLException {
-        List<Competencia> competencias = new ArrayList<>()
+        List<Competencia> competenciasList = new ArrayList<>()
         String sql = "SELECT * FROM competencias"
 
         try (Connection connection = databaseConnection.getConnection()
@@ -63,10 +63,10 @@ class CompetenciaDao implements ICompetenciaDao {
 
                 Competencia competencia = new Competencia(nome)
                 competencia.setId(id)
-                competencias.add(competencia)
+                competenciasList.add(competencia)
             }
         }
-        return competencias
+        return competenciasList
     }
 
     void atualizarCompetencia(Competencia competencia) throws SQLException {

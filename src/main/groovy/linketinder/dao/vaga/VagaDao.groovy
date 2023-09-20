@@ -27,7 +27,7 @@ class VagaDao implements IVagaDao {
                 "INNER JOIN competencias comp ON cv.idCompetencia = comp.id " +
                 "GROUP BY v.id, v.nome, v.descricao"
 
-        List<VagaDTO> vagas = new ArrayList<>()
+        List<VagaDTO> vagasList = new ArrayList<>()
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)
@@ -42,11 +42,11 @@ class VagaDao implements IVagaDao {
                 List<String> nomeCompetencia = Arrays.asList(nomesCompetencia.split(", "))
 
                 VagaDTO vagaDTO = new VagaDTO(id, nome, descricao, nomeCompetencia)
-                vagas.add(vagaDTO)
+                vagasList.add(vagaDTO)
             }
 
         }
-        return vagas
+        return vagasList
     }
 
     @Override
@@ -70,7 +70,7 @@ class VagaDao implements IVagaDao {
 
     @Override
     List<VagaDTO> listarVagasDaEmpresa(int idEmpresa) throws SQLException {
-        List<VagaDTO> vagaDTOs = new ArrayList<>()
+        List<VagaDTO> vagaDTOsList = new ArrayList<>()
 
         String sql = "SELECT " +
                 "    v.id AS id_vaga, " +
@@ -109,12 +109,12 @@ class VagaDao implements IVagaDao {
                             nomeCompetencia
                     )
 
-                    vagaDTOs.add(vagaDTO)
+                    vagaDTOsList.add(vagaDTO)
                 }
             }
         }
 
-        return vagaDTOs
+        return vagaDTOsList
     }
 
     @Override
