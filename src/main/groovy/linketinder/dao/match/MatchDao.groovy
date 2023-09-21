@@ -1,5 +1,6 @@
 package linketinder.dao.match
 
+import linketinder.Exception.DataBaseException
 import linketinder.config.Config
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
@@ -46,6 +47,8 @@ class MatchDao implements IMatchDao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 return extrairMatchesCandidato(resultSet)
             }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -99,6 +102,8 @@ class MatchDao implements IMatchDao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 return extrairMatchesEmpresa(resultSet)
             }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
