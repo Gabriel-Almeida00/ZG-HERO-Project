@@ -1,6 +1,11 @@
 package linketinder.dao.curtida
 
+import linketinder.Exception.DataBaseException
 import linketinder.config.Config
+import linketinder.dao.candidato.CandidatoDao
+import linketinder.dao.candidato.ICandidatoDao
+import linketinder.dao.vaga.IVagaDao
+import linketinder.dao.vaga.VagaDao
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
@@ -14,20 +19,29 @@ import java.sql.SQLException
 class CurtidaDao implements ICurtidaDao {
 
     private IDatabaseConnection databaseConnection
+    private ICandidatoDao candidatoDao
+    private IVagaDao vagaDao
 
-    CurtidaDao( ) {
+    CurtidaDao() {
         Config config = new Config()
         databaseConnection = new DatabaseConnection(config)
+        candidatoDao = new CandidatoDao()
+        vagaDao = new VagaDao()
     }
 
     @Override
     void curtirVaga(Integer idCandidato, Integer idVaga) {
-        String sql = "INSERT INTO curtidas (idCandidato, idVaga , idStatus) VALUES (?, ?, 1)"
+        candidatoDao.obterCandidatoPorId(idCandidato)
+        vagaDao.buscarVagaPorId(idVaga)
 
+        String sql = "INSERT INTO curtidas (idCandidato, idVaga , idStatus) VALUES (?, ?, 1)"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idCandidato)
             statement.setInt(2, idVaga)
             statement.executeUpdate()
+        }
+        catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -55,7 +69,7 @@ class CurtidaDao implements ICurtidaDao {
     }
 
     @Override
-    void AtualizarCurtidaComIdVaga(Integer idVaga, Integer idEmpresa, Integer idCandidato ) {
+    void AtualizarCurtidaComIdVaga(Integer idVaga, Integer idEmpresa, Integer idCandidato) {
         String sql = " UPDATE curtidas SET idStatus = 2 , idVaga =? WHERE idEmpresa =? AND idCandidato =?"
 
         try (Connection connection = databaseConnection.getConnection()
@@ -70,6 +84,8 @@ class CurtidaDao implements ICurtidaDao {
 
     @Override
     List<EmpresaDTO> listarEmpresasQueCurtiramCandidato(Integer idCandidato) throws SQLException {
+        candidatoDao.obterCandidatoPorId(idCandidato)
+
         String sql = "SELECT e.id, e.pais, e.descricao " +
                 "FROM empresas e " +
                 "INNER JOIN curtidas c ON e.id = c.idEmpresa " +
@@ -82,6 +98,9 @@ class CurtidaDao implements ICurtidaDao {
 
             List<EmpresaDTO> empresasDtoList = obterEmpresasCurtiramCandidato(statement)
             return empresasDtoList
+        }
+        catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -137,7 +156,7 @@ class CurtidaDao implements ICurtidaDao {
     }
 
     @Override
-    void AtualizarCurtidaComIdEmpresa(Integer idVaga, Integer idEmpresa, Integer idCandidato ) {
+    void AtualizarCurtidaComIdEmpresa(Integer idVaga, Integer idEmpresa, Integer idCandidato) {
         String sql = " UPDATE curtidas SET idStatus = 2 , idEmpresa =? WHERE idVaga =? AND idCandidato =?"
 
         try (Connection connection = databaseConnection.getConnection()

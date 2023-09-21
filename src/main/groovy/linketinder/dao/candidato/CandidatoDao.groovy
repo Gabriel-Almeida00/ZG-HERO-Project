@@ -1,5 +1,7 @@
 package linketinder.dao.candidato
 
+import linketinder.Exception.CandidatosNotFoundException
+import linketinder.Exception.DataBaseException
 import linketinder.config.Config
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
@@ -9,6 +11,7 @@ import linketinder.entity.dto.CandidatoDTO
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
+import java.sql.SQLException
 
 class CandidatoDao implements ICandidatoDao {
 
@@ -30,6 +33,8 @@ class CandidatoDao implements ICandidatoDao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 return retornarCandidatoResultSet(resultSet)
             }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -48,8 +53,9 @@ class CandidatoDao implements ICandidatoDao {
             )
             candidato.setId(resultSet.getInt("id"))
             return candidato
+        } else {
+            throw new CandidatosNotFoundException("Candidato não encontrado")
         }
-        return null
     }
 
     @Override
@@ -70,8 +76,10 @@ class CandidatoDao implements ICandidatoDao {
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
+             return extrairCandidatosDTO(resultSet)
 
-            return extrairCandidatosDTO(resultSet)
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -87,7 +95,6 @@ class CandidatoDao implements ICandidatoDao {
             List<String> nomesCompetenciaList = Arrays.asList(nomesCompetencia.split(", "))
 
             CandidatoDTO candidatoDTO = new CandidatoDTO(candidatoId, nome, descricao, nomesCompetenciaList)
-
             candidatosDTO.add(candidatoDTO)
         }
         return candidatosDTO
@@ -95,7 +102,9 @@ class CandidatoDao implements ICandidatoDao {
 
     @Override
     void adicionarCandidato(Candidato candidato) {
-        String sql = "INSERT INTO candidatos (nome, sobrenome, dataNascimento, email, cpf, pais, cep, descricao, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        String sql = "INSERT INTO candidatos (nome, sobrenome, dataNascimento, email, cpf, pais, cep, descricao, senha) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setString(1, candidato.getNome())
             statement.setString(2, candidato.getSobrenome())
@@ -107,12 +116,17 @@ class CandidatoDao implements ICandidatoDao {
             statement.setString(8, candidato.getDescricao())
             statement.setString(9, candidato.getSenha())
             statement.executeUpdate()
+
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
 
     @Override
     void atualizarCandidato(Candidato candidato) {
+        obterCandidatoPorId(candidato.getId())
+
         String sql = "UPDATE candidatos SET nome=?, sobrenome=?, dataNascimento=?, email=?, cpf=?, pais=?, cep=?, descricao=?, senha=? WHERE id=?"
 
         try (Connection connection = databaseConnection.getConnection()
@@ -127,17 +141,24 @@ class CandidatoDao implements ICandidatoDao {
             statement.setString(8, candidato.getDescricao())
             statement.setString(9, candidato.getSenha())
             statement.setInt(10, candidato.getId())
-
             statement.executeUpdate()
+
+        }  catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
     void deletarCandidato(Integer id) {
+        obterCandidatoPorId(id)
+
         String sql = "DELETE FROM candidatos WHERE id=?"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, id)
             statement.executeUpdate()
+
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 }

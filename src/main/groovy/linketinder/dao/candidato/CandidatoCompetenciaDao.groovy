@@ -1,5 +1,7 @@
 package linketinder.dao.candidato
 
+
+import linketinder.Exception.DataBaseException
 import linketinder.config.Config
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
@@ -13,15 +15,19 @@ import java.sql.SQLException
 
 class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
 
-    private  IDatabaseConnection databaseConnection
+    private IDatabaseConnection databaseConnection
+    private ICandidatoDao candidatoDao
 
     CandidatoCompetenciaDao() {
         Config config = new Config()
         databaseConnection = new DatabaseConnection(config)
+        candidatoDao = new CandidatoDao()
     }
 
     @Override
     List<CompetenciaDTO> listarCompetenciasPorCandidato(Integer idCandidato) throws SQLException {
+        candidatoDao.obterCandidatoPorId(idCandidato)
+
         String sql = listarCompetenciasPorCandidatoQuery(idCandidato)
         List<CompetenciaDTO> competenciasList = mapearQueryParaCompetenciaDTO(sql)
         return competenciasList
@@ -48,8 +54,9 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
                 CompetenciaDTO competencias = new CompetenciaDTO(id, nome, nivel)
                 competenciasList.add(competencias)
             }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
-
         return competenciasList
     }
 
@@ -62,9 +69,10 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
             statement.setInt(3, candidatoCompetencia.getNivel())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
-
 
 
     @Override
@@ -78,6 +86,8 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
             updateStatement.setInt(2, candidatoCompetencia.getId())
 
             updateStatement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -90,7 +100,8 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
             deleteStatement.setInt(1, id)
 
             deleteStatement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
-
 }

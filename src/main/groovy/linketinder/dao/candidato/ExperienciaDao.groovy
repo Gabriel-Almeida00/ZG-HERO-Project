@@ -1,5 +1,7 @@
 package linketinder.dao.candidato
 
+import linketinder.Exception.DataBaseException
+import linketinder.Exception.ExperienciaNotFoundException
 import linketinder.config.Config
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
@@ -12,11 +14,13 @@ import java.sql.SQLException
 
 class ExperienciaDao implements IExperienciaDao {
 
-    private  IDatabaseConnection databaseConnection
+    private IDatabaseConnection databaseConnection
+    private ICandidatoDao candidatoDao
 
     ExperienciaDao() {
         Config config = new Config()
         databaseConnection = new DatabaseConnection(config)
+        candidatoDao = new CandidatoDao()
     }
 
     @Override
@@ -29,11 +33,15 @@ class ExperienciaDao implements IExperienciaDao {
             statement.setInt(4, experiencia.getNivel())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
     void atualizarExperiencia(Experiencia experiencia) throws SQLException {
+        buscarExperienciaPorId(experiencia.getId())
+
         String sql = "UPDATE experiencias SET cargo=?, empresa=?, idNivelExperiencia=? WHERE id=?"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setString(1, experiencia.getCargo())
@@ -42,13 +50,16 @@ class ExperienciaDao implements IExperienciaDao {
             statement.setInt(4, experiencia.getId())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
     List<Experiencia> listarExperienciasPorCandidato(Integer idCandidato) throws SQLException {
-        String sql = "SELECT id, cargo, empresa, idNivelExperiencia FROM experiencias WHERE idCandidato=?"
+        candidatoDao.obterCandidatoPorId(idCandidato)
 
+        String sql = "SELECT id, cargo, empresa, idNivelExperiencia FROM experiencias WHERE idCandidato=?"
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idCandidato)
@@ -62,26 +73,35 @@ class ExperienciaDao implements IExperienciaDao {
     private List<Experiencia> extrairExperiencias(ResultSet resultSet, Integer idCandidato) throws SQLException {
         List<Experiencia> experienciasList = new ArrayList<>()
 
-        while (resultSet.next()) {
-            String cargo = resultSet.getString("cargo")
-            String empresa = resultSet.getString("empresa")
-            Integer nivel = resultSet.getInt("idNivelExperiencia")
-            Integer id = resultSet.getInt("id")
+        try {
+            while (resultSet.next()) {
+                String cargo = resultSet.getString("cargo")
+                String empresa = resultSet.getString("empresa")
+                Integer nivel = resultSet.getInt("idNivelExperiencia")
+                Integer id = resultSet.getInt("id")
 
-            Experiencia experiencia = new Experiencia(idCandidato, cargo, empresa, nivel)
-            experiencia.setId(id)
+                Experiencia experiencia = new Experiencia(idCandidato, cargo, empresa, nivel)
+                experiencia.setId(id)
 
-            experienciasList.add(experiencia)
+                experienciasList.add(experiencia)
+            }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao extrair experiências do banco de dados: " + e.getMessage())
         }
         return experienciasList
     }
 
     @Override
     void excluirExperiencia(Integer idExperiencia) throws SQLException {
+        buscarExperienciaPorId(idExperiencia)
+
         String sql = "DELETE FROM experiencias WHERE id=?"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idExperiencia)
             statement.executeUpdate()
+        }
+        catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -96,6 +116,8 @@ class ExperienciaDao implements IExperienciaDao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 return extrairExperiencia(resultSet)
             }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -107,7 +129,8 @@ class ExperienciaDao implements IExperienciaDao {
             Integer nivel = resultSet.getInt("idNivelExperiencia")
 
             return new Experiencia(idCandidato, cargo, empresa, nivel)
+        } else {
+            throw new ExperienciaNotFoundException("Experiencia não encontrada")
         }
-        return null
     }
 }

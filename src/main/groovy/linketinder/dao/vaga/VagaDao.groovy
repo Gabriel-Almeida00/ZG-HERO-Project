@@ -1,5 +1,7 @@
 package linketinder.dao.vaga
 
+import linketinder.Exception.DataBaseException
+import linketinder.Exception.EmpresasNotFoundException
 import linketinder.config.Config
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
@@ -60,20 +62,22 @@ class VagaDao implements IVagaDao {
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
-
             statement.setInt(1, idVaga)
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 return extrairIdEmpresa(resultSet)
             }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     private Integer extrairIdEmpresa(ResultSet resultSet) throws SQLException {
         if (resultSet.next()) {
             return resultSet.getInt("idEmpresa")
+        } else {
+            throw new EmpresasNotFoundException("Empresa não encontrada")
         }
-        return null
     }
 
     @Override

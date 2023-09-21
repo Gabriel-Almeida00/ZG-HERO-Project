@@ -41,239 +41,100 @@ class CandidatoService implements ICandidatoService {
     }
 
     List<CandidatoDTO> listarCandidatos() {
-        try {
-            return candidatoDao.listarCandidatos()
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        return candidatoDao.listarCandidatos()
     }
 
     Candidato obterCandidatoPorId(Integer id) {
-        try {
-            Candidato candidato = candidatoDao.obterCandidatoPorId(id)
-            if (candidato == null) {
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + id)
-            }
-            return candidato
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        Candidato candidato = candidatoDao.obterCandidatoPorId(id)
+        return candidato
     }
 
     void cadastrarCandidato(Candidato candidato) {
-        try {
-            candidatoDao.adicionarCandidato(candidato)
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        candidatoDao.adicionarCandidato(candidato)
     }
 
     void atualizarCandidato(Candidato candidato) {
-        try {
-            if (candidato.getId() == null) {
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + candidato.getId())
-            }
-            candidatoDao.atualizarCandidato(candidato)
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        candidatoDao.atualizarCandidato(candidato)
     }
 
     void deletarCandidato(Integer candidatoId) {
-        try {
-            Candidato candidato = candidatoDao.obterCandidatoPorId(candidatoId)
-            if (candidato == null) {
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + candidatoId)
-            }
-            candidatoDao.deletarCandidato(candidatoId)
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        candidatoDao.deletarCandidato(candidatoId)
     }
 
     @Override
     List<CompetenciaDTO> listarCompetenciasPorCandidato(Integer idCandidato) {
-        try {
-            Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato)
-            if (candidato == null) {
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
-            }
-            return candidatoCompetenciaDao.listarCompetenciasPorCandidato(idCandidato)
-        } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        return candidatoCompetenciaDao.listarCompetenciasPorCandidato(idCandidato)
     }
 
 
     @Override
     void adicionarCandidatoCompetencia(CandidatoCompetencia candidatoCompetencia) {
-        try {
-            candidatoCompetenciaDao.adicionarCandidatoCompetencia(candidatoCompetencia)
-        } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        candidatoCompetenciaDao.adicionarCandidatoCompetencia(candidatoCompetencia)
     }
 
     @Override
     void atualizarNivelCompetenciaCandidato(CandidatoCompetencia candidatoCompetencia) {
-        try {
-            candidatoCompetenciaDao.atualizarNivelCompetenciaCandidato(candidatoCompetencia)
-        } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        candidatoCompetenciaDao.atualizarNivelCompetenciaCandidato(candidatoCompetencia)
     }
 
     @Override
     void excluirCompetenciaCandidato(Integer id) {
-        try {
-            candidatoCompetenciaDao.excluirCompetenciaCandidato(id)
-        } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        candidatoCompetenciaDao.excluirCompetenciaCandidato(id)
     }
 
 
     void adicionarExperiencia(Experiencia experiencia) {
-        try {
-            experienciaDao.adicionarExperiencia(experiencia)
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        experienciaDao.adicionarExperiencia(experiencia)
     }
 
 
     void atualizarExperiencia(Experiencia experiencia) {
-        try {
-            if (experiencia.getId() == null) {
-                throw new ExperienciaNotFoundException("Experiencia não encontrada com ID: " + experiencia.getId())
-            }
-            experienciaDao.atualizarExperiencia(experiencia)
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        experienciaDao.atualizarExperiencia(experiencia)
     }
 
 
     List<Experiencia> listarExperienciasPorCandidato(Integer idCandidato) {
-        try {
-            Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato)
-            if (candidato == null) {
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
-            }
-            return experienciaDao.listarExperienciasPorCandidato(idCandidato)
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        return experienciaDao.listarExperienciasPorCandidato(idCandidato)
     }
 
 
     void excluirExperiencia(Integer idExperiencia) {
-        try {
-            Experiencia experiencia = experienciaDao.buscarExperienciaPorId(idExperiencia)
-            if (experiencia == null) {
-                throw new ExperienciaNotFoundException("Experiencia não encontrada com ID: " + idExperiencia)
-            }
-            experienciaDao.excluirExperiencia(idExperiencia)
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        experienciaDao.excluirExperiencia(idExperiencia)
     }
 
     void adicionarFormacao(Formacao formacao) {
-        try {
-            formacaoDao.adicionarFormacao(formacao)
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        formacaoDao.adicionarFormacao(formacao)
     }
 
 
     void atualizarFormacao(Formacao formacao) {
-        try {
-            formacaoDao.atualizarFormacao(formacao)
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        formacaoDao.atualizarFormacao(formacao)
     }
 
 
     void excluirFormacao(Integer idFormacao) {
-        try {
-            Formacao formacao = formacaoDao.buscarFormacaoPorId(idFormacao)
-            if (formacao == null) {
-                throw new FormacaoNotFoundException("Formação não encontrado com ID: " + idFormacao)
-            }
-            formacaoDao.excluirFormacao(idFormacao)
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        formacaoDao.excluirFormacao(idFormacao)
     }
 
 
     List<Formacao> listarFormacoesPorCandidato(Integer idCandidato) {
-        try {
-            Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato)
-            if (candidato == null) {
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
-            }
-            return formacaoDao.listarFormacoesPorCandidato(idCandidato)
-        }
-        catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+        return formacaoDao.listarFormacoesPorCandidato(idCandidato)
     }
 
     @Override
     void curtirVaga(Integer idCandidato, Integer idVaga) {
-        try {
-            Candidato candidato = candidatoDao.obterCandidatoPorId(idCandidato)
-            Vaga vaga = vagaDao.buscarVagaPorId(idVaga)
+        Integer idEmpresa = vagaDao.obterIdEmpresaPorIdVaga(idVaga)
+        Integer empresaQueCurtiu = curtidaDao.verificaCurtidaDaEmpresa(idEmpresa, idCandidato)
 
-            if (candidato == null) {
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
-            }
-            if (vaga == null) {
-                throw new VagaNotFoundException("Vaga não encontrada com ID: " + idVaga)
-            }
-
-            Integer idEmpresa = vagaDao.obterIdEmpresaPorIdVaga(idVaga)
-            Integer empresaQueCurtiu = curtidaDao.verificaCurtidaDaEmpresa(idEmpresa, idCandidato)
-
-            if(empresaQueCurtiu == null){
-                curtidaDao.curtirVaga(idCandidato, idVaga)
-            }
-            else {
-                curtidaDao.AtualizarCurtidaComIdVaga(idVaga, idEmpresa, idCandidato)
-            }
-
-        } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        if (empresaQueCurtiu == null) {
+            curtidaDao.curtirVaga(idCandidato, idVaga)
+        } else {
+            curtidaDao.AtualizarCurtidaComIdVaga(idVaga, idEmpresa, idCandidato)
         }
     }
 
     @Override
-    List<EmpresaDTO> listarEmpresasQueCurtiramCandidato(Integer idCandidato){
-        try{
-            Candidato id = candidatoDao.obterCandidatoPorId(idCandidato)
-
-            if(id == null){
-                throw new CandidatosNotFoundException("Candidato não encontrado com ID: " + idCandidato)
-            }
-            curtidaDao.listarEmpresasQueCurtiramCandidato(idCandidato)
-        }catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
+    List<EmpresaDTO> listarEmpresasQueCurtiramCandidato(Integer idCandidato) {
+        curtidaDao.listarEmpresasQueCurtiramCandidato(idCandidato)
     }
 }
