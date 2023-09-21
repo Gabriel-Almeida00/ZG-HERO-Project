@@ -25,6 +25,9 @@ class CurtidaDao implements ICurtidaDao {
     private IVagaDao vagaDao
     private IEmpresaDao empresaDao
 
+    public final static Integer CURTIDA_NAO_ENCONTRADA = 0
+
+
     CurtidaDao() {
         Config config = new Config()
         databaseConnection = new DatabaseConnection(config)
@@ -69,7 +72,7 @@ class CurtidaDao implements ICurtidaDao {
                 return resultSet.getInt("idEmpresa")
             }
         }
-        return null
+        return CURTIDA_NAO_ENCONTRADA
     }
 
     @Override
@@ -162,7 +165,7 @@ class CurtidaDao implements ICurtidaDao {
                 return resultSet.getInt("idVaga")
             }
         }
-        return null
+        return CURTIDA_NAO_ENCONTRADA
     }
 
     @Override

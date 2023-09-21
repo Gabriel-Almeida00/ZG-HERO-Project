@@ -123,7 +123,6 @@ class VagaDao implements IVagaDao {
             String nomesCompetencia = resultSet.getString("nomes_competencia")
 
             List<String> nomeCompetenciaList = extrairNomesCompetencia(nomesCompetencia)
-
             VagaDTO vagaDTO = new VagaDTO(
                     idVaga,
                     nomeVaga,

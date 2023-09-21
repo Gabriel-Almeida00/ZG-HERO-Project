@@ -1,19 +1,20 @@
 package linketinder.service
 
 
-import linketinder.Exception.*
 import linketinder.dao.candidato.ICandidatoCompetenciaDao
 import linketinder.dao.candidato.ICandidatoDao
 import linketinder.dao.candidato.IExperienciaDao
 import linketinder.dao.candidato.IFormacaoDao
+import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaDao
-import linketinder.entity.*
+import linketinder.entity.Candidato
+import linketinder.entity.CandidatoCompetencia
+import linketinder.entity.Experiencia
+import linketinder.entity.Formacao
 import linketinder.entity.dto.CandidatoDTO
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.entity.dto.EmpresaDTO
-
-import java.sql.SQLException
 
 class CandidatoService implements ICandidatoService {
 
@@ -126,7 +127,7 @@ class CandidatoService implements ICandidatoService {
         Integer idEmpresa = vagaDao.obterIdEmpresaPorIdVaga(idVaga)
         Integer empresaQueCurtiu = curtidaDao.verificaCurtidaDaEmpresa(idEmpresa, idCandidato)
 
-        if (empresaQueCurtiu == null) {
+        if (empresaQueCurtiu == CurtidaDao.CURTIDA_NAO_ENCONTRADA) {
             curtidaDao.curtirVaga(idCandidato, idVaga)
         } else {
             curtidaDao.AtualizarCurtidaComIdVaga(idVaga, idEmpresa, idCandidato)

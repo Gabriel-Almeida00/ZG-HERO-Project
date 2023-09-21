@@ -1,6 +1,7 @@
 package linketinder.dao.candidato
 
 import linketinder.Exception.DataBaseException
+import linketinder.Exception.FormacaoNotFoundException
 import linketinder.config.Config
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
@@ -132,7 +133,7 @@ class FormacaoDao implements IFormacaoDao {
             formacao.setId(id)
             return formacao
         } else {
-            return null
+            throw new FormacaoNotFoundException("Formação não encontrada")
         }
     }
 }

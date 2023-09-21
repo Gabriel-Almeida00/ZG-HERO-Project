@@ -121,6 +121,4 @@ class CompetenciaDao implements ICompetenciaDao {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
-
-
 }

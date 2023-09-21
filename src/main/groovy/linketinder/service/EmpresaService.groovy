@@ -2,6 +2,7 @@ package linketinder.service
 
 
 import linketinder.dao.candidato.ICandidatoDao
+import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.empresa.IEmpresaDao
 import linketinder.entity.Empresa
@@ -46,7 +47,7 @@ class EmpresaService implements IEmpresa {
     @Override
     void curtirCandidato(Integer idCandidato, Integer idEmpresa) {
         Integer idVaga = curtidaDao.verificaCurtidaDoCandidato(idCandidato)
-        if (idVaga == null) {
+        if (idVaga == CurtidaDao.CURTIDA_NAO_ENCONTRADA) {
             curtidaDao.curtirCandidato(idCandidato, idEmpresa)
         } else {
             curtidaDao.AtualizarCurtidaComIdEmpresa(idVaga, idEmpresa, idCandidato)
