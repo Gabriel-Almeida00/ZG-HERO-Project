@@ -1,5 +1,7 @@
 package linketinder.dao.competencia
 
+import linketinder.Exception.CompetenciaNotFoundException
+import linketinder.Exception.DataBaseException
 import linketinder.config.Config
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
@@ -12,7 +14,7 @@ import java.sql.SQLException
 
 class CompetenciaDao implements ICompetenciaDao {
 
-    private  IDatabaseConnection databaseConnection
+    private IDatabaseConnection databaseConnection
 
     CompetenciaDao() {
         Config config = new Config()
@@ -27,6 +29,9 @@ class CompetenciaDao implements ICompetenciaDao {
 
             statement.executeUpdate()
         }
+        catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        }
     }
 
     @Override
@@ -40,6 +45,8 @@ class CompetenciaDao implements ICompetenciaDao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 return criarCompetenciaAPartirDoResultSet(resultSet, id)
             }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -50,7 +57,7 @@ class CompetenciaDao implements ICompetenciaDao {
             competencia.setId(id)
             return competencia
         } else {
-            return null
+            throw new CompetenciaNotFoundException("Competencia não encontrada com ID " + id)
         }
     }
 
@@ -63,6 +70,8 @@ class CompetenciaDao implements ICompetenciaDao {
              ResultSet resultSet = statement.executeQuery()) {
 
             return criarListaCompetenciasAPartirDoResultSet(resultSet)
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -82,8 +91,9 @@ class CompetenciaDao implements ICompetenciaDao {
     }
 
     void atualizarCompetencia(Competencia competencia) throws SQLException {
-        String sql = "UPDATE competencias SET nome = ? WHERE id = ?"
+        buscarCompetenciaPorId(competencia.getId())
 
+        String sql = "UPDATE competencias SET nome = ? WHERE id = ?"
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -91,18 +101,24 @@ class CompetenciaDao implements ICompetenciaDao {
             statement.setInt(2, competencia.getId())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     void excluirCompetencia(Integer idCompetencia) throws SQLException {
-        String sql = "DELETE FROM competencias WHERE id = ?"
+        buscarCompetenciaPorId(idCompetencia)
 
+        String sql = "DELETE FROM competencias WHERE id = ?"
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, idCompetencia)
 
             statement.executeUpdate()
+        }
+        catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
