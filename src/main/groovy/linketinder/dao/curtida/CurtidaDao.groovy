@@ -4,6 +4,8 @@ import linketinder.Exception.DataBaseException
 import linketinder.config.Config
 import linketinder.dao.candidato.CandidatoDao
 import linketinder.dao.candidato.ICandidatoDao
+import linketinder.dao.empresa.EmpresaDao
+import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaDao
 import linketinder.db.DatabaseConnection
@@ -21,12 +23,14 @@ class CurtidaDao implements ICurtidaDao {
     private IDatabaseConnection databaseConnection
     private ICandidatoDao candidatoDao
     private IVagaDao vagaDao
+    private IEmpresaDao empresaDao
 
     CurtidaDao() {
         Config config = new Config()
         databaseConnection = new DatabaseConnection(config)
         candidatoDao = new CandidatoDao()
         vagaDao = new VagaDao()
+        empresaDao = new EmpresaDao()
     }
 
     @Override
@@ -124,12 +128,18 @@ class CurtidaDao implements ICurtidaDao {
 
     @Override
     void curtirCandidato(Integer idCandidato, Integer idEmpresa) {
+        candidatoDao.obterCandidatoPorId(idCandidato)
+        empresaDao.buscarEmpresaPorId(idEmpresa)
+
         String sql = "INSERT INTO curtidas (idCandidato, idEmpresa, idStatus) VALUES (?, ?,  1)"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idCandidato)
             statement.setInt(2, idEmpresa)
             statement.executeUpdate()
+        }
+        catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 

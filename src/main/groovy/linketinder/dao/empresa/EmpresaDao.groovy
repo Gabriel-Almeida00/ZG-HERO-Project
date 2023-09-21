@@ -1,5 +1,7 @@
 package linketinder.dao.empresa
 
+import linketinder.Exception.DataBaseException
+import linketinder.Exception.EmpresasNotFoundException
 import linketinder.config.Config
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
@@ -11,7 +13,7 @@ import java.sql.SQLException
 
 class EmpresaDao implements IEmpresaDao {
 
-    private  IDatabaseConnection databaseConnection
+    private IDatabaseConnection databaseConnection
 
     EmpresaDao() {
         Config config = new Config()
@@ -21,11 +23,12 @@ class EmpresaDao implements IEmpresaDao {
     @Override
     List<Empresa> listarTodasEmpresas() throws SQLException {
         String sql = "SELECT * FROM empresas"
-
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
 
             return extrairEmpresas(resultSet)
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -65,14 +68,17 @@ class EmpresaDao implements IEmpresaDao {
             statement.setString(7, empresa.getSenha())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
     void atualizarEmpresa(Empresa empresa) throws SQLException {
+        buscarEmpresaPorId(empresa.getId())
+
         String sql = "UPDATE empresas SET nome = ?, cnpj = ?, email = ?, descricao = ?, pais = ?, cep = ?, senha = ? " +
                 "WHERE id = ?"
-
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setString(1, empresa.getNome())
             statement.setString(2, empresa.getCnpj())
@@ -84,16 +90,21 @@ class EmpresaDao implements IEmpresaDao {
             statement.setInt(8, empresa.getId())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
     void excluirEmpresa(Integer idEmpresa) throws SQLException {
-        String sql = "DELETE FROM empresas WHERE id = ?"
+        buscarEmpresaPorId(idEmpresa)
 
+        String sql = "DELETE FROM empresas WHERE id = ?"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idEmpresa)
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -106,6 +117,8 @@ class EmpresaDao implements IEmpresaDao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 return extrairEmpresa(resultSet)
             }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -125,7 +138,7 @@ class EmpresaDao implements IEmpresaDao {
 
             return empresa
         } else {
-            return null
+           throw new EmpresasNotFoundException("Empresa não encontrada")
         }
     }
 }
