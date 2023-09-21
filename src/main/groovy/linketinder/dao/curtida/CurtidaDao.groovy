@@ -182,6 +182,8 @@ class CurtidaDao implements ICurtidaDao {
 
     @Override
     List<CandidatoQueCurtiuVagaDTO> listarCandidatosQueCurtiramVaga(Integer idVaga) throws SQLException {
+        vagaDao.buscarVagaPorId(idVaga)
+
         String sql = "SELECT " +
                 "    c.id AS id_candidato, " +
                 "    c.descricao AS descricao_candidato, " +
@@ -205,6 +207,8 @@ class CurtidaDao implements ICurtidaDao {
             ResultSet resultSet = statement.executeQuery()
 
             return extrairCandidatosDTO(resultSet)
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 

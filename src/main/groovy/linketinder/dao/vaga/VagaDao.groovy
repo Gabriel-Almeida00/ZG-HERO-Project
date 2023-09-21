@@ -2,6 +2,7 @@ package linketinder.dao.vaga
 
 import linketinder.Exception.DataBaseException
 import linketinder.Exception.EmpresasNotFoundException
+import linketinder.Exception.VagaNotFoundException
 import linketinder.config.Config
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
@@ -36,6 +37,8 @@ class VagaDao implements IVagaDao {
              ResultSet resultSet = statement.executeQuery()) {
 
             return extrairVagas(resultSet)
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -58,8 +61,9 @@ class VagaDao implements IVagaDao {
 
     @Override
     Integer obterIdEmpresaPorIdVaga(Integer idVaga) {
-        String sql = "SELECT idEmpresa FROM vagas WHERE id = ?"
+        buscarVagaPorId(idVaga)
 
+        String sql = "SELECT idEmpresa FROM vagas WHERE id = ?"
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idVaga)
@@ -104,6 +108,8 @@ class VagaDao implements IVagaDao {
             statement.setInt(1, idEmpresa)
 
             return extrairVagasDTO(statement.executeQuery())
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -145,6 +151,8 @@ class VagaDao implements IVagaDao {
             statement.setInt(1, idVaga)
 
             return extrairVaga(statement.executeQuery(), idVaga)
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -161,8 +169,10 @@ class VagaDao implements IVagaDao {
             vaga.setId(idVaga)
 
             return vaga
+        } else {
+            throw new VagaNotFoundException("Vaga não encontrada com ID : " + idVaga)
         }
-        return null
+
     }
 
 
@@ -180,15 +190,18 @@ class VagaDao implements IVagaDao {
             statement.setInt(6, vaga.getExperienciaMinima())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
 
     @Override
     void atualizarVaga(Vaga vaga) throws SQLException {
+        buscarVagaPorId(vaga.getId())
+
         String sql = "UPDATE vagas SET idEmpresa = ?, nome = ?, descricao = ?, cidade = ?, idNivelFormacao = ?, idNivelExperiencia = ? " +
                 "WHERE id = ?"
-
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, vaga.getIdEmpresa())
             statement.setString(2, vaga.getNome())
@@ -199,16 +212,21 @@ class VagaDao implements IVagaDao {
             statement.setInt(7, vaga.getId())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
     void excluirVaga(Integer idVaga) throws SQLException {
-        String sql = "DELETE FROM vagas WHERE id = ?"
+        buscarVagaPorId(idVaga)
 
+        String sql = "DELETE FROM vagas WHERE id = ?"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idVaga)
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 }

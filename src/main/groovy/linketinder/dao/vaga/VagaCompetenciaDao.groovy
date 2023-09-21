@@ -1,5 +1,6 @@
 package linketinder.dao.vaga
 
+import linketinder.Exception.DataBaseException
 import linketinder.config.Config
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
@@ -11,17 +12,19 @@ import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
 
-class VagaCompetenciaDao implements IVagaCompetenciaDao{
+class VagaCompetenciaDao implements IVagaCompetenciaDao {
 
     private IDatabaseConnection databaseConnection
+    private IVagaDao vagaDao
 
-     VagaCompetenciaDao() {
-         Config config = new Config()
-         databaseConnection = new DatabaseConnection(config)
+    VagaCompetenciaDao() {
+        Config config = new Config()
+        databaseConnection = new DatabaseConnection(config)
+        vagaDao = new VagaDao()
     }
 
     @Override
-     void adicionarVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException {
+    void adicionarVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException {
         String sql = "INSERT INTO vaga_competencia (idVaga, idCompetencia, idNivelCompetencia) VALUES (?, ?, ?)"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
@@ -30,11 +33,13 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao{
             statement.setInt(3, vagaCompetencia.getNivel())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
-     void atualizarNivelVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException {
+    void atualizarNivelVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException {
         String sql = "UPDATE vaga_competencia SET idNivelCompetencia = ? WHERE idVaga = ? AND idCompetencia = ?"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
@@ -43,21 +48,27 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao{
             statement.setInt(3, vagaCompetencia.getIdCompetencia())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
-     void excluirVagaCompetencia(Integer idVagaCompetencia) throws SQLException {
+    void excluirVagaCompetencia(Integer idVagaCompetencia) throws SQLException {
         String sql = "DELETE FROM vaga_competencia WHERE id = ?"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idVagaCompetencia)
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
     List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) throws SQLException {
+        vagaDao.buscarVagaPorId(idVaga)
+
         String sql =
                 "SELECT vc.id, c.nome AS nomeCompetencia, nc.nivel AS nivel " +
                         "FROM vaga_competencia vc " +
@@ -72,6 +83,8 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao{
             try (ResultSet resultSet = statement.executeQuery()) {
                 return extrairCompetencias(resultSet)
             }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
