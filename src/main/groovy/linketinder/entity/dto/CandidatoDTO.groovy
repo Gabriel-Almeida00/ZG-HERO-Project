@@ -1,24 +1,16 @@
 package linketinder.entity.dto
 
 class CandidatoDTO {
-    Integer id
-    String descricao
-    List<CompetenciaDTO> competencias = []
-    List<FormacaoDTO> formacoes = []
-    List<ExperienciaDTO> experiencias = []
+    private Integer id
+    private String nome
+    private String descricao
+    private List<String> competencias
 
-    CandidatoDTO(
-            Integer id,
-            String descricao,
-            List<CompetenciaDTO> competencias,
-            List<FormacaoDTO> formacao,
-            List<ExperienciaDTO> experiencias
-    ) {
+     CandidatoDTO(Integer id, String nome, String descricao, List<String> competencias) {
         this.id = id
+        this.nome = nome
         this.descricao = descricao
         this.competencias = competencias
-        this.formacoes = formacao
-        this.experiencias = experiencias
     }
 
     Integer getId() {
@@ -29,20 +21,12 @@ class CandidatoDTO {
         this.id = id
     }
 
-    List<CompetenciaDTO> getCompetencias() {
-        return competencias
+    String getNome() {
+        return nome
     }
 
-    void setCompetencias(List<CompetenciaDTO> competencias) {
-        this.competencias = competencias
-    }
-
-    List<FormacaoDTO> getFormacoes() {
-        return formacoes
-    }
-
-    List<ExperienciaDTO> getExperiencias() {
-        return experiencias
+    void setNome(String nome) {
+        this.nome = nome
     }
 
     String getDescricao() {
@@ -51,5 +35,13 @@ class CandidatoDTO {
 
     void setDescricao(String descricao) {
         this.descricao = descricao
+    }
+
+    List<String> getCompetencias() {
+        return competencias
+    }
+
+    void setCompetencias(List<String> competencias) {
+        this.competencias = competencias
     }
 }

@@ -1,6 +1,13 @@
 package linketinder.UI.empresa
 
 import linketinder.UI.competencia.CompetenciaMenu
+import linketinder.config.Config
+import linketinder.dao.candidato.CandidatoDao
+import linketinder.dao.candidato.ICandidatoDao
+import linketinder.dao.curtida.CurtidaDao
+import linketinder.dao.curtida.ICurtidaDao
+import linketinder.dao.empresa.EmpresaDao
+import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaCompetenciaDao
@@ -17,21 +24,25 @@ class CompetenciaVagaMenu {
     CompetenciaMenu competenciaMenu
 
     CompetenciaVagaMenu() {
-        IDatabaseConnection databaseConnection = new DatabaseConnection()
-        IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(databaseConnection)
+        Config config = new Config()
+        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
         IVagaDao vagaDao = new VagaDao(databaseConnection)
+        IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(databaseConnection, vagaDao)
+        ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
+        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
 
         competenciaMenu = new CompetenciaMenu()
-        vagaService = new VagaService(vagaDao, vagaCompetenciaDao)
+        vagaService = new VagaService(vagaDao, vagaCompetenciaDao, curtidaDao)
     }
 
     void exibirMenuVaga(Reader reader) {
         while (true) {
-            println "Menu Competencias da Vaga:"
-            println "1. Listar Competencias da Vaga"
-            println "2. Cadastrar Competencias da Vaga"
-            println "3. Atualizar Competencias da Vaga"
-            println "4. Deletar Competencias da Vaga"
+            println "Menu Competencia da Vaga:"
+            println "1. Listar Competencia da Vaga"
+            println "2. Cadastrar Competencia da Vaga"
+            println "3. Atualizar Competencia da Vaga"
+            println "4. Deletar Competencia da Vaga"
             println "5. voltar"
 
 
@@ -65,7 +76,7 @@ class CompetenciaVagaMenu {
         Integer idCompetencia = Integer.parseInt(reader.readLine())
 
         println "Digite o nível da competencia: "
-        String nivel = reader.readLine()
+        Integer nivel = Integer.parseInt(reader.readLine())
 
         return new VagaCompetencia(
                 idVaga,
@@ -81,15 +92,15 @@ class CompetenciaVagaMenu {
 
         vagaCompetencias.each {competencia ->
             println "========================="
-            println "ID: ${competencia.id}"
-            println "Nome: ${competencia.nome}"
-            println "Nivel: ${competencia.nivel}"
+            println "ID: ${competencia.getId()}"
+            println "Nome: ${competencia.getNome()}"
+            println "Nivel: ${competencia.getNivel()}"
             println ""
         }
     }
 
     void adicionarCompetenciaVaga(Reader reader){
-        println "Competencias: "
+        println "Competencia: "
         competenciaMenu.listarCompetencias()
         VagaCompetencia vagaCompetencia = criarCompetenciaVaga(reader)
         vagaService.adicionarVagaCompetencia(vagaCompetencia)

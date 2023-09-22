@@ -1,15 +1,11 @@
 package linketinder.UI.candidato
 
-import linketinder.dao.candidato.CandidatoCompetenciaDao
-import linketinder.dao.candidato.CandidatoDao
-import linketinder.dao.candidato.ExperienciaDao
-import linketinder.dao.candidato.FormacaoDao
-import linketinder.dao.candidato.ICandidatoCompetenciaDao
-import linketinder.dao.candidato.ICandidatoDao
-import linketinder.dao.candidato.IExperienciaDao
-import linketinder.dao.candidato.IFormacaoDao
+import linketinder.config.Config
+import linketinder.dao.candidato.*
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
+import linketinder.dao.empresa.EmpresaDao
+import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaDao
 import linketinder.db.DatabaseConnection
@@ -17,19 +13,21 @@ import linketinder.db.IDatabaseConnection
 import linketinder.entity.Experiencia
 import linketinder.service.CandidatoService
 
-
 class ExperienciaMenu {
 
     CandidatoService service
 
     ExperienciaMenu() {
-        IDatabaseConnection databaseConnection = new DatabaseConnection()
+        Config config = new Config()
+        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+
         ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection)
-        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection)
-        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection)
+        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection, candidatoDao)
+        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection, candidatoDao)
+        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection, candidatoDao)
         IVagaDao vagaDao = new VagaDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
+        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
 
         service = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao, vagaDao, curtidaDao)
     }
@@ -77,7 +75,7 @@ class ExperienciaMenu {
 
 
         println "Digite o nivel:"
-        String nivel = reader.readLine()
+        Integer nivel = Integer.parseInt(reader.readLine())
 
         return new Experiencia(
                 idCandidato,

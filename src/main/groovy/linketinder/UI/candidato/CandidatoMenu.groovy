@@ -1,9 +1,12 @@
 package linketinder.UI.candidato
 
 import linketinder.UI.empresa.VagaMenu
+import linketinder.config.Config
 import linketinder.dao.candidato.*
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
+import linketinder.dao.empresa.EmpresaDao
+import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.match.IMatchDao
 import linketinder.dao.match.MatchDao
 import linketinder.dao.vaga.IVagaDao
@@ -13,7 +16,8 @@ import linketinder.db.IDatabaseConnection
 import linketinder.entity.Candidato
 import linketinder.entity.VagaCurtida
 import linketinder.entity.dto.CandidatoDTO
-import linketinder.entity.dto.VagaCurtidaDTO
+import linketinder.entity.dto.EmpresaDTO
+import linketinder.entity.dto.MatchEmpresaDTO
 import linketinder.service.CandidatoService
 import linketinder.service.MatchService
 
@@ -29,13 +33,16 @@ class CandidatoMenu {
     VagaMenu vagaMenu
 
     CandidatoMenu() {
-        IDatabaseConnection databaseConnection = new DatabaseConnection()
+        Config config = new Config()
+        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+
         ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection)
-        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection)
-        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection)
+        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection, candidatoDao)
+        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection, candidatoDao)
+        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection, candidatoDao)
         IVagaDao vagaDao = new VagaDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
+        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
         IMatchDao matchDao = new MatchDao(databaseConnection)
 
         formacaoMenu = new FormacaoMenu()
@@ -53,11 +60,13 @@ class CandidatoMenu {
             println "2. Cadastrar candidato"
             println "3. Atualizar candidato"
             println "4. Deletar candidato"
-            println "5. Gerenciar Competencias do candidato"
+            println "5. Gerenciar Competencia do candidato"
             println "6. Gerenciar experiencias do candidato"
             println "7. Gerenciar formações do candidato"
             println "8. Curtir Vaga"
-            println "9. Voltar"
+            println "9. Verificar Match"
+            println "10. Listar empresas que curtiram candidato"
+            println "11. Voltar"
 
             int opcao = Integer.parseInt(reader.readLine())
             switch (opcao) {
@@ -86,6 +95,12 @@ class CandidatoMenu {
                     curtirVaga(reader)
                     break
                 case 9:
+                    verificaMatch(reader)
+                    break
+                case 10:
+                    listarEmpresasQueCurtiramCandidato(reader)
+                    break
+                case 11:
                     return
                 default:
                     println "Opção inválida. Tente novamente."
@@ -167,22 +182,13 @@ class CandidatoMenu {
         candidatos.each { candidato ->
             println "======================="
             println "ID: ${candidato.id}"
+            println "Nome: ${candidato.nome}"
             println "Descrição:"
             println "  - ${candidato.descricao}"
 
-            println "Formações:"
-            candidato.formacoes.each { formacao ->
-                println "  - ${formacao.curso} - (${formacao.anoConclusao})"
-            }
-
-            println "Experiências:"
-            candidato.experiencias.each { experiencia ->
-                println "  - ${experiencia.cargo} - ${experiencia.nivel}"
-            }
-
             println "Competências:"
             candidato.competencias.each { competencia ->
-                println "  - ${competencia.nome} - ${competencia.nivel}"
+                println "  - ${competencia}"
             }
         }
         println ""
@@ -197,26 +203,43 @@ class CandidatoMenu {
 
     void curtirVaga(Reader reader) {
         vagaMenu.listarVagas()
+
         VagaCurtida vagaCurtida = criarVagaCurtida(reader)
         Integer idCandidato = vagaCurtida.getIdCandidata()
         Integer idVaga = vagaCurtida.getIdVaga()
+
         candidatoService.curtirVaga(idCandidato, idVaga)
-        verificaMatch(idCandidato, idVaga)
     }
 
-    void verificaMatch(Integer idCandidato,Integer idVaga){
-        List<VagaCurtidaDTO> matchs = matchService.encontrarMatchesPelaVaga(idCandidato, idVaga)
+    void listarEmpresasQueCurtiramCandidato(Reader reader) {
+        println("Digite o id do candidato: ")
+        Integer id = Integer.parseInt(reader.readLine())
+        List<EmpresaDTO> empresas = candidatoService.listarEmpresasQueCurtiramCandidato(id)
 
-        matchs.each {match ->
+        empresas.forEach { empresa ->
+            println("==========")
+            println("Empresas: ")
+            println("Descrição:  ${empresa.getDescricaoEmpresa()}")
+            println("País:  ${empresa.getPais()}")
+            println()
+        }
+    }
+
+    void verificaMatch(Reader reader) {
+        println("Digite o id do candidato: ")
+        Integer id = Integer.parseInt(reader.readLine())
+        List<MatchEmpresaDTO> matchs = matchService.encontrarMatchesPeloCandidato(id)
+
+        matchs.each { match ->
             println "============================"
             println "DEU MATCH"
-            println  "A seguinte empresa curtiu seu perfil: "
-            println "Nome :  ${match.nomeEmpresa}"
-            println  "Descrição: ${match.descricaoEmpresa}"
-            println  "Vaga que o candidato curitu: "
-            println  "Nome: ${match.nomeVaga}"
-            println  "Descrição: ${match.descricaoVaga}"
-            println  ""
+            println "A seguinte empresa curtiu seu perfil: "
+            println "Nome :  ${match.getNomeEmpresa()}"
+            println "Descrição: ${match.getDescricaoEmpresa()}"
+            println "Vaga que o candidato curitu: "
+            println "Nome: ${match.getNomeVaga()}"
+            println "Descrição: ${match.getDescricaoVaga()}"
+            println ""
         }
     }
 }

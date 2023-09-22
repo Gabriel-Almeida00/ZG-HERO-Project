@@ -1,16 +1,15 @@
 package linketinder.entity
 
-
 class Formacao {
 
-    Integer id
-    Integer idCandidato
-    String instituicao
-    String curso
-    String nivel
-    String anoConclusao
+    private Integer id
+    private Integer idCandidato
+    private String instituicao
+    private String curso
+    private Integer nivel
+    private String anoConclusao
 
-    Formacao(Integer idCandidato, String instituicao, String curso, String nivel, String anoConclusao) {
+    Formacao(Integer idCandidato, String instituicao, String curso, Integer nivel, String anoConclusao) {
         this.idCandidato = idCandidato
         this.instituicao = instituicao
         this.curso = curso
@@ -42,11 +41,11 @@ class Formacao {
         return curso
     }
 
-    String getNivel() {
+    Integer getNivel() {
         return nivel
     }
 
-    void setNivel(String nivel) {
+    void setNivel(Integer nivel) {
         this.nivel = nivel
     }
 

@@ -2,12 +2,14 @@ package linketinder.entity
 
 class CandidatoCompetencia {
 
-    Integer id
-    Integer idCandidato
-    Integer idCompetencia
-    String nivel
+    private Integer id
+    private Integer idCandidato
+    private Integer idCompetencia
+    private Integer nivel
 
-    CandidatoCompetencia(Integer idCandidato, Integer idCompetencia, String nivel) {
+
+
+    CandidatoCompetencia(Integer idCandidato, Integer idCompetencia, Integer nivel) {
         this.idCandidato = idCandidato
         this.idCompetencia = idCompetencia
         this.nivel = nivel
@@ -37,11 +39,11 @@ class CandidatoCompetencia {
         this.idCompetencia = idCompetencia
     }
 
-    String getNivel() {
+    Integer getNivel() {
         return nivel
     }
 
-    void setNivel(String nivel) {
+    void setNivel(Integer nivel) {
         this.nivel = nivel
     }
 }

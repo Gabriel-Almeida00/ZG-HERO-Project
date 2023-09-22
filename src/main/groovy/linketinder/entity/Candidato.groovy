@@ -17,15 +17,17 @@ class Candidato {
     private List<Experiencia> experiencias
     private List<CandidatoCurtido> curtida
 
-    Candidato(String nome,
-              String sobrenome,
-              Date dataNascimento,
-              String email,
-              String cpf,
-              String pais,
-              String cep,
-              String descricao,
-              String senha) {
+    Candidato(
+            String nome,
+            String sobrenome,
+            Date dataNascimento,
+            String email,
+            String cpf,
+            String pais,
+            String cep,
+            String descricao,
+            String senha
+    ) {
         this.nome = nome
         this.sobrenome = sobrenome
         this.dataNascimento = dataNascimento

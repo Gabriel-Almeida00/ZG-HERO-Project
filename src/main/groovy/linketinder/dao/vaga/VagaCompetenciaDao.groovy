@@ -1,82 +1,101 @@
 package linketinder.dao.vaga
 
-
+import linketinder.Exception.DataBaseException
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.VagaCompetencia
 import linketinder.entity.dto.CompetenciaDTO
 
+import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
 
-class VagaCompetenciaDao implements IVagaCompetenciaDao{
+class VagaCompetenciaDao implements IVagaCompetenciaDao {
 
     private IDatabaseConnection databaseConnection
+    private IVagaDao vagaDao
 
-     VagaCompetenciaDao(IDatabaseConnection databaseConnection) {
+    VagaCompetenciaDao(IDatabaseConnection databaseConnection, IVagaDao vagaDao) {
         this.databaseConnection = databaseConnection
+        this.vagaDao = vagaDao
     }
 
     @Override
-     void adicionarVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException {
-        String sql = "INSERT INTO vaga_competencia (idVaga, idCompetencia, nivel) VALUES (?, ?, ?)"
+    void adicionarVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException {
+        String sql = "INSERT INTO vaga_competencia (idVaga, idCompetencia, idNivelCompetencia) VALUES (?, ?, ?)"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, vagaCompetencia.getIdVaga())
             statement.setInt(2, vagaCompetencia.getIdCompetencia())
-            statement.setString(3, vagaCompetencia.getNivel())
+            statement.setInt(3, vagaCompetencia.getNivel())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
-     void atualizarNivelVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException {
-        String sql = "UPDATE vaga_competencia SET nivel = ? WHERE idVaga = ? AND idCompetencia = ?"
+    void atualizarNivelVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException {
+        String sql = "UPDATE vaga_competencia SET idNivelCompetencia = ? WHERE idVaga = ? AND idCompetencia = ?"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
-            statement.setString(1, vagaCompetencia.getNivel())
+            statement.setInt(1, vagaCompetencia.getNivel())
             statement.setInt(2, vagaCompetencia.getIdVaga())
             statement.setInt(3, vagaCompetencia.getIdCompetencia())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
-     void excluirVagaCompetencia(Integer idVagaCompetencia) throws SQLException {
+    void excluirVagaCompetencia(Integer idVagaCompetencia) throws SQLException {
         String sql = "DELETE FROM vaga_competencia WHERE id = ?"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idVagaCompetencia)
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
-     List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) throws SQLException {
-        List<CompetenciaDTO> vagaCompetencias = new ArrayList<>()
-            String sql = "SELECT vc.id, c.nome AS nomeCompetencia, vc.nivel AS nivel " +
-                    "FROM vaga_competencia vc " +
-                    "INNER JOIN competencias c ON vc.idCompetencia = c.id " +
-                    "WHERE vc.idVaga = ?;"
+    List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) throws SQLException {
+        vagaDao.buscarVagaPorId(idVaga)
 
-        try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
+        String sql =
+                "SELECT vc.id, c.nome AS nomeCompetencia, nc.nivel AS nivel " +
+                        "FROM vaga_competencia vc " +
+                        "INNER JOIN competencias c ON vc.idCompetencia = c.id " +
+                        "INNER JOIN nivel_competencia nc ON vc.idNivelCompetencia = nc.id " +
+                        "WHERE vc.idVaga =?;"
+
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, idVaga)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Integer id = resultSet.getInt("id")
-                    String nomeCompetencia = resultSet.getString("nomeCompetencia")
-                    String nivel = resultSet.getString("nivel")
-
-                    CompetenciaDTO competencia = new CompetenciaDTO(nomeCompetencia, nivel)
-                    competencia.setId(id)
-                    vagaCompetencias.add(competencia)
-                }
+                return retornarCompetenciaResultset(resultSet)
             }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
+    }
 
-        return vagaCompetencias
+    private List<CompetenciaDTO> retornarCompetenciaResultset(ResultSet resultSet) throws SQLException {
+        List<CompetenciaDTO> vagaCompetenciasList = new ArrayList<>()
+
+        while (resultSet.next()) {
+            Integer id = resultSet.getInt("id")
+            String nomeCompetencia = resultSet.getString("nomeCompetencia")
+            String nivel = resultSet.getString("nivel")
+
+            CompetenciaDTO competencia = new CompetenciaDTO(id, nomeCompetencia, nivel)
+            vagaCompetenciasList.add(competencia)
+        }
+        return vagaCompetenciasList
     }
 }

@@ -1,15 +1,11 @@
 package linketinder.UI.candidato
 
-import linketinder.dao.candidato.CandidatoCompetenciaDao
-import linketinder.dao.candidato.CandidatoDao
-import linketinder.dao.candidato.ExperienciaDao
-import linketinder.dao.candidato.FormacaoDao
-import linketinder.dao.candidato.ICandidatoCompetenciaDao
-import linketinder.dao.candidato.ICandidatoDao
-import linketinder.dao.candidato.IExperienciaDao
-import linketinder.dao.candidato.IFormacaoDao
+import linketinder.config.Config
+import linketinder.dao.candidato.*
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
+import linketinder.dao.empresa.EmpresaDao
+import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaDao
 import linketinder.db.DatabaseConnection
@@ -22,13 +18,16 @@ class FormacaoMenu {
     CandidatoService service
 
     FormacaoMenu() {
-        IDatabaseConnection databaseConnection = new DatabaseConnection()
+        Config config = new Config()
+        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+
         ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection)
-        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection)
-        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection)
+        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection, candidatoDao)
+        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection, candidatoDao)
+        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection, candidatoDao)
         IVagaDao vagaDao = new VagaDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
+        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
 
         service = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao, vagaDao, curtidaDao)
     }
@@ -64,7 +63,7 @@ class FormacaoMenu {
         }
     }
 
-     Formacao criarFormacao(Reader reader){
+    Formacao criarFormacao(Reader reader) {
         println "Digite o id do candidato: "
         Integer idCandidato = Integer.parseInt(reader.readLine())
 
@@ -75,7 +74,7 @@ class FormacaoMenu {
         String curso = reader.readLine()
 
         println "Digite o nivel da formação: "
-        String nivel = reader.readLine()
+        Integer nivel = Integer.parseInt(reader.readLine())
 
         println "Digite o ano de conclusao da formação: "
         String anoConclusao = reader.readLine()
@@ -89,12 +88,12 @@ class FormacaoMenu {
         )
     }
 
-    void adicionarFormacao(Reader reader){
+    void adicionarFormacao(Reader reader) {
         Formacao formacao = criarFormacao(reader)
         service.adicionarFormacao(formacao)
     }
 
-    void atualizarFormacao(Reader reader){
+    void atualizarFormacao(Reader reader) {
         println "Digite o id da formação que deseja atualizar: "
         Integer id = Integer.parseInt(reader.readLine())
 
@@ -104,7 +103,7 @@ class FormacaoMenu {
         service.atualizarFormacao(formacao)
     }
 
-    void exluirFormacao(Reader reader){
+    void exluirFormacao(Reader reader) {
         println "Digite o id da formação que deseja excluir: "
         Integer id = Integer.parseInt(reader.readLine())
 
@@ -112,7 +111,7 @@ class FormacaoMenu {
         service.excluirFormacao(id)
     }
 
-    void listarFormacaoDoCandidato(Reader reader){
+    void listarFormacaoDoCandidato(Reader reader) {
         println "Digite o id da candidato: "
         Integer id = Integer.parseInt(reader.readLine())
 

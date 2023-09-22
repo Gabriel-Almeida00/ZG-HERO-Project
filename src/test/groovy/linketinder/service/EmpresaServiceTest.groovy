@@ -107,11 +107,9 @@ class EmpresaServiceTest {
                 "34534")
         empresaMock.setId(idEmpresa)
 
-        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock)
 
         empresaService.atualizarEmpresa(empresaMock)
 
-        verify(empresaDao).buscarEmpresaPorId(idEmpresa)
         verify(empresaDao).atualizarEmpresa(empresaMock)
     }
 
@@ -129,18 +127,16 @@ class EmpresaServiceTest {
         )
         empresaMock.setId(idEmpresa)
 
-        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock)
 
         empresaService.excluirEmpresa(idEmpresa)
 
-        verify(empresaDao).buscarEmpresaPorId(idEmpresa)
         verify(empresaDao).excluirEmpresa(idEmpresa)
     }
 
     @Test
     void testCurtirCandidato_ComSucesso() throws SQLException {
-        Integer idCandidato = 1
-        Integer idEmpresa = 2
+        Integer idCandidato = 2
+        Integer idEmpresa = 4
 
         Candidato candidato = new Candidato(
                 "João",
@@ -156,20 +152,62 @@ class EmpresaServiceTest {
         candidato.setId(idCandidato)
 
         Empresa empresa = new Empresa(
-                "empresa 2",
-                "54321",
-                "empresa2@gmail.com",
-                "empresa 2 descrição",
-                "argentina",
-                "98765",
-                "34534")
+                "Empresa XYZ",
+                "CNPJ123456",
+                "empresa@example.com",
+                "Descrição da empresa",
+                "Brasil",
+                "12345-678",
+                "senha123"
+        )
         empresa.setId(idEmpresa)
 
         when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
         when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresa)
+        when(curtidaDao.verificaCurtidaDaEmpresa(idEmpresa, idCandidato)).thenReturn(null)
 
-        empresaService.curtirCandidato(idCandidato, idEmpresa)
+        curtidaDao.curtirCandidato(idCandidato, idEmpresa)
 
         verify(curtidaDao).curtirCandidato(idCandidato, idEmpresa)
     }
+
+    @Test
+    void testCurtirCandidato_AtualizarCurtida() throws SQLException {
+        Integer idCandidato = 2
+        Integer idEmpresa = 4
+        Integer idVaga = 7
+
+        Candidato candidato = new Candidato(
+                "João",
+                "Silva",
+                new Date(System.currentTimeMillis()),
+                "joao@example.com",
+                "12345678900",
+                "Brasil",
+                "12345-678",
+                "Descrição do candidato",
+                "senha123"
+        )
+        candidato.setId(idCandidato)
+
+        Empresa empresa = new Empresa(
+                "Empresa XYZ",
+                "CNPJ123456",
+                "empresa@example.com",
+                "Descrição da empresa",
+                "Brasil",
+                "12345-678",
+                "senha123"
+        )
+        empresa.setId(idEmpresa)
+
+        when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
+        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresa)
+        when(curtidaDao.verificaCurtidaDoCandidato(idCandidato)).thenReturn(idVaga)
+
+        empresaService.curtirCandidato(idCandidato, idEmpresa)
+
+        verify(curtidaDao).AtualizarCurtidaComIdEmpresa(idVaga, idEmpresa, idCandidato)
+    }
 }
+

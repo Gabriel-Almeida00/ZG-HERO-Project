@@ -1,41 +1,28 @@
 package linketinder.entity.dto
 
 class CompetenciaDTO {
-    Integer id
-    String nome
-    String nivel
+    void setId(Integer id) {
+        this.id = id
+    }
+    private Integer id
+    private String nome
+    private String nivel
 
-    CompetenciaDTO(String nome, String nivel) {
+    CompetenciaDTO(Integer id, String nome, String nivel) {
+        this.id = id
         this.nome = nome
         this.nivel = nivel
-    }
-
-    String getNome() {
-        return nome
-    }
-
-    void setNome(String nome) {
-        this.nome = nome
-    }
-
-    String getNivel() {
-        return nivel
     }
 
     Integer getId() {
         return id
     }
 
-    void setId(Integer id) {
-        this.id = id
+    String getNome() {
+        return nome
     }
 
-    void setNivel(String nivel) {
-        this.nivel = nivel
-    }
-
-    @Override
-    String toString() {
-        return nome + " - " + nivel
+    String getNivel() {
+        return nivel
     }
 }

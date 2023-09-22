@@ -1,8 +1,9 @@
 package linketinder.dao.competencia
 
-
+import linketinder.Exception.CompetenciaNotFoundException
+import linketinder.Exception.DataBaseException
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.Competencias
+import linketinder.entity.Competencia
 
 import java.sql.Connection
 import java.sql.PreparedStatement
@@ -11,67 +12,85 @@ import java.sql.SQLException
 
 class CompetenciaDao implements ICompetenciaDao {
 
-    private final IDatabaseConnection databaseConnection
+    private IDatabaseConnection databaseConnection
 
     CompetenciaDao(IDatabaseConnection databaseConnection) {
         this.databaseConnection = databaseConnection
     }
 
-    void adicionarCompetencia(Competencias competencia) throws SQLException {
+    void adicionarCompetencia(Competencia competencia) throws SQLException {
         String sql = "INSERT INTO competencias (nome) VALUES (?)"
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
-
             statement.setString(1, competencia.getNome())
-
 
             statement.executeUpdate()
         }
+        catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        }
     }
 
-    Competencias buscarCompetenciaPorId(Integer id) throws SQLException {
-        String sql = "SELECT * FROM competencias WHERE id = ?"
+    @Override
+    Competencia buscarCompetenciaPorId(Integer id) throws SQLException {
+        String sql = "SELECT nome FROM competencias WHERE id = ?"
+
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
-
             statement.setInt(1, id)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    String nome = resultSet.getString("nome")
-
-                    Competencias competencias = new Competencias(nome)
-                    competencias.setId(id)
-                    return competencias
-                }
+                return retornarCompetenciaresultSet(resultSet, id)
             }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
-        return null
     }
 
-    List<Competencias> listarTodasCompetencias() throws SQLException {
-        List<Competencias> competencias = new ArrayList<>()
-        String sql = "SELECT * FROM competencias"
+    private Competencia retornarCompetenciaresultSet(ResultSet resultSet, Integer id) throws SQLException {
+        if (resultSet.next()) {
+            String nome = resultSet.getString("nome")
+            Competencia competencia = new Competencia(nome)
+            competencia.setId(id)
+            return competencia
+        } else {
+            throw new CompetenciaNotFoundException("Competencia não encontrada com ID " + id)
+        }
+    }
+
+    @Override
+    List<Competencia> listarTodasCompetencias() throws SQLException {
+        String sql = "SELECT id, nome FROM competencias"
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
 
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id")
-                String nome = resultSet.getString("nome")
-
-                Competencias competencia = new Competencias(nome)
-                competencia.setId(id)
-                competencias.add(competencia)
-            }
+            return retornarListaCompetenciaResultSet(resultSet)
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
-        return competencias
     }
 
-    void atualizarCompetencia(Competencias competencia) throws SQLException {
-        String sql = "UPDATE competencias SET nome = ? WHERE id = ?"
+    private List<Competencia> retornarListaCompetenciaResultSet(ResultSet resultSet) throws SQLException {
+        List<Competencia> competenciasList = new ArrayList<>()
 
+        while (resultSet.next()) {
+            Integer id = resultSet.getInt("id")
+            String nome = resultSet.getString("nome")
+
+            Competencia competencia = new Competencia(nome)
+            competencia.setId(id)
+            competenciasList.add(competencia)
+        }
+
+        return competenciasList
+    }
+
+    void atualizarCompetencia(Competencia competencia) throws SQLException {
+        buscarCompetenciaPorId(competencia.getId())
+
+        String sql = "UPDATE competencias SET nome = ? WHERE id = ?"
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -79,12 +98,15 @@ class CompetenciaDao implements ICompetenciaDao {
             statement.setInt(2, competencia.getId())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     void excluirCompetencia(Integer idCompetencia) throws SQLException {
-        String sql = "DELETE FROM competencias WHERE id = ?"
+        buscarCompetenciaPorId(idCompetencia)
 
+        String sql = "DELETE FROM competencias WHERE id = ?"
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -92,7 +114,8 @@ class CompetenciaDao implements ICompetenciaDao {
 
             statement.executeUpdate()
         }
+        catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        }
     }
-
-
 }

@@ -1,10 +1,12 @@
 package linketinder.service
 
 
+import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.entity.Vaga
 import linketinder.entity.VagaCompetencia
+import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.entity.dto.VagaDTO
 import org.junit.jupiter.api.BeforeEach
@@ -18,13 +20,15 @@ class VagaServiceTest {
 
     private IVagaDao vagaDao
     private IVagaCompetenciaDao vagaCompetenciaDao
+    private ICurtidaDao curtidaDao
     private VagaService service
 
     @BeforeEach
     void setup() {
         vagaDao = mock(IVagaDao.class)
         vagaCompetenciaDao = mock(IVagaCompetenciaDao.class)
-        service = new VagaService(vagaDao, vagaCompetenciaDao)
+        curtidaDao = mock(ICurtidaDao.class)
+        service = new VagaService(vagaDao, vagaCompetenciaDao, curtidaDao)
     }
 
     @Test
@@ -34,19 +38,13 @@ class VagaServiceTest {
         vagasMock.add(new VagaDTO(
                 1,
                 "desenvolvedor",
-                "SP",
                 "tech descricao",
-                "graduação",
-                "nenhuma",
                 new ArrayList<>()
         ))
         vagasMock.add(new VagaDTO(
                 2,
                 "desenvolvedor",
-                "SP",
                 "tech descricao",
-                "graduação",
-                "nenhuma",
                 new ArrayList<>()
         ))
 
@@ -66,19 +64,13 @@ class VagaServiceTest {
         vagasMock.add(new VagaDTO(
                 1,
                 "desenvolvedor",
-                "SP",
                 "tech descricao",
-                "graduação",
-                "nenhuma",
                 new ArrayList<>()
         ))
         vagasMock.add(new VagaDTO(
                 2,
                 "desenvolvedor",
-                "SP",
                 "tech descricao",
-                "graduação",
-                "nenhuma",
                 new ArrayList<>()
         ))
 
@@ -100,8 +92,8 @@ class VagaServiceTest {
                 "ibm",
                 "ibm descrição",
                 "RJ",
-                "ensino médio",
-                "nenhuma"
+                1,
+                2
         )
         when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock)
 
@@ -118,8 +110,8 @@ class VagaServiceTest {
                 "ibm",
                 "ibm descrição",
                 "RJ",
-                "ensino médio",
-                "nenhuma"
+                1,
+                2
         )
 
         service.adicionarVaga(vaga)
@@ -134,8 +126,8 @@ class VagaServiceTest {
                 "ibm",
                 "ibm descrição",
                 "RJ",
-                "ensino médio",
-                "nenhuma")
+                1,
+                3)
         vaga.setId(1)
 
         when(vagaDao.buscarVagaPorId(vaga.getId())).thenReturn(vaga)
@@ -154,8 +146,8 @@ class VagaServiceTest {
                 "ibm",
                 "ibm descrição",
                 "RJ",
-                "ensino médio",
-                "nenhuma")
+                1,
+                1)
         when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock)
 
         service.excluirVaga(idVaga)
@@ -165,7 +157,7 @@ class VagaServiceTest {
 
     @Test
     void testAdicionarVagaCompetencia() {
-        VagaCompetencia vagaCompetenciaMock = new VagaCompetencia(1, 2, "Avançado")
+        VagaCompetencia vagaCompetenciaMock = new VagaCompetencia(1, 2, 1)
 
         doNothing().when(vagaCompetenciaDao).adicionarVagaCompetencia(vagaCompetenciaMock)
 
@@ -176,7 +168,7 @@ class VagaServiceTest {
 
     @Test
     void testAtualizarNivelVagaCompetencia() {
-        VagaCompetencia vagaCompetenciaMock = new VagaCompetencia(1, 2, "Intermediário")
+        VagaCompetencia vagaCompetenciaMock = new VagaCompetencia(1, 2, 2)
 
         doNothing().when(vagaCompetenciaDao).atualizarNivelVagaCompetencia(vagaCompetenciaMock)
 
@@ -205,18 +197,18 @@ class VagaServiceTest {
                 "ibm",
                 "ibm descrição",
                 "RJ",
-                "ensino médio",
-                "nenhuma"
+                1,
+                2
         )
-
-        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock)
 
         List<CompetenciaDTO> vagaCompetenciaListMock = new ArrayList<>()
         vagaCompetenciaListMock.add(new CompetenciaDTO(
+                1,
                 "java",
-                "Intermediário"
+               "básico"
         ))
         vagaCompetenciaListMock.add(new CompetenciaDTO(
+                2,
                 "groovy",
                 "avançado"
         ))
@@ -225,9 +217,57 @@ class VagaServiceTest {
 
         List<CompetenciaDTO> result = service.listarCompetenciasPorVaga(idVaga)
 
-        verify(vagaDao).buscarVagaPorId(idVaga)
         verify(vagaCompetenciaDao).listarCompetenciasPorVaga(idVaga)
+
         assert vagaCompetenciaListMock.size() == result.size()
         assert vagaCompetenciaListMock == result
+    }
+
+    @Test
+     void testListarCandidatosQueCurtiramVaga() throws SQLException {
+        int idVaga = 1
+        Vaga vaga = new Vaga(
+                2,
+                "ibm",
+                "ibm descrição",
+                "RJ",
+                1,
+                2
+        )
+
+        List<CandidatoQueCurtiuVagaDTO> resultadosEsperados = Arrays.asList(
+                new CandidatoQueCurtiuVagaDTO(1, "Descrição Candidato 1", Arrays.asList("Java", "Python")),
+                new CandidatoQueCurtiuVagaDTO(2, "Descrição Candidato 2", Arrays.asList("Groovy", "Python"))
+        )
+        when(curtidaDao.listarCandidatosQueCurtiramVaga(idVaga)).thenReturn(resultadosEsperados)
+
+        List<CandidatoQueCurtiuVagaDTO> resultado = service.listarCandidatosQueCurtiramVaga(idVaga)
+
+        assert resultadosEsperados == resultado
+
+        verify(curtidaDao, times(1)).listarCandidatosQueCurtiramVaga(idVaga)
+    }
+
+    @Test
+     void testObterIdEmpresaPorIdVaga() throws SQLException {
+        int idVagaExistente = 1
+        int idEmpresaEsperado = 10
+
+        Vaga vaga = new Vaga(
+                idEmpresaEsperado,
+                "ibm",
+                "ibm descrição",
+                "RJ",
+                1,
+                2
+        )
+        vaga.setId(idVagaExistente)
+
+        when(vagaDao.buscarVagaPorId(idVagaExistente)).thenReturn(vaga)
+        when(vagaDao.obterIdEmpresaPorIdVaga(idVagaExistente)).thenReturn(idEmpresaEsperado)
+
+        Integer idEmpresa = vagaDao.obterIdEmpresaPorIdVaga(idVagaExistente)
+
+        assert idEmpresaEsperado == idEmpresa
     }
 }

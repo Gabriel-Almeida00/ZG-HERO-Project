@@ -1,6 +1,7 @@
 package linketinder.UI.empresa
 
 import linketinder.UI.candidato.CandidatoMenu
+import linketinder.config.Config
 import linketinder.dao.candidato.CandidatoDao
 import linketinder.dao.candidato.ICandidatoDao
 import linketinder.dao.curtida.CurtidaDao
@@ -9,11 +10,13 @@ import linketinder.dao.empresa.EmpresaDao
 import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.match.IMatchDao
 import linketinder.dao.match.MatchDao
+import linketinder.dao.vaga.IVagaDao
+import linketinder.dao.vaga.VagaDao
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCurtido
 import linketinder.entity.Empresa
-import linketinder.entity.dto.CandidatoCurtidoDTO
+import linketinder.entity.dto.MatchCandidatoDTO
 import linketinder.service.EmpresaService
 import linketinder.service.MatchService
 
@@ -25,10 +28,12 @@ class EmpresaMenu {
     CandidatoMenu candidatoMenu
 
     EmpresaMenu() {
-        IDatabaseConnection databaseConnection = new DatabaseConnection()
+        Config config = new Config()
+        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
         IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
         ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
+        IVagaDao vagaDao = new VagaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
         IMatchDao matchDao = new MatchDao(databaseConnection)
 
 
@@ -47,7 +52,8 @@ class EmpresaMenu {
             println "4. Deletar empresa"
             println "5. Gerenciar vagas da empresa"
             println "6. Curtir Candidato"
-            println "7. Voltar"
+            println "7. verificar match"
+            println "8. Voltar"
 
             int opcao = Integer.parseInt(reader.readLine())
             switch (opcao) {
@@ -70,6 +76,9 @@ class EmpresaMenu {
                     curtirCandidato(reader)
                     break
                 case 7:
+                    verificaMatch(reader)
+                    break
+                case 8:
                     return
                 default:
                     println "Opção inválida. Tente novamente."
@@ -162,21 +171,23 @@ class EmpresaMenu {
         Integer idCandidato = candidatoCurtido.getIdCandidato()
         Integer idEmpresa = candidatoCurtido.getIdEmpresa()
         empresaService.curtirCandidato(idCandidato, idEmpresa)
-        verificaMatch(idCandidato)
     }
 
-    void verificaMatch(Integer idCandidato){
-        List<CandidatoCurtidoDTO> matchs = matchService.encontrarMatchesPeloCandidato(idCandidato)
+    void verificaMatch(Reader reader){
+        println("Digite o id da vaga: ")
+        Integer  id = Integer.parseInt(reader.readLine())
+
+        List<MatchCandidatoDTO> matchs = matchService.encontrarMatchesPelaEmpresa(id)
 
         matchs.each {match ->
             println "============================"
             println "DEU MATCH"
             println  "O seguinte candidato curtiu uma de suas vagas: "
-            println "Nome :  ${match.nomeCandidato}"
-            println  "Descrição: ${match.descricaoCandidato}"
+            println "Nome :  ${match.getNomeCandidato()}"
+            println  "Descrição: ${match.getDescricaoCandidato()}"
             println  "Vaga que o candidato curitu: "
-            println  "Nome: ${match.nomeVaga}"
-            println  "Descrição: ${match.descricaoVaga}"
+            println  "Nome: ${match.getNomeVaga()}"
+            println  "Descrição: ${match.getDescricaoVaga()}"
             println  ""
         }
     }

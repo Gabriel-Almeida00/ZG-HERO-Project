@@ -1,9 +1,12 @@
 package linketinder.UI.candidato
 
 import linketinder.UI.competencia.CompetenciaMenu
+import linketinder.config.Config
 import linketinder.dao.candidato.*
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
+import linketinder.dao.empresa.EmpresaDao
+import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaDao
 import linketinder.db.DatabaseConnection
@@ -18,22 +21,24 @@ class CompetenciaCandidatoMenu {
     CompetenciaMenu competenciaMenu
 
     CompetenciaCandidatoMenu() {
-        IDatabaseConnection databaseConnection = new DatabaseConnection()
+        Config config = new Config()
+        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+
         ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection)
-        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection)
-        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection)
+        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection, candidatoDao)
+        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection, candidatoDao)
+        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection, candidatoDao)
         IVagaDao vagaDao = new VagaDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection)
+        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
 
         competenciaMenu = new CompetenciaMenu()
-
         candidatoService = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao, vagaDao, curtidaDao)
     }
 
     void exibirMenuCandidato(Reader reader) {
         while (true) {
-            println "Menu Competencias do Candidato:"
+            println "Menu Competencia do Candidato:"
             println "1. Listar competencias do candidato"
             println "2. adicionar competencia"
             println "3. Atualizar competencia"
@@ -69,13 +74,14 @@ class CompetenciaCandidatoMenu {
         println "Digite o Id da competencia:"
         Integer idCompetencia = Integer.parseInt(reader.readLine())
 
-        println "Digite o nivel da competencia"
-        String nivel = reader.readLine()
+        println "Digite o nivel da competencia (1 a 3):"
+        Integer nivel = Integer.parseInt(reader.readLine())
 
-        return new CandidatoCompetencia(
-                idCandidato, idCompetencia, nivel
-        )
+
+        return new CandidatoCompetencia(idCandidato, idCompetencia, nivel)
     }
+
+
 
     void listarCompetenciasDoCandidato(Reader reader) {
         println "Digite o ID do candidato:"
@@ -89,14 +95,15 @@ class CompetenciaCandidatoMenu {
     }
 
     void adicionarCompetenciaCandidato(Reader reader) {
-        println "Competencias :"
+        println "Competencia :"
         competenciaMenu.listarCompetencias()
         CandidatoCompetencia candidatoCompetencia = criarCompetenciaCandidato(reader)
         candidatoService.adicionarCandidatoCompetencia(candidatoCompetencia)
     }
 
     void atualizarCompetenciaCandidato(Reader reader) {
-        println "Digite o ID da competencia do candidato:"
+        listarCompetenciasDoCandidato(reader)
+        println "Digite o ID da competencia que deseja atualizar:"
         Integer idCompetencia = Integer.parseInt(reader.readLine())
 
         CandidatoCompetencia candidatoCompetencia = criarCompetenciaCandidato(reader)

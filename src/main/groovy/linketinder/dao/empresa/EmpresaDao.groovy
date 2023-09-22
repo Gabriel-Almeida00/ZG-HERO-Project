@@ -1,6 +1,7 @@
 package linketinder.dao.empresa
 
-
+import linketinder.Exception.DataBaseException
+import linketinder.Exception.EmpresasNotFoundException
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Empresa
 
@@ -10,7 +11,7 @@ import java.sql.SQLException
 
 class EmpresaDao implements IEmpresaDao {
 
-    private final IDatabaseConnection databaseConnection
+    private IDatabaseConnection databaseConnection
 
     EmpresaDao(IDatabaseConnection databaseConnection) {
         this.databaseConnection = databaseConnection
@@ -18,29 +19,36 @@ class EmpresaDao implements IEmpresaDao {
 
     @Override
     List<Empresa> listarTodasEmpresas() throws SQLException {
-        List<Empresa> empresas = new ArrayList<>()
         String sql = "SELECT * FROM empresas"
-
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id")
-                String nome = resultSet.getString("nome")
-                String cnpj = resultSet.getString("cnpj")
-                String email = resultSet.getString("email")
-                String descricao = resultSet.getString("descricao")
-                String pais = resultSet.getString("pais")
-                String cep = resultSet.getString("cep")
-                String senha = resultSet.getString("senha")
 
-                Empresa empresa = new Empresa( nome, cnpj, email, descricao, pais, cep, senha)
-                empresa.setId(id)
-                empresas.add(empresa)
-            }
+            return retornarEmpresasresultSet(resultSet)
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
-
-        return empresas
     }
+
+    private List<Empresa> retornarEmpresasresultSet(ResultSet resultSet) throws SQLException {
+        List<Empresa> empresasList = new ArrayList<>()
+
+        while (resultSet.next()) {
+            Integer id = resultSet.getInt("id")
+            String nome = resultSet.getString("nome")
+            String cnpj = resultSet.getString("cnpj")
+            String email = resultSet.getString("email")
+            String descricao = resultSet.getString("descricao")
+            String pais = resultSet.getString("pais")
+            String cep = resultSet.getString("cep")
+            String senha = resultSet.getString("senha")
+
+            Empresa empresa = new Empresa(nome, cnpj, email, descricao, pais, cep, senha)
+            empresa.setId(id)
+            empresasList.add(empresa)
+        }
+        return empresasList
+    }
+
 
     @Override
     void adicionarEmpresa(Empresa empresa) throws SQLException {
@@ -57,14 +65,17 @@ class EmpresaDao implements IEmpresaDao {
             statement.setString(7, empresa.getSenha())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
     void atualizarEmpresa(Empresa empresa) throws SQLException {
+        buscarEmpresaPorId(empresa.getId())
+
         String sql = "UPDATE empresas SET nome = ?, cnpj = ?, email = ?, descricao = ?, pais = ?, cep = ?, senha = ? " +
                 "WHERE id = ?"
-
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setString(1, empresa.getNome())
             statement.setString(2, empresa.getCnpj())
@@ -76,16 +87,21 @@ class EmpresaDao implements IEmpresaDao {
             statement.setInt(8, empresa.getId())
 
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
     @Override
     void excluirEmpresa(Integer idEmpresa) throws SQLException {
-        String sql = "DELETE FROM empresas WHERE id = ?"
+        buscarEmpresaPorId(idEmpresa)
 
+        String sql = "DELETE FROM empresas WHERE id = ?"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idEmpresa)
             statement.executeUpdate()
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
@@ -96,24 +112,30 @@ class EmpresaDao implements IEmpresaDao {
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idEmpresa)
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Integer id = resultSet.getInt("id")
-                    String nome = resultSet.getString("nome")
-                    String cnpj = resultSet.getString("cnpj")
-                    String email = resultSet.getString("email")
-                    String descricao = resultSet.getString("descricao")
-                    String pais = resultSet.getString("pais")
-                    String cep = resultSet.getString("cep")
-                    String senha = resultSet.getString("senha")
-
-                    Empresa empresa = new Empresa(nome, cnpj, email, descricao, pais, cep, senha)
-                    empresa.setId(id)
-
-                    return empresa
-                } else {
-                    return null
-                }
+                return retornarIdEmpresaresultSet(resultSet)
             }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        }
+    }
+
+    private Empresa retornarIdEmpresaresultSet(ResultSet resultSet) throws SQLException {
+        if (resultSet.next()) {
+            Integer id = resultSet.getInt("id")
+            String nome = resultSet.getString("nome")
+            String cnpj = resultSet.getString("cnpj")
+            String email = resultSet.getString("email")
+            String descricao = resultSet.getString("descricao")
+            String pais = resultSet.getString("pais")
+            String cep = resultSet.getString("cep")
+            String senha = resultSet.getString("senha")
+
+            Empresa empresa = new Empresa(nome, cnpj, email, descricao, pais, cep, senha)
+            empresa.setId(id)
+
+            return empresa
+        } else {
+           throw new EmpresasNotFoundException("Empresa não encontrada")
         }
     }
 }

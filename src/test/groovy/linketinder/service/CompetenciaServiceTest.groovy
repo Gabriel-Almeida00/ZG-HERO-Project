@@ -2,7 +2,7 @@ package linketinder.service
 
 
 import linketinder.dao.competencia.ICompetenciaDao
-import linketinder.entity.Competencias
+import linketinder.entity.Competencia
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -23,13 +23,13 @@ class CompetenciaServiceTest {
 
     @Test
     void testListarCompetencias() throws SQLException {
-        List<Competencias> competenciasMock = new ArrayList<>()
-        competenciasMock.add(new Competencias("Java"))
-        competenciasMock.add(new Competencias("SQL"))
+        List<Competencia> competenciasMock = new ArrayList<>()
+        competenciasMock.add(new Competencia("Java"))
+        competenciasMock.add(new Competencia("SQL"))
 
         when(competenciaDao.listarTodasCompetencias()).thenReturn(competenciasMock)
 
-        List<Competencias> result = competenciaService.listarCompetencias()
+        List<Competencia> result = competenciaService.listarCompetencias()
 
         verify(competenciaDao).listarTodasCompetencias()
 
@@ -40,12 +40,12 @@ class CompetenciaServiceTest {
     @Test
     void testBuscarCompetenciaPorId() throws SQLException {
         Integer idCompetencia = 1
-        Competencias competenciaMock = new Competencias("Java")
+        Competencia competenciaMock = new Competencia("Java")
         competenciaMock.setId(idCompetencia)
 
         when(competenciaDao.buscarCompetenciaPorId(idCompetencia)).thenReturn(competenciaMock)
 
-        Competencias result = competenciaService.buscarCompetenciaPorId(idCompetencia)
+        Competencia result = competenciaService.buscarCompetenciaPorId(idCompetencia)
 
         verify(competenciaDao).buscarCompetenciaPorId(idCompetencia)
 
@@ -54,7 +54,7 @@ class CompetenciaServiceTest {
 
     @Test
     void testAdicionarCompetencia() throws SQLException {
-        Competencias competencia = new Competencias("Java")
+        Competencia competencia = new Competencia("Java")
 
         competenciaService.adicionarCompetencia(competencia)
 
@@ -63,7 +63,7 @@ class CompetenciaServiceTest {
 
     @Test
     void testAtualizarCompetencia() throws SQLException {
-        Competencias competencia = new Competencias("Java")
+        Competencia competencia = new Competencia("Java")
         competencia.setId(1)
 
         when(competenciaDao.buscarCompetenciaPorId(competencia.getId())).thenReturn(competencia)
@@ -77,7 +77,7 @@ class CompetenciaServiceTest {
     void testExcluirCompetencia() throws SQLException {
         Integer idCompetencia = 1
 
-        when(competenciaDao.buscarCompetenciaPorId(idCompetencia)).thenReturn(new Competencias("Java"))
+        when(competenciaDao.buscarCompetenciaPorId(idCompetencia)).thenReturn(new Competencia("Java"))
 
         competenciaService.excluirCompetencia(idCompetencia)
 

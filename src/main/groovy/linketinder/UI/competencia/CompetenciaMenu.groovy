@@ -1,10 +1,11 @@
 package linketinder.UI.competencia
 
+import linketinder.config.Config
 import linketinder.dao.competencia.CompetenciaDao
 import linketinder.dao.competencia.ICompetenciaDao
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.Competencias
+import linketinder.entity.Competencia
 import linketinder.service.CompetenciaService
 
 class CompetenciaMenu {
@@ -12,15 +13,17 @@ class CompetenciaMenu {
     CompetenciaService competenciaService
 
     CompetenciaMenu() {
-        IDatabaseConnection databaseConnection = new DatabaseConnection()
+        Config config = new Config()
+        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
         ICompetenciaDao competenciaDao = new CompetenciaDao(databaseConnection)
+
         competenciaService = new CompetenciaService(competenciaDao)
     }
 
     void exibirMenuCompetencia(Reader reader) {
         while (true) {
             println "Menu Competencia:"
-            println "1. Listar Competencias"
+            println "1. Listar Competencia"
             println "2. Cadastrar Competencia"
             println "3. Atualizar Competencia"
             println "4. Deletar Competencia"
@@ -48,15 +51,15 @@ class CompetenciaMenu {
         }
     }
 
-    Competencias criarCompetencia(Reader reader){
+    Competencia criarCompetencia(Reader reader){
         println "Digite o nome da competencia que deseja adicionar: "
         String nome = reader.readLine()
 
-        return new Competencias(nome)
+        return new Competencia(nome)
     }
 
     void listarCompetencias( ){
-        List<Competencias> competencias = competenciaService.listarCompetencias()
+        List<Competencia> competencias = competenciaService.listarCompetencias()
 
         competencias.each {competencia ->
             println "================="
@@ -67,7 +70,7 @@ class CompetenciaMenu {
     }
 
     void adicionarCompetencia(Reader reader){
-        Competencias competencias = criarCompetencia(reader)
+        Competencia competencias = criarCompetencia(reader)
         competenciaService.adicionarCompetencia(competencias)
     }
 
@@ -75,7 +78,7 @@ class CompetenciaMenu {
         println "Digite o id da competencia que deseja atualizar: "
         Integer id = Integer.parseInt(reader.readLine())
 
-        Competencias competencias = criarCompetencia(reader)
+        Competencia competencias = criarCompetencia(reader)
         competencias.setId(id)
 
         competenciaService.atualizarCompetencia(competencias)
