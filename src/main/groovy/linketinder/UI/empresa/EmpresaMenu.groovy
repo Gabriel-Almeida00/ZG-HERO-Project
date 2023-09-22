@@ -110,12 +110,12 @@ class EmpresaMenu {
 
         return  new Empresa(
                 nome,
-                cnpj,
                 email,
-                descricao,
                 pais,
                 cep,
-                senha
+                descricao,
+                senha,
+                cnpj
         )
     }
 

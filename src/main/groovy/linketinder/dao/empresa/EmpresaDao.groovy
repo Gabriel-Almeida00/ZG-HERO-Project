@@ -42,7 +42,7 @@ class EmpresaDao implements IEmpresaDao {
             String cep = resultSet.getString("cep")
             String senha = resultSet.getString("senha")
 
-            Empresa empresa = new Empresa(nome, cnpj, email, descricao, pais, cep, senha)
+            Empresa empresa = new Empresa(nome, email, pais, cep, descricao, senha, cnpj)
             empresa.setId(id)
             empresasList.add(empresa)
         }
@@ -135,7 +135,7 @@ class EmpresaDao implements IEmpresaDao {
 
             return empresa
         } else {
-           throw new EmpresasNotFoundException("Empresa não encontrada")
+            throw new EmpresasNotFoundException("Empresa não encontrada")
         }
     }
 }

@@ -64,15 +64,16 @@ class CandidatoServiceTest {
     void testObterCandidatoPorId() throws SQLException {
         Integer candidatoId = 1
         Candidato candidatoMock = new Candidato(
-                "João",
-                "Silva",
+                "gabriel",
+                "gabrel@gmail.com",
+                "brasil",
+                "32132",
+                "descrição",
+                "123teste",
+                "almeida",
                 new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
+                "321321311"
+
         )
         when(candidatoDao.obterCandidatoPorId(candidatoId)).thenReturn(candidatoMock)
         Candidato result = candidatoService.obterCandidatoPorId(candidatoId)
@@ -84,15 +85,15 @@ class CandidatoServiceTest {
     @Test
     void testCadastrarCandidato() throws SQLException {
         Candidato candidatoMock = new Candidato(
-                "João",
-                "Silva",
+                "gabriel",
+                "gabrel@gmail.com",
+                "brasil",
+                "32132",
+                "descrição",
+                "123teste",
+                "almeida",
                 new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
+                "321321311"
         )
 
         candidatoService.cadastrarCandidato(candidatoMock)
@@ -104,15 +105,15 @@ class CandidatoServiceTest {
     void testAtualizarCandidato() throws SQLException {
 
         Candidato candidatoMock = new Candidato(
-                "João",
-                "Silva",
+                "gabriel",
+                "gabrel@gmail.com",
+                "brasil",
+                "32132",
+                "descrição",
+                "123teste",
+                "almeida",
                 new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
+                "321321311"
         )
         candidatoMock.setId(1)
 
@@ -124,15 +125,15 @@ class CandidatoServiceTest {
     @Test
     void testDeletarCandidato() throws SQLException {
         Candidato candidatoMock = new Candidato(
-                "João",
-                "Silva",
+                "gabriel",
+                "gabrel@gmail.com",
+                "brasil",
+                "32132",
+                "descrição",
+                "123teste",
+                "almeida",
                 new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
+                "321321311"
         )
         Integer idCandidato = 1
         candidatoMock.setId(idCandidato)
@@ -148,15 +149,15 @@ class CandidatoServiceTest {
     @Test
     void testListarCompetenciasCandidato() throws SQLException {
         Candidato candidatoMock = new Candidato(
-                "João",
-                "Silva",
+                "gabriel",
+                "gabrel@gmail.com",
+                "brasil",
+                "32132",
+                "descrição",
+                "123teste",
+                "almeida",
                 new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
+                "321321311"
         )
         Integer idCandidato = 1
         candidatoMock.setId(idCandidato)
@@ -251,15 +252,15 @@ class CandidatoServiceTest {
     void testListarExperienciasPorCandidato() throws SQLException {
         Integer idCandidato = 1
         Candidato candidatoMock = new Candidato(
-                "João",
-                "Silva",
+                "gabriel",
+                "gabrel@gmail.com",
+                "brasil",
+                "32132",
+                "descrição",
+                "123teste",
+                "almeida",
                 new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
+                "321321311"
         )
         candidatoMock.setId(idCandidato)
         List<Experiencia> experienciasMock = new ArrayList<>()
@@ -348,15 +349,15 @@ class CandidatoServiceTest {
         Integer idCandidato = 1
 
         Candidato candidatoMock = new Candidato(
-                "João",
-                "Silva",
+                "gabriel",
+                "gabrel@gmail.com",
+                "brasil",
+                "32132",
+                "descrição",
+                "123teste",
+                "almeida",
                 new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
+                "321321311"
         )
         candidatoMock.setId(idCandidato)
 
@@ -379,15 +380,15 @@ class CandidatoServiceTest {
         Integer idVaga = 2
 
         Candidato candidato = new Candidato(
-                "João",
-                "Silva",
+                "gabriel",
+                "gabrel@gmail.com",
+                "brasil",
+                "32132",
+                "descrição",
+                "123teste",
+                "almeida",
                 new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
+                "321321311"
         )
         candidato.setId(idCandidato)
 
@@ -414,15 +415,15 @@ class CandidatoServiceTest {
         Integer empresaId = 1
 
         Candidato candidato = new Candidato(
-                "João",
-                "Silva",
+                "gabriel",
+                "gabrel@gmail.com",
+                "brasil",
+                "32132",
+                "descrição",
+                "123teste",
+                "almeida",
                 new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
+                "321321311"
         )
         candidato.setId(idCandidato)
 
@@ -449,15 +450,15 @@ class CandidatoServiceTest {
     void testListarEmpresasQueCurtiramCandidato() {
         Integer id = 1
         Candidato candidato = new Candidato(
-                "João",
-                "Silva",
+                "gabriel",
+                "gabrel@gmail.com",
+                "brasil",
+                "32132",
+                "descrição",
+                "123teste",
+                "almeida",
                 new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
+                "321321311"
         )
         candidato.setId(id)
 

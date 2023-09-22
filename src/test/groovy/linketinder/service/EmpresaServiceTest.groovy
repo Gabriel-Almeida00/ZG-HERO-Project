@@ -33,22 +33,23 @@ class EmpresaServiceTest {
     void testListarTodasEmpresas() throws SQLException {
         List<Empresa> empresasMock = new ArrayList<>()
         empresasMock.add(new Empresa(
-                "empresa 1",
-                "12345",
+                "Empresa 1",
                 "empresa1@gmail.com",
-                "empresa 1 descrição",
                 "brasil",
-                "54321",
-                "12345"
+                "321123",
+                "descrição empresa 1",
+                "321teste",
+                "1233"
         ))
         empresasMock.add(new Empresa(
-                "empresa 2",
-                "54321",
+                "Empresa 2",
                 "empresa2@gmail.com",
-                "empresa 2 descrição",
-                "argentina",
-                "98765",
-                "34534"))
+                "brasil",
+                "9898",
+                "descrição empresa 2",
+                "321teste2",
+                "1233222"
+        ))
 
         when(empresaDao.listarTodasEmpresas()).thenReturn(empresasMock)
 
@@ -62,13 +63,14 @@ class EmpresaServiceTest {
     void testObterEmpresaPorId() throws SQLException {
         Integer idEmpresa = 1
         Empresa empresaMock = new Empresa(
-                "empresa 2",
-                "54321",
-                "empresa2@gmail.com",
-                "empresa 2 descrição",
-                "argentina",
-                "98765",
-                "34534")
+                "Empresa 1",
+                "empresa1@gmail.com",
+                "brasil",
+                "321123",
+                "descrição empresa 1",
+                "321teste",
+                "1233"
+        )
 
         when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock)
 
@@ -81,13 +83,14 @@ class EmpresaServiceTest {
     @Test
     void testAdicionarEmpresa() throws SQLException {
         Empresa empresaMock = new Empresa(
-                "empresa 2",
-                "54321",
-                "empresa2@gmail.com",
-                "empresa 2 descrição",
-                "argentina",
-                "98765",
-                "34534")
+                "Empresa 1",
+                "empresa1@gmail.com",
+                "brasil",
+                "321123",
+                "descrição empresa 1",
+                "321teste",
+                "1233"
+        )
 
         empresaService.adicionarEmpresa(empresaMock)
 
@@ -98,13 +101,14 @@ class EmpresaServiceTest {
     void testAtualizarEmpresa() throws SQLException {
         Integer idEmpresa = 1
         Empresa empresaMock = new Empresa(
-                "empresa 2",
-                "54321",
-                "empresa2@gmail.com",
-                "empresa 2 descrição",
-                "argentina",
-                "98765",
-                "34534")
+                "Empresa 1",
+                "empresa1@gmail.com",
+                "brasil",
+                "321123",
+                "descrição empresa 1",
+                "321teste",
+                "1233"
+        )
         empresaMock.setId(idEmpresa)
 
 
@@ -117,13 +121,13 @@ class EmpresaServiceTest {
     void testExcluirEmpresa() throws SQLException {
         Integer idEmpresa = 1
         Empresa empresaMock = new Empresa(
-                "empresa 2",
-                "54321",
-                "empresa2@gmail.com",
-                "empresa 2 descrição",
-                "argentina",
-                "98765",
-                "34534"
+                "Empresa 1",
+                "empresa1@gmail.com",
+                "brasil",
+                "321123",
+                "descrição empresa 1",
+                "321teste",
+                "1233"
         )
         empresaMock.setId(idEmpresa)
 
@@ -139,26 +143,26 @@ class EmpresaServiceTest {
         Integer idEmpresa = 4
 
         Candidato candidato = new Candidato(
-                "João",
-                "Silva",
+                "gabriel",
+                "gabrel@gmail.com",
+                "brasil",
+                "32132",
+                "descrição",
+                "123teste",
+                "almeida",
                 new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
+                "321321311"
         )
         candidato.setId(idCandidato)
 
         Empresa empresa = new Empresa(
-                "Empresa XYZ",
-                "CNPJ123456",
-                "empresa@example.com",
-                "Descrição da empresa",
-                "Brasil",
-                "12345-678",
-                "senha123"
+                "Empresa 1",
+                "empresa1@gmail.com",
+                "brasil",
+                "321123",
+                "descrição empresa 1",
+                "321teste",
+                "1233"
         )
         empresa.setId(idEmpresa)
 
@@ -178,26 +182,26 @@ class EmpresaServiceTest {
         Integer idVaga = 7
 
         Candidato candidato = new Candidato(
-                "João",
-                "Silva",
+                "gabriel",
+                "gabrel@gmail.com",
+                "brasil",
+                "32132",
+                "descrição",
+                "123teste",
+                "almeida",
                 new Date(System.currentTimeMillis()),
-                "joao@example.com",
-                "12345678900",
-                "Brasil",
-                "12345-678",
-                "Descrição do candidato",
-                "senha123"
+                "321321311"
         )
         candidato.setId(idCandidato)
 
         Empresa empresa = new Empresa(
-                "Empresa XYZ",
-                "CNPJ123456",
-                "empresa@example.com",
-                "Descrição da empresa",
-                "Brasil",
-                "12345-678",
-                "senha123"
+                "Empresa 1",
+                "empresa1@gmail.com",
+                "brasil",
+                "321123",
+                "descrição empresa 1",
+                "321teste",
+                "1233"
         )
         empresa.setId(idEmpresa)
 

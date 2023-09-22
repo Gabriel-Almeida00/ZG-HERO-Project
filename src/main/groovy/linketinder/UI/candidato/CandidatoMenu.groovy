@@ -139,14 +139,14 @@ class CandidatoMenu {
 
         return new Candidato(
                 nome,
-                sobrenome,
-                dataNascimento,
                 email,
-                cpf,
                 pais,
                 cep,
                 descricao,
-                senha
+                senha,
+                sobrenome,
+                dataNascimento,
+                cpf
         )
     }
 

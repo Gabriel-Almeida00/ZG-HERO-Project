@@ -39,14 +39,14 @@ class CandidatoDao implements ICandidatoDao {
         if (resultSet.next()) {
             Candidato candidato = new Candidato(
                     resultSet.getString("nome"),
-                    resultSet.getString("sobrenome"),
-                    resultSet.getDate("dataNascimento"),
                     resultSet.getString("email"),
-                    resultSet.getString("cpf"),
                     resultSet.getString("pais"),
                     resultSet.getString("cep"),
                     resultSet.getString("descricao"),
-                    resultSet.getString("senha")
+                    resultSet.getString("senha"),
+                    resultSet.getString("sobrenome"),
+                    resultSet.getDate("dataNascimento"),
+                    resultSet.getString("cpf")
             )
             candidato.setId(resultSet.getInt("id"))
             return candidato
