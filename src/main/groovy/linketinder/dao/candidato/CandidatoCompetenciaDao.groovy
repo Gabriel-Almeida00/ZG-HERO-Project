@@ -1,9 +1,6 @@
 package linketinder.dao.candidato
 
-
 import linketinder.Exception.DataBaseException
-import linketinder.config.Config
-import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCompetencia
 import linketinder.entity.dto.CompetenciaDTO
@@ -18,10 +15,9 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
     private IDatabaseConnection databaseConnection
     private ICandidatoDao candidatoDao
 
-    CandidatoCompetenciaDao() {
-        Config config = new Config()
-        databaseConnection = new DatabaseConnection(config)
-        candidatoDao = new CandidatoDao()
+    CandidatoCompetenciaDao(IDatabaseConnection databaseConnection, ICandidatoDao candidatoDao) {
+        this.databaseConnection = databaseConnection
+        this.candidatoDao = candidatoDao
     }
 
     @Override

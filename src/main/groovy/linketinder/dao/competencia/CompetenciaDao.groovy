@@ -2,8 +2,6 @@ package linketinder.dao.competencia
 
 import linketinder.Exception.CompetenciaNotFoundException
 import linketinder.Exception.DataBaseException
-import linketinder.config.Config
-import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Competencia
 
@@ -16,9 +14,8 @@ class CompetenciaDao implements ICompetenciaDao {
 
     private IDatabaseConnection databaseConnection
 
-    CompetenciaDao() {
-        Config config = new Config()
-        databaseConnection = new DatabaseConnection(config)
+    CompetenciaDao(IDatabaseConnection databaseConnection) {
+        this.databaseConnection = databaseConnection
     }
 
     void adicionarCompetencia(Competencia competencia) throws SQLException {

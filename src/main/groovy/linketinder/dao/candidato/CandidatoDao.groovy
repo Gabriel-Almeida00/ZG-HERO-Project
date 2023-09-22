@@ -2,8 +2,6 @@ package linketinder.dao.candidato
 
 import linketinder.Exception.CandidatosNotFoundException
 import linketinder.Exception.DataBaseException
-import linketinder.config.Config
-import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Candidato
 import linketinder.entity.dto.CandidatoDTO
@@ -17,9 +15,8 @@ class CandidatoDao implements ICandidatoDao {
 
     private IDatabaseConnection databaseConnection
 
-    CandidatoDao() {
-        Config config = new Config()
-        databaseConnection = new DatabaseConnection(config)
+    CandidatoDao(IDatabaseConnection databaseConnection ) {
+        this.databaseConnection = databaseConnection
     }
 
     @Override

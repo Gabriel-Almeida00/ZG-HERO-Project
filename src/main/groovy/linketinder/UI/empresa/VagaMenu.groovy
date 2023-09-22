@@ -1,11 +1,18 @@
 package linketinder.UI.empresa
 
+import linketinder.config.Config
+import linketinder.dao.candidato.CandidatoDao
+import linketinder.dao.candidato.ICandidatoDao
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
+import linketinder.dao.empresa.EmpresaDao
+import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaCompetenciaDao
 import linketinder.dao.vaga.VagaDao
+import linketinder.db.DatabaseConnection
+import linketinder.db.IDatabaseConnection
 import linketinder.entity.Vaga
 import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.entity.dto.VagaDTO
@@ -17,9 +24,13 @@ class VagaMenu {
     CompetenciaVagaMenu competenciaVagaMenu
 
     VagaMenu() {
-        IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao()
-        IVagaDao vagaDao = new VagaDao()
-        ICurtidaDao curtidaDao = new CurtidaDao()
+        Config config = new Config()
+        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+        IVagaDao vagaDao = new VagaDao(databaseConnection)
+        IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(databaseConnection, vagaDao)
+        ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
+        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
 
         vagaService = new VagaService(vagaDao, vagaCompetenciaDao, curtidaDao)
         competenciaVagaMenu = new CompetenciaVagaMenu()

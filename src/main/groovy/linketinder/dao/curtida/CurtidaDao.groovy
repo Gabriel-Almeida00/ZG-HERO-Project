@@ -1,14 +1,9 @@
 package linketinder.dao.curtida
 
 import linketinder.Exception.DataBaseException
-import linketinder.config.Config
-import linketinder.dao.candidato.CandidatoDao
 import linketinder.dao.candidato.ICandidatoDao
-import linketinder.dao.empresa.EmpresaDao
 import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaDao
-import linketinder.dao.vaga.VagaDao
-import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.entity.dto.EmpresaDTO
@@ -27,13 +22,11 @@ class CurtidaDao implements ICurtidaDao {
 
     public final static Integer CURTIDA_NAO_ENCONTRADA = 0
 
-
-    CurtidaDao() {
-        Config config = new Config()
-        databaseConnection = new DatabaseConnection(config)
-        candidatoDao = new CandidatoDao()
-        vagaDao = new VagaDao()
-        empresaDao = new EmpresaDao()
+    CurtidaDao(IDatabaseConnection databaseConnection, ICandidatoDao candidatoDao, IVagaDao vagaDao, IEmpresaDao empresaDao) {
+        this.databaseConnection = databaseConnection
+        this.candidatoDao = candidatoDao
+        this.vagaDao = vagaDao
+        this.empresaDao = empresaDao
     }
 
     @Override

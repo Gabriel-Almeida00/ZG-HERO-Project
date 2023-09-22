@@ -1,12 +1,8 @@
 package linketinder.service
 
 
-import linketinder.Exception.CompetenciaNotFoundException
-import linketinder.Exception.DataBaseException
 import linketinder.dao.competencia.ICompetenciaDao
 import linketinder.entity.Competencia
-
-import java.sql.SQLException
 
 class CompetenciaService implements ICompetenciaService {
     private ICompetenciaDao competenciaDao

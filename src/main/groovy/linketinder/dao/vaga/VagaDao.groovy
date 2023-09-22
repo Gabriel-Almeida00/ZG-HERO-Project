@@ -3,8 +3,6 @@ package linketinder.dao.vaga
 import linketinder.Exception.DataBaseException
 import linketinder.Exception.EmpresasNotFoundException
 import linketinder.Exception.VagaNotFoundException
-import linketinder.config.Config
-import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Vaga
 import linketinder.entity.dto.VagaDTO
@@ -18,9 +16,8 @@ class VagaDao implements IVagaDao {
 
     private IDatabaseConnection databaseConnection
 
-    VagaDao() {
-        Config config = new Config()
-        databaseConnection = new DatabaseConnection(config)
+    VagaDao(IDatabaseConnection databaseConnection) {
+        this.databaseConnection = databaseConnection
     }
 
     @Override

@@ -1,11 +1,16 @@
 package linketinder.UI.candidato
 
 import linketinder.UI.competencia.CompetenciaMenu
+import linketinder.config.Config
 import linketinder.dao.candidato.*
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
+import linketinder.dao.empresa.EmpresaDao
+import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaDao
+import linketinder.db.DatabaseConnection
+import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCompetencia
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.service.CandidatoService
@@ -16,15 +21,18 @@ class CompetenciaCandidatoMenu {
     CompetenciaMenu competenciaMenu
 
     CompetenciaCandidatoMenu() {
-        ICandidatoDao candidatoDao = new CandidatoDao()
-        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao()
-        IExperienciaDao experienciaDao = new ExperienciaDao()
-        IFormacaoDao formacaoDao = new FormacaoDao()
-        IVagaDao vagaDao = new VagaDao()
-        ICurtidaDao curtidaDao = new CurtidaDao()
+        Config config = new Config()
+        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+
+        ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
+        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection, candidatoDao)
+        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection, candidatoDao)
+        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection, candidatoDao)
+        IVagaDao vagaDao = new VagaDao(databaseConnection)
+        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
 
         competenciaMenu = new CompetenciaMenu()
-
         candidatoService = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao, vagaDao, curtidaDao)
     }
 

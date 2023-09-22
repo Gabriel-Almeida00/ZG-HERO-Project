@@ -2,8 +2,6 @@ package linketinder.dao.empresa
 
 import linketinder.Exception.DataBaseException
 import linketinder.Exception.EmpresasNotFoundException
-import linketinder.config.Config
-import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Empresa
 
@@ -15,9 +13,8 @@ class EmpresaDao implements IEmpresaDao {
 
     private IDatabaseConnection databaseConnection
 
-    EmpresaDao() {
-        Config config = new Config()
-        databaseConnection = new DatabaseConnection(config)
+    EmpresaDao(IDatabaseConnection databaseConnection) {
+        this.databaseConnection = databaseConnection
     }
 
     @Override

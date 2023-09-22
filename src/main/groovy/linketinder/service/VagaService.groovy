@@ -1,8 +1,6 @@
 package linketinder.service
 
 
-import linketinder.Exception.DataBaseException
-import linketinder.Exception.VagaNotFoundException
 import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao

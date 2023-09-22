@@ -1,12 +1,19 @@
 package linketinder.UI.empresa
 
 import linketinder.UI.competencia.CompetenciaMenu
+import linketinder.config.Config
+import linketinder.dao.candidato.CandidatoDao
+import linketinder.dao.candidato.ICandidatoDao
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
+import linketinder.dao.empresa.EmpresaDao
+import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaCompetenciaDao
 import linketinder.dao.vaga.VagaDao
+import linketinder.db.DatabaseConnection
+import linketinder.db.IDatabaseConnection
 import linketinder.entity.VagaCompetencia
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.service.VagaService
@@ -17,9 +24,13 @@ class CompetenciaVagaMenu {
     CompetenciaMenu competenciaMenu
 
     CompetenciaVagaMenu() {
-        IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao()
-        IVagaDao vagaDao = new VagaDao()
-        ICurtidaDao curtidaDao = new CurtidaDao()
+        Config config = new Config()
+        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+        IVagaDao vagaDao = new VagaDao(databaseConnection)
+        IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(databaseConnection, vagaDao)
+        ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
+        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
+        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
 
         competenciaMenu = new CompetenciaMenu()
         vagaService = new VagaService(vagaDao, vagaCompetenciaDao, curtidaDao)
