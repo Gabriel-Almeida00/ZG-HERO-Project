@@ -29,6 +29,7 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
         return competenciasList
     }
 
+
     private String listarCompetenciasPorCandidatoQuery(Integer idCandidato) {
         return "SELECT cc.id AS id, c.nome AS nome, nc.nivel AS nivel_competencia " +
                 "FROM candidato_competencia cc " +
