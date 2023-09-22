@@ -78,14 +78,14 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao {
             statement.setInt(1, idVaga)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                return extrairCompetencias(resultSet)
+                return retornarCompetenciaResultset(resultSet)
             }
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private List<CompetenciaDTO> extrairCompetencias(ResultSet resultSet) throws SQLException {
+    private List<CompetenciaDTO> retornarCompetenciaResultset(ResultSet resultSet) throws SQLException {
         List<CompetenciaDTO> vagaCompetenciasList = new ArrayList<>()
 
         while (resultSet.next()) {

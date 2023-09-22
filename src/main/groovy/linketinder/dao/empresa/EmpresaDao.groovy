@@ -23,13 +23,13 @@ class EmpresaDao implements IEmpresaDao {
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
 
-            return extrairEmpresas(resultSet)
+            return retornarEmpresasresultSet(resultSet)
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private List<Empresa> extrairEmpresas(ResultSet resultSet) throws SQLException {
+    private List<Empresa> retornarEmpresasresultSet(ResultSet resultSet) throws SQLException {
         List<Empresa> empresasList = new ArrayList<>()
 
         while (resultSet.next()) {
@@ -112,14 +112,14 @@ class EmpresaDao implements IEmpresaDao {
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setInt(1, idEmpresa)
             try (ResultSet resultSet = statement.executeQuery()) {
-                return extrairEmpresa(resultSet)
+                return retornarIdEmpresaresultSet(resultSet)
             }
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private Empresa extrairEmpresa(ResultSet resultSet) throws SQLException {
+    private Empresa retornarIdEmpresaresultSet(ResultSet resultSet) throws SQLException {
         if (resultSet.next()) {
             Integer id = resultSet.getInt("id")
             String nome = resultSet.getString("nome")

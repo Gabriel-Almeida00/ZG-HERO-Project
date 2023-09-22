@@ -107,11 +107,9 @@ class EmpresaServiceTest {
                 "34534")
         empresaMock.setId(idEmpresa)
 
-        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock)
 
         empresaService.atualizarEmpresa(empresaMock)
 
-        verify(empresaDao).buscarEmpresaPorId(idEmpresa)
         verify(empresaDao).atualizarEmpresa(empresaMock)
     }
 
@@ -129,11 +127,9 @@ class EmpresaServiceTest {
         )
         empresaMock.setId(idEmpresa)
 
-        when(empresaDao.buscarEmpresaPorId(idEmpresa)).thenReturn(empresaMock)
 
         empresaService.excluirEmpresa(idEmpresa)
 
-        verify(empresaDao).buscarEmpresaPorId(idEmpresa)
         verify(empresaDao).excluirEmpresa(idEmpresa)
     }
 

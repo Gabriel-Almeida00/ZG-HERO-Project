@@ -73,14 +73,14 @@ class CandidatoDao implements ICandidatoDao {
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
-             return extrairCandidatosDTO(resultSet)
+             return retornarCandidatosDTOResultSet(resultSet)
 
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private List<CandidatoDTO> extrairCandidatosDTO(ResultSet resultSet) {
+    private List<CandidatoDTO> retornarCandidatosDTOResultSet(ResultSet resultSet) {
         List<CandidatoDTO> candidatosDTO = new ArrayList<>()
 
         while (resultSet.next()) {

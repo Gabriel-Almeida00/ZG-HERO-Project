@@ -33,13 +33,13 @@ class VagaDao implements IVagaDao {
              PreparedStatement statement = connection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
 
-            return extrairVagas(resultSet)
+            return retornarVagasResultSet(resultSet)
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private List<VagaDTO> extrairVagas(ResultSet resultSet) throws SQLException {
+    private List<VagaDTO> retornarVagasResultSet(ResultSet resultSet) throws SQLException {
         List<VagaDTO> vagasList = new ArrayList<>()
 
         while (resultSet.next()) {
@@ -66,14 +66,14 @@ class VagaDao implements IVagaDao {
             statement.setInt(1, idVaga)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                return extrairIdEmpresa(resultSet)
+                return retornarIdEmpresaResultSet(resultSet)
             }
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private Integer extrairIdEmpresa(ResultSet resultSet) throws SQLException {
+    private Integer retornarIdEmpresaResultSet(ResultSet resultSet) throws SQLException {
         if (resultSet.next()) {
             return resultSet.getInt("idEmpresa")
         } else {
@@ -104,13 +104,13 @@ class VagaDao implements IVagaDao {
 
             statement.setInt(1, idEmpresa)
 
-            return extrairVagasDTO(statement.executeQuery())
+            return retornarVagasDtoResultSet(statement.executeQuery())
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private List<VagaDTO> extrairVagasDTO(ResultSet resultSet) throws SQLException {
+    private List<VagaDTO> retornarVagasDtoResultSet(ResultSet resultSet) throws SQLException {
         List<VagaDTO> vagaDTOsList = new ArrayList<>()
 
         while (resultSet.next()) {

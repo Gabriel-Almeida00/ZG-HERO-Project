@@ -42,14 +42,14 @@ class MatchDao implements IMatchDao {
             statement.setInt(1, idEmpresa)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                return extrairMatchesCandidato(resultSet)
+                return retornarMatchCandidatoResultSet(resultSet)
             }
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private List<MatchCandidatoDTO> extrairMatchesCandidato(ResultSet resultSet) throws SQLException {
+    private List<MatchCandidatoDTO> retornarMatchCandidatoResultSet(ResultSet resultSet) throws SQLException {
         List<MatchCandidatoDTO> matchesList = new ArrayList<>()
 
         while (resultSet.next()) {
@@ -97,14 +97,14 @@ class MatchDao implements IMatchDao {
             statement.setInt(1, idCandidato)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                return extrairMatchesEmpresa(resultSet)
+                return retornarMatchEmpresaResultSet(resultSet)
             }
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private List<MatchEmpresaDTO> extrairMatchesEmpresa(ResultSet resultSet) throws SQLException {
+    private List<MatchEmpresaDTO> retornarMatchEmpresaResultSet(ResultSet resultSet) throws SQLException {
         List<MatchEmpresaDTO> matchesList = new ArrayList<>()
 
         while (resultSet.next()) {

@@ -50,14 +50,14 @@ class CandidatoServiceTest {
     @Test
     void testListarCandidatos() throws SQLException {
         List<CandidatoDTO> candidatosMock = new ArrayList<>()
+        candidatosMock.add(new CandidatoDTO(1, "Candidato 1", "Descrição 1", Arrays.asList("Competência 1", "Competência 2")))
+        candidatosMock.add(new CandidatoDTO(2, "Candidato 2", "Descrição 2", Arrays.asList("Competência 3", "Competência 4")))
 
         when(candidatoDao.listarCandidatos()).thenReturn(candidatosMock)
-
         List<CandidatoDTO> resultado = candidatoService.listarCandidatos()
 
-        assert candidatosMock == resultado
-
         verify(candidatoDao).listarCandidatos()
+        assert candidatosMock == resultado
     }
 
     @Test
@@ -75,7 +75,6 @@ class CandidatoServiceTest {
                 "senha123"
         )
         when(candidatoDao.obterCandidatoPorId(candidatoId)).thenReturn(candidatoMock)
-
         Candidato result = candidatoService.obterCandidatoPorId(candidatoId)
 
         verify(candidatoDao).obterCandidatoPorId(candidatoId)
@@ -163,8 +162,8 @@ class CandidatoServiceTest {
         candidatoMock.setId(idCandidato)
 
         List<CompetenciaDTO> competenciasMock = new ArrayList<>()
-        competenciasMock.add(new CompetenciaDTO(1,"Java", "Intermediároo"))
-        competenciasMock.add(new CompetenciaDTO(2,"SQL", "Avançado"))
+        competenciasMock.add(new CompetenciaDTO(1, "Java", "Intermediároo"))
+        competenciasMock.add(new CompetenciaDTO(2, "SQL", "Avançado"))
 
         when(candidatoDao.obterCandidatoPorId(candidatoMock.getId())).thenReturn(candidatoMock)
 
@@ -202,7 +201,7 @@ class CandidatoServiceTest {
         CandidatoCompetencia candidatoCompetencia = new CandidatoCompetencia(1, idCompetencia, novoNivel)
         candidatoCompetencia.setId(id)
 
-        CompetenciaDTO competenciasMock = new CompetenciaDTO(idCompetencia,"Java", "Avançado")
+        CompetenciaDTO competenciasMock = new CompetenciaDTO(idCompetencia, "Java", "Avançado")
         competenciasMock.setId(idCompetencia)
 
         doNothing().when(candidatoCompetenciaDao).atualizarNivelCompetenciaCandidato(candidatoCompetencia)
@@ -216,7 +215,7 @@ class CandidatoServiceTest {
     void testExcluirCompetenciaCandidato() throws SQLException {
         Integer idCompetencia = 2
 
-        CompetenciaDTO competenciasMock = new CompetenciaDTO(idCompetencia,"Java",  "Básico")
+        CompetenciaDTO competenciasMock = new CompetenciaDTO(idCompetencia, "Java", "Básico")
         competenciasMock.setId(idCompetencia)
 
         doNothing().when(candidatoCompetenciaDao).excluirCompetenciaCandidato(idCompetencia)
@@ -402,9 +401,6 @@ class CandidatoServiceTest {
         )
         vaga.setId(idVaga)
 
-        when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
-        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vaga)
-        when(curtidaDao.verificaCurtidaDaEmpresa(anyInt(), anyInt())).thenReturn(null)
 
         candidatoService.curtirVaga(idCandidato, idVaga)
 
@@ -440,19 +436,17 @@ class CandidatoServiceTest {
         )
         vaga.setId(idVaga)
 
-        when(candidatoDao.obterCandidatoPorId(idCandidato)).thenReturn(candidato)
-        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vaga)
+
         when(curtidaDao.verificaCurtidaDaEmpresa(anyInt(), anyInt())).thenReturn(empresaId)
 
-        curtidaDao.AtualizarCurtidaComIdVaga(  idVaga,empresaId, idCandidato)
+        curtidaDao.AtualizarCurtidaComIdVaga(idVaga, empresaId, idCandidato)
 
         verify(curtidaDao).AtualizarCurtidaComIdVaga(idVaga, empresaId, idCandidato)
     }
 
 
-
     @Test
-    void testListarEmpresasQueCurtiramCandidato(){
+    void testListarEmpresasQueCurtiramCandidato() {
         Integer id = 1
         Candidato candidato = new Candidato(
                 "João",
@@ -471,16 +465,12 @@ class CandidatoServiceTest {
         empresas.add(new EmpresaDTO("São Paulo", "Empresa A"))
         empresas.add(new EmpresaDTO("Rio de Janeiro", "Empresa B"))
 
-        when(candidatoDao.obterCandidatoPorId(id)).thenReturn(candidato)
 
-        when(curtidaDao.listarEmpresasQueCurtiramCandidato(id)).thenReturn(empresas)
-
+        when(candidatoService.listarEmpresasQueCurtiramCandidato(id)).thenReturn(empresas)
         List<EmpresaDTO> empresasDTO = candidatoService.listarEmpresasQueCurtiramCandidato(id)
 
 
-        verify(candidatoDao).obterCandidatoPorId(id)
-
-        verify(curtidaDao).listarEmpresasQueCurtiramCandidato(1)
+        verify(curtidaDao).listarEmpresasQueCurtiramCandidato(id)
 
         assert empresas == empresasDTO
     }

@@ -55,11 +55,11 @@ class CurtidaDao implements ICurtidaDao {
             statement.setInt(1, idEmpresa)
             statement.setInt(2, idCandidato)
 
-            return obterIdEmpresaCurtiu(statement)
+            return obterIdEmpresaQueCurtiu(statement)
         }
     }
 
-    private Integer obterIdEmpresaCurtiu(PreparedStatement statement) throws SQLException {
+    private Integer obterIdEmpresaQueCurtiu(PreparedStatement statement) throws SQLException {
         try (ResultSet resultSet = statement.executeQuery()) {
             if (resultSet.next()) {
                 return resultSet.getInt("idEmpresa")
@@ -202,13 +202,13 @@ class CurtidaDao implements ICurtidaDao {
             statement.setInt(1, idVaga)
             ResultSet resultSet = statement.executeQuery()
 
-            return extrairCandidatosDTO(resultSet)
+            return retornarCandidatoResultSet(resultSet)
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private List<CandidatoQueCurtiuVagaDTO> extrairCandidatosDTO(ResultSet resultSet) throws SQLException {
+    private List<CandidatoQueCurtiuVagaDTO> retornarCandidatoResultSet(ResultSet resultSet) throws SQLException {
         List<CandidatoQueCurtiuVagaDTO> candidatosList = new ArrayList<>()
 
         while (resultSet.next()) {

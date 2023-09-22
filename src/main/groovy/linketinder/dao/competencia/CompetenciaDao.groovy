@@ -40,14 +40,14 @@ class CompetenciaDao implements ICompetenciaDao {
             statement.setInt(1, id)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                return criarCompetenciaAPartirDoResultSet(resultSet, id)
+                return retornarCompetenciaresultSet(resultSet, id)
             }
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private Competencia criarCompetenciaAPartirDoResultSet(ResultSet resultSet, Integer id) throws SQLException {
+    private Competencia retornarCompetenciaresultSet(ResultSet resultSet, Integer id) throws SQLException {
         if (resultSet.next()) {
             String nome = resultSet.getString("nome")
             Competencia competencia = new Competencia(nome)
@@ -66,13 +66,13 @@ class CompetenciaDao implements ICompetenciaDao {
              PreparedStatement statement = connection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
 
-            return criarListaCompetenciasAPartirDoResultSet(resultSet)
+            return retornarListaCompetenciaResultSet(resultSet)
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private List<Competencia> criarListaCompetenciasAPartirDoResultSet(ResultSet resultSet) throws SQLException {
+    private List<Competencia> retornarListaCompetenciaResultSet(ResultSet resultSet) throws SQLException {
         List<Competencia> competenciasList = new ArrayList<>()
 
         while (resultSet.next()) {

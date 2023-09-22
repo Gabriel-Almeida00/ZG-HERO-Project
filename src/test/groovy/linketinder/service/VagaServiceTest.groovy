@@ -201,8 +201,6 @@ class VagaServiceTest {
                 2
         )
 
-        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vagaMock)
-
         List<CompetenciaDTO> vagaCompetenciaListMock = new ArrayList<>()
         vagaCompetenciaListMock.add(new CompetenciaDTO(
                 1,
@@ -219,8 +217,8 @@ class VagaServiceTest {
 
         List<CompetenciaDTO> result = service.listarCompetenciasPorVaga(idVaga)
 
-        verify(vagaDao).buscarVagaPorId(idVaga)
         verify(vagaCompetenciaDao).listarCompetenciasPorVaga(idVaga)
+
         assert vagaCompetenciaListMock.size() == result.size()
         assert vagaCompetenciaListMock == result
     }
@@ -236,7 +234,6 @@ class VagaServiceTest {
                 1,
                 2
         )
-        when(vagaDao.buscarVagaPorId(idVaga)).thenReturn(vaga)
 
         List<CandidatoQueCurtiuVagaDTO> resultadosEsperados = Arrays.asList(
                 new CandidatoQueCurtiuVagaDTO(1, "Descrição Candidato 1", Arrays.asList("Java", "Python")),
@@ -248,7 +245,6 @@ class VagaServiceTest {
 
         assert resultadosEsperados == resultado
 
-        verify(vagaDao, times(1)).buscarVagaPorId(idVaga)
         verify(curtidaDao, times(1)).listarCandidatosQueCurtiramVaga(idVaga)
     }
 

@@ -76,12 +76,12 @@ class FormacaoDao implements IFormacaoDao {
             statement.setInt(1, idCandidato)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                return extrairFormacoes(idCandidato, resultSet)
+                return retornarFormacoesresultSet(idCandidato, resultSet)
             }
         }
     }
 
-    private List<Formacao> extrairFormacoes(Integer idCandidato, ResultSet resultSet) throws SQLException {
+    private List<Formacao> retornarFormacoesresultSet(Integer idCandidato, ResultSet resultSet) throws SQLException {
         List<Formacao> formacoesList = new ArrayList<>()
 
         try {
@@ -112,12 +112,12 @@ class FormacaoDao implements IFormacaoDao {
             statement.setInt(1, idFormacao)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                return criarFormacaoAPartirDoResultSet(resultSet)
+                return retornarIdFormacaoResultSet(resultSet)
             }
         }
     }
 
-    private Formacao criarFormacaoAPartirDoResultSet(ResultSet resultSet) throws SQLException {
+    private Formacao retornarIdFormacaoResultSet(ResultSet resultSet) throws SQLException {
         if (resultSet.next()) {
             Integer id = resultSet.getInt("id")
             Integer idCandidato = resultSet.getInt("idCandidato")

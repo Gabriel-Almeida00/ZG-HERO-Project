@@ -25,7 +25,7 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
         candidatoDao.obterCandidatoPorId(idCandidato)
 
         String sql = listarCompetenciasPorCandidatoQuery(idCandidato)
-        List<CompetenciaDTO> competenciasList = mapearQueryParaCompetenciaDTO(sql)
+        List<CompetenciaDTO> competenciasList = retornarCompetenciaResultSet(sql)
         return competenciasList
     }
 
@@ -37,7 +37,7 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
                 "WHERE cc.idCandidato = " + idCandidato
     }
 
-    private List<CompetenciaDTO> mapearQueryParaCompetenciaDTO(String sql) throws SQLException {
+    private List<CompetenciaDTO> retornarCompetenciaResultSet(String sql) throws SQLException {
         List<CompetenciaDTO> competenciasList = new ArrayList<>()
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)

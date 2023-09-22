@@ -62,12 +62,12 @@ class ExperienciaDao implements IExperienciaDao {
             statement.setInt(1, idCandidato)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                return extrairExperiencias(resultSet, idCandidato)
+                return retornarExperienciasResultSet(resultSet, idCandidato)
             }
         }
     }
 
-    private List<Experiencia> extrairExperiencias(ResultSet resultSet, Integer idCandidato) throws SQLException {
+    private List<Experiencia> retornarExperienciasResultSet(ResultSet resultSet, Integer idCandidato) throws SQLException {
         List<Experiencia> experienciasList = new ArrayList<>()
 
         try {
@@ -111,14 +111,14 @@ class ExperienciaDao implements IExperienciaDao {
             statement.setInt(1, idExperiencia)
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                return extrairExperiencia(resultSet)
+                return retornarIdExperienciaResultSet(resultSet)
             }
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
 
-    private Experiencia extrairExperiencia(ResultSet resultSet) throws SQLException {
+    private Experiencia retornarIdExperienciaResultSet(ResultSet resultSet) throws SQLException {
         if (resultSet.next()) {
             Integer idCandidato = resultSet.getInt("idCandidato")
             String cargo = resultSet.getString("cargo")
