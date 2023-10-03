@@ -1,13 +1,13 @@
 package linketinder.db
 
-import linketinder.config.Config
+import linketinder.Exception.DataBaseException
 
 import java.sql.*
 
 class DatabaseConnection implements IDatabaseConnection {
-    private final Config config
+    private final ConfigDatabase config
 
-    DatabaseConnection(Config config) {
+    DatabaseConnection(ConfigDatabase config) {
         this.config = config
     }
 
@@ -19,7 +19,7 @@ class DatabaseConnection implements IDatabaseConnection {
 
             return DriverManager.getConnection(dbUrl, dbUser, dbPassword)
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao obter a conexão com o banco de dados.", e)
+            throw new DataBaseException("Erro ao obter a conexão com o banco de dados.", e)
         }
     }
 

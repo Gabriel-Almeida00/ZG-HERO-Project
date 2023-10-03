@@ -41,12 +41,4 @@ class Candidato extends Pessoa {
     String getCpf() {
         return cpf
     }
-
-    List<CandidatoCompetencia> getCompetencias() {
-        return competencias
-    }
-
-    void setCompetencias(List<CandidatoCompetencia> competencias) {
-        this.competencias = competencias
-    }
 }

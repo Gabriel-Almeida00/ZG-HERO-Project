@@ -1,6 +1,6 @@
 package linketinder.UI.competencia
 
-import linketinder.config.Config
+import linketinder.db.ConfigDatabase
 import linketinder.dao.competencia.CompetenciaDao
 import linketinder.dao.competencia.ICompetenciaDao
 import linketinder.db.DatabaseConnection
@@ -13,7 +13,7 @@ class CompetenciaMenu {
     CompetenciaService competenciaService
 
     CompetenciaMenu() {
-        Config config = new Config()
+        ConfigDatabase config = new ConfigDatabase()
         IDatabaseConnection databaseConnection = new DatabaseConnection(config)
         ICompetenciaDao competenciaDao = new CompetenciaDao(databaseConnection)
 

@@ -30,14 +30,6 @@ class Vaga {
         curtida = []
     }
 
-    List<VagaCurtida> getCurtida() {
-        return curtida
-    }
-
-    void setCurtida(List<VagaCurtida> curtida) {
-        this.curtida = curtida
-    }
-
     Integer getId() {
         return id
     }
@@ -50,24 +42,12 @@ class Vaga {
         return idEmpresa
     }
 
-    void setIdEmpresa(Integer idEmpresa) {
-        this.idEmpresa = idEmpresa
-    }
-
     String getNome() {
         return nome
     }
 
-    void setNome(String nome) {
-        this.nome = nome
-    }
-
     String getDescricao() {
         return descricao
-    }
-
-    void setDescricao(String descricao) {
-        this.descricao = descricao
     }
 
     String getCidade() {
@@ -80,13 +60,5 @@ class Vaga {
 
     Integer getExperienciaMinima() {
         return experienciaMinima
-    }
-
-    List<VagaCompetencia> getCompetencias() {
-        return competencias
-    }
-
-    void setCompetencias(List<VagaCompetencia> competencias) {
-        this.competencias = competencias
     }
 }

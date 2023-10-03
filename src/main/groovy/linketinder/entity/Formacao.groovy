@@ -29,10 +29,6 @@ class Formacao {
         return idCandidato
     }
 
-    void setIdCandidato(Integer idCandidato) {
-        this.idCandidato = idCandidato
-    }
-
     String getInstituicao() {
         return instituicao
     }
@@ -43,10 +39,6 @@ class Formacao {
 
     Integer getNivel() {
         return nivel
-    }
-
-    void setNivel(Integer nivel) {
-        this.nivel = nivel
     }
 
     String getAnoConclusao() {

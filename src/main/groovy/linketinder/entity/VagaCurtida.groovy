@@ -10,23 +10,11 @@ class VagaCurtida {
         this.idVaga = idVaga
     }
 
-    Integer getId() {
-        return id
-    }
-
-    void setId(Integer id) {
-        this.id = id
-    }
-
     Integer getIdCandidata() {
         return idCandidata
     }
 
     Integer getIdVaga() {
         return idVaga
-    }
-
-    void setIdVaga(Integer idVaga) {
-        this.idVaga = idVaga
     }
 }

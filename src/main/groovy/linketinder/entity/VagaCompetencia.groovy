@@ -13,10 +13,6 @@ class VagaCompetencia {
         this.nivel = nivel
     }
 
-    Integer getId() {
-        return id
-    }
-
     void setId(Integer id) {
         this.id = id
     }
@@ -25,23 +21,11 @@ class VagaCompetencia {
         return idVaga
     }
 
-    void setIdVaga(Integer idVaga) {
-        this.idVaga = idVaga
-    }
-
     Integer getIdCompetencia() {
         return idCompetencia
     }
 
-    void setIdCompetencia(Integer idCompetencia) {
-        this.idCompetencia = idCompetencia
-    }
-
     Integer getNivel() {
         return nivel
-    }
-
-    void setNivel(Integer nivel) {
-        this.nivel = nivel
     }
 }

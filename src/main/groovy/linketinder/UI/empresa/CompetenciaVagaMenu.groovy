@@ -1,7 +1,7 @@
 package linketinder.UI.empresa
 
 import linketinder.UI.competencia.CompetenciaMenu
-import linketinder.config.Config
+import linketinder.db.ConfigDatabase
 import linketinder.dao.candidato.CandidatoDao
 import linketinder.dao.candidato.ICandidatoDao
 import linketinder.dao.curtida.CurtidaDao
@@ -24,7 +24,7 @@ class CompetenciaVagaMenu {
     CompetenciaMenu competenciaMenu
 
     CompetenciaVagaMenu() {
-        Config config = new Config()
+        ConfigDatabase config = new ConfigDatabase()
         IDatabaseConnection databaseConnection = new DatabaseConnection(config)
         IVagaDao vagaDao = new VagaDao(databaseConnection)
         IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(databaseConnection, vagaDao)

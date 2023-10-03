@@ -29,8 +29,4 @@ class CandidatoCurtido {
     Integer getIdEmpresa() {
         return idEmpresa
     }
-
-    void setIdEmpresa(Integer idEmpresa) {
-        this.idEmpresa = idEmpresa
-    }
 }
