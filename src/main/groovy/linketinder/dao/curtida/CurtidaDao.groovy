@@ -1,6 +1,6 @@
 package linketinder.dao.curtida
 
-import linketinder.Exception.DataBaseException
+import linketinder.exception.DataBaseException
 import linketinder.dao.candidato.ICandidatoDao
 import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaDao

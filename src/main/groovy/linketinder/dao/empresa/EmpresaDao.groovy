@@ -1,7 +1,7 @@
 package linketinder.dao.empresa
 
-import linketinder.Exception.DataBaseException
-import linketinder.Exception.EmpresasNotFoundException
+import linketinder.exception.DataBaseException
+import linketinder.exception.EmpresasNotFoundException
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Empresa
 

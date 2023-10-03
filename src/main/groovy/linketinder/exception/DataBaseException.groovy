@@ -1,4 +1,4 @@
-package linketinder.Exception
+package linketinder.exception
 
 class DataBaseException extends RuntimeException {
     DataBaseException(String message) {

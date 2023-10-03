@@ -1,4 +1,4 @@
-package linketinder.Exception
+package linketinder.exception
 
 class EmpresasNotFoundException extends RuntimeException {
     EmpresasNotFoundException(String message) {

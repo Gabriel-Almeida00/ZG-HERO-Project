@@ -1,6 +1,6 @@
 package linketinder.db
 
-import linketinder.Exception.DataBaseException
+import linketinder.exception.DataBaseException
 
 import java.sql.*
 

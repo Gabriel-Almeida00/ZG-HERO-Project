@@ -1,7 +1,7 @@
 package linketinder.dao.candidato
 
-import linketinder.Exception.DataBaseException
-import linketinder.Exception.FormacaoNotFoundException
+import linketinder.exception.DataBaseException
+import linketinder.exception.FormacaoNotFoundException
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Formacao
 

@@ -1,4 +1,4 @@
-package linketinder.Exception
+package linketinder.exception
 
 class CompetenciaNotFoundException extends RuntimeException {
     CompetenciaNotFoundException(String message) {

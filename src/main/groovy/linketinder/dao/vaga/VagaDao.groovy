@@ -1,8 +1,8 @@
 package linketinder.dao.vaga
 
-import linketinder.Exception.DataBaseException
-import linketinder.Exception.EmpresasNotFoundException
-import linketinder.Exception.VagaNotFoundException
+import linketinder.exception.DataBaseException
+import linketinder.exception.EmpresasNotFoundException
+import linketinder.exception.VagaNotFoundException
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Vaga
 import linketinder.entity.dto.VagaDTO

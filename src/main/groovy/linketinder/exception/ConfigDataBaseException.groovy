@@ -1,4 +1,4 @@
-package linketinder.Exception
+package linketinder.exception
 
 class ConfigDataBaseException extends Exception {
     ConfigDataBaseException(String message) {

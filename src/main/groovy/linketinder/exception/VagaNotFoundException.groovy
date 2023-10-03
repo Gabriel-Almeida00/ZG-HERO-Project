@@ -1,4 +1,4 @@
-package linketinder.Exception
+package linketinder.exception
 
 class VagaNotFoundException extends RuntimeException {
     VagaNotFoundException(String message) {

@@ -2,7 +2,7 @@ package linketinder.db
 
 import groovy.json.JsonException
 import groovy.json.JsonSlurper
-import linketinder.Exception.ConfigDataBaseException
+import linketinder.exception.ConfigDataBaseException
 
 class ConfigDatabase {
     private String urlDB
