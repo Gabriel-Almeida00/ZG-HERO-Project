@@ -1,8 +1,6 @@
 package linketinder.service.candidato
 
 import linketinder.dao.candidato.ICandidatoDao
-import linketinder.dao.curtida.ICurtidaDao
-import linketinder.dao.vaga.IVagaDao
 import linketinder.entity.Candidato
 import linketinder.entity.dto.CandidatoDTO
 

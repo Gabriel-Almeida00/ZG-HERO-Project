@@ -1,4 +1,4 @@
-package linketinder.service
+package linketinder.service.match
 
 
 import linketinder.dao.match.IMatchDao

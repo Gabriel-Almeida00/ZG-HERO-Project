@@ -1,9 +1,7 @@
-package linketinder.service
+package linketinder.service.competencia
 
 
-import linketinder.dao.competencia.ICompetenciaDao
 import linketinder.entity.Competencia
-import linketinder.service.competencia.CompetenciaService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -13,13 +11,12 @@ import static org.mockito.Mockito.*
 
 class CompetenciaServiceTest {
 
-    private ICompetenciaDao competenciaDao
-    private CompetenciaService competenciaService
+    private ICompetenciaService competenciaService
 
     @BeforeEach
     void setup() {
-        competenciaDao = mock(ICompetenciaDao.class)
-        competenciaService = new CompetenciaService(competenciaDao)
+        competenciaService = mock(ICompetenciaService.class)
+
     }
 
     @Test
@@ -28,11 +25,11 @@ class CompetenciaServiceTest {
         competenciasMock.add(new Competencia("Java"))
         competenciasMock.add(new Competencia("SQL"))
 
-        when(competenciaDao.listarTodasCompetencias()).thenReturn(competenciasMock)
+        when(competenciaService.listarCompetencias()).thenReturn(competenciasMock)
 
         List<Competencia> result = competenciaService.listarCompetencias()
 
-        verify(competenciaDao).listarTodasCompetencias()
+        verify(competenciaService).listarCompetencias()
 
         assert competenciasMock.size() == result.size()
         assert competenciasMock == result
@@ -44,11 +41,11 @@ class CompetenciaServiceTest {
         Competencia competenciaMock = new Competencia("Java")
         competenciaMock.setId(idCompetencia)
 
-        when(competenciaDao.buscarCompetenciaPorId(idCompetencia)).thenReturn(competenciaMock)
+        when(competenciaService.buscarCompetenciaPorId(idCompetencia)).thenReturn(competenciaMock)
 
         Competencia result = competenciaService.buscarCompetenciaPorId(idCompetencia)
 
-        verify(competenciaDao).buscarCompetenciaPorId(idCompetencia)
+        verify(competenciaService).buscarCompetenciaPorId(idCompetencia)
 
         assert competenciaMock  == result
     }
@@ -59,7 +56,7 @@ class CompetenciaServiceTest {
 
         competenciaService.adicionarCompetencia(competencia)
 
-        verify(competenciaDao).adicionarCompetencia(competencia)
+        verify(competenciaService).adicionarCompetencia(competencia)
     }
 
     @Test
@@ -67,21 +64,21 @@ class CompetenciaServiceTest {
         Competencia competencia = new Competencia("Java")
         competencia.setId(1)
 
-        when(competenciaDao.buscarCompetenciaPorId(competencia.getId())).thenReturn(competencia)
+        when(competenciaService.buscarCompetenciaPorId(competencia.getId())).thenReturn(competencia)
 
         competenciaService.atualizarCompetencia(competencia)
 
-        verify(competenciaDao).atualizarCompetencia(competencia)
+        verify(competenciaService).atualizarCompetencia(competencia)
     }
 
     @Test
     void testExcluirCompetencia() throws SQLException {
         Integer idCompetencia = 1
 
-        when(competenciaDao.buscarCompetenciaPorId(idCompetencia)).thenReturn(new Competencia("Java"))
+        when(competenciaService.buscarCompetenciaPorId(idCompetencia)).thenReturn(new Competencia("Java"))
 
         competenciaService.excluirCompetencia(idCompetencia)
 
-        verify(competenciaDao).excluirCompetencia(idCompetencia)
+        verify(competenciaService).excluirCompetencia(idCompetencia)
     }
 }
