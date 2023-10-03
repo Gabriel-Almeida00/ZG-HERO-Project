@@ -24,20 +24,12 @@ class MatchCandidatoDTO {
         this.descricaoVaga = descricaoVaga
     }
 
-    Integer getIdCandidato() {
-        return idCandidato
-    }
-
     String getNomeCandidato() {
         return nomeCandidato
     }
 
     String getDescricaoCandidato() {
         return descricaoCandidato
-    }
-
-    Integer getIdVaga() {
-        return idVaga
     }
 
     String getNomeVaga() {

@@ -1,8 +1,8 @@
 package linketinder.UI.candidato
 
 import linketinder.UI.empresa.VagaMenu
-import linketinder.config.Config
-import linketinder.dao.candidato.*
+import linketinder.dao.candidato.CandidatoDao
+import linketinder.dao.candidato.ICandidatoDao
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.empresa.EmpresaDao
@@ -11,6 +11,7 @@ import linketinder.dao.match.IMatchDao
 import linketinder.dao.match.MatchDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaDao
+import linketinder.db.ConfigDatabase
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Candidato
@@ -18,39 +19,44 @@ import linketinder.entity.VagaCurtida
 import linketinder.entity.dto.CandidatoDTO
 import linketinder.entity.dto.EmpresaDTO
 import linketinder.entity.dto.MatchEmpresaDTO
-import linketinder.service.CandidatoService
-import linketinder.service.MatchService
+import linketinder.service.candidato.CandidatoService
+import linketinder.service.candidato.ICandidatoService
+import linketinder.service.curtida.CurtidaService
+import linketinder.service.curtida.ICurtidaService
+import linketinder.service.match.IMatchService
+import linketinder.service.match.MatchService
 
 import java.text.SimpleDateFormat
 
 class CandidatoMenu {
 
-    CandidatoService candidatoService
-    MatchService matchService
-    CompetenciaCandidatoMenu competenciaCandidatoMenu
-    ExperienciaMenu experienciaCandidatoMenu
-    FormacaoMenu formacaoMenu
-    VagaMenu vagaMenu
+    private CompetenciaCandidatoMenu competenciaCandidatoMenu
+    private ExperienciaMenu experienciaMenu
+    private FormacaoMenu formacaoMenu
+    private VagaMenu vagaMenu
+
+    private ICandidatoService candidatoService
+    private ICurtidaService curtidaService
+    private IMatchService matchService
 
     CandidatoMenu() {
-        Config config = new Config()
-        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+        competenciaCandidatoMenu = new CompetenciaCandidatoMenu()
+        experienciaMenu = new ExperienciaMenu()
+        formacaoMenu = new FormacaoMenu()
+        vagaMenu = new VagaMenu()
+
+        ConfigDatabase configDatabase = new ConfigDatabase()
+        IDatabaseConnection databaseConnection = new DatabaseConnection(configDatabase)
 
         ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection, candidatoDao)
-        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection, candidatoDao)
-        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection, candidatoDao)
         IVagaDao vagaDao = new VagaDao(databaseConnection)
         IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
         ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
         IMatchDao matchDao = new MatchDao(databaseConnection)
 
-        formacaoMenu = new FormacaoMenu()
-        experienciaCandidatoMenu = new ExperienciaMenu()
-        competenciaCandidatoMenu = new CompetenciaCandidatoMenu()
-        vagaMenu = new VagaMenu()
+        candidatoService = new CandidatoService(candidatoDao)
+        curtidaService = new CurtidaService(curtidaDao, vagaDao)
         matchService = new MatchService(matchDao)
-        candidatoService = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao, vagaDao, curtidaDao)
     }
 
     void exibirMenuCandidato(Reader reader) {
@@ -86,7 +92,7 @@ class CandidatoMenu {
                     competenciaCandidatoMenu.exibirMenuCandidato(reader)
                     break
                 case 6:
-                    experienciaCandidatoMenu.exibirMenuCandidato(reader)
+                    experienciaMenu.exibirMenuCandidato(reader)
                     break
                 case 7:
                     formacaoMenu.exibirMenuCandidato(reader)
@@ -208,13 +214,13 @@ class CandidatoMenu {
         Integer idCandidato = vagaCurtida.getIdCandidata()
         Integer idVaga = vagaCurtida.getIdVaga()
 
-        candidatoService.curtirVaga(idCandidato, idVaga)
+        curtidaService.curtirVaga(idCandidato, idVaga)
     }
 
     void listarEmpresasQueCurtiramCandidato(Reader reader) {
         println("Digite o id do candidato: ")
         Integer id = Integer.parseInt(reader.readLine())
-        List<EmpresaDTO> empresas = candidatoService.listarEmpresasQueCurtiramCandidato(id)
+        List<EmpresaDTO> empresas = curtidaService.listarEmpresasQueCurtiramCandidato(id)
 
         empresas.forEach { empresa ->
             println("==========")

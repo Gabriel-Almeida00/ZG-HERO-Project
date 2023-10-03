@@ -17,24 +17,12 @@ class VagaDTO {
         return id
     }
 
-    void setId(Integer id) {
-        this.id = id
-    }
-
     String getNome() {
         return nome
     }
 
-    void setNome(String nome) {
-        this.nome = nome
-    }
-
     String getDescricao() {
         return descricao
-    }
-
-    void setDescricao(String descricao) {
-        this.descricao = descricao
     }
 
     List<String> getNomeCompetencia() {

@@ -1,7 +1,7 @@
 package linketinder.UI.empresa
 
 import linketinder.UI.candidato.CandidatoMenu
-import linketinder.config.Config
+import linketinder.db.ConfigDatabase
 import linketinder.dao.candidato.CandidatoDao
 import linketinder.dao.candidato.ICandidatoDao
 import linketinder.dao.curtida.CurtidaDao
@@ -17,19 +17,26 @@ import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCurtido
 import linketinder.entity.Empresa
 import linketinder.entity.dto.MatchCandidatoDTO
-import linketinder.service.EmpresaService
-import linketinder.service.MatchService
+import linketinder.service.curtida.CurtidaService
+import linketinder.service.curtida.ICurtidaService
+import linketinder.service.empresa.EmpresaService
+import linketinder.service.empresa.IEmpresaService
+import linketinder.service.match.IMatchService
+import linketinder.service.match.MatchService
 
 class EmpresaMenu {
 
-    EmpresaService empresaService
-    MatchService matchService
-    VagaMenu vagaMenu
-    CandidatoMenu candidatoMenu
+    private IEmpresaService empresaService
+    private IMatchService matchService
+    private ICurtidaService curtidaService
+
+    private VagaMenu vagaMenu
+    private CandidatoMenu candidatoMenu
 
     EmpresaMenu() {
-        Config config = new Config()
+        ConfigDatabase config = new ConfigDatabase()
         IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+
         IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
         ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
         IVagaDao vagaDao = new VagaDao(databaseConnection)
@@ -37,8 +44,10 @@ class EmpresaMenu {
         IMatchDao matchDao = new MatchDao(databaseConnection)
 
 
-        empresaService = new EmpresaService(empresaDao, candidatoDao, curtidaDao)
+        empresaService = new EmpresaService(empresaDao)
         matchService = new MatchService(matchDao)
+        curtidaService = new CurtidaService(curtidaDao, vagaDao)
+
         candidatoMenu = new CandidatoMenu()
         vagaMenu = new VagaMenu()
     }
@@ -170,7 +179,7 @@ class EmpresaMenu {
         CandidatoCurtido candidatoCurtido = criarCandidatoCurtido(reader)
         Integer idCandidato = candidatoCurtido.getIdCandidato()
         Integer idEmpresa = candidatoCurtido.getIdEmpresa()
-        empresaService.curtirCandidato(idCandidato, idEmpresa)
+        curtidaService.curtirCandidato(idCandidato, idEmpresa)
     }
 
     void verificaMatch(Reader reader){

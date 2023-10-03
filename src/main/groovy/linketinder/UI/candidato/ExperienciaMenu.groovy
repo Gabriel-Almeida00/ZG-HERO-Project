@@ -1,6 +1,6 @@
 package linketinder.UI.candidato
 
-import linketinder.config.Config
+import linketinder.db.ConfigDatabase
 import linketinder.dao.candidato.*
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
@@ -11,25 +11,22 @@ import linketinder.dao.vaga.VagaDao
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Experiencia
-import linketinder.service.CandidatoService
+import linketinder.service.candidato.CandidatoFormacaoService
+import linketinder.service.candidato.CandidatoService
+import linketinder.service.candidato.ICandidatoFormacaoService
 
 class ExperienciaMenu {
 
-    CandidatoService service
+   private ICandidatoFormacaoService candidatoFormacaoService
 
     ExperienciaMenu() {
-        Config config = new Config()
+        ConfigDatabase config = new ConfigDatabase()
         IDatabaseConnection databaseConnection = new DatabaseConnection(config)
 
         ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection, candidatoDao)
-        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection, candidatoDao)
         IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection, candidatoDao)
-        IVagaDao vagaDao = new VagaDao(databaseConnection)
-        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
 
-        service = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao, vagaDao, curtidaDao)
+        candidatoFormacaoService = new CandidatoFormacaoService(formacaoDao)
     }
 
     void exibirMenuCandidato(Reader reader) {
@@ -87,7 +84,7 @@ class ExperienciaMenu {
 
     void adicionarExperiencia(Reader reader) {
         Experiencia experiencia = criarExperiencia(reader)
-        service.adicionarExperiencia(experiencia)
+        candidatoFormacaoService.adicionarExperiencia(experiencia)
     }
 
     void atualizarExperiencia(Reader reader) {
@@ -97,22 +94,21 @@ class ExperienciaMenu {
         Experiencia experiencia = criarExperiencia(reader)
         experiencia.setId(id)
 
-        service.atualizarExperiencia(experiencia)
+        candidatoFormacaoService.atualizarExperiencia(experiencia)
     }
 
     void excluirExperiencia(Reader reader) {
         println "Digite o Id da experiencia que deseja excluir: "
         Integer id = Integer.parseInt(reader.readLine())
 
-
-        service.excluirExperiencia(id)
+        candidatoFormacaoService.excluirExperiencia(id)
     }
 
     void listarExperienciaDoCandidato(Reader reader) {
         println "Digite o ID do candidato:"
         Integer idCandidato = Integer.parseInt(reader.readLine())
 
-        List<Experiencia> experiencias = service.listarExperienciasPorCandidato(idCandidato)
+        List<Experiencia> experiencias = candidatoFormacaoService.listarExperienciasPorCandidato(idCandidato)
 
         experiencias.each { experiencia ->
             println "============================"

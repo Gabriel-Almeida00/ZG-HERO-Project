@@ -1,0 +1,33 @@
+package linketinder.service.candidato
+
+import linketinder.dao.candidato.ICandidatoCompetenciaDao
+import linketinder.entity.CandidatoCompetencia
+import linketinder.entity.dto.CompetenciaDTO
+
+class CandidatoCompetenciaService implements ICandidatoCompetenciaService {
+    private final ICandidatoCompetenciaDao candidatoCompetenciaDao
+
+    CandidatoCompetenciaService(ICandidatoCompetenciaDao candidatoCompetenciaDao) {
+        this.candidatoCompetenciaDao = candidatoCompetenciaDao
+    }
+
+    @Override
+    List<CompetenciaDTO> listarCompetenciasPorCandidato(Integer idCandidato) {
+        return candidatoCompetenciaDao.listarCompetenciasPorCandidato(idCandidato)
+    }
+
+    @Override
+    void adicionarCandidatoCompetencia(CandidatoCompetencia candidatoCompetencia) {
+        candidatoCompetenciaDao.adicionarCandidatoCompetencia(candidatoCompetencia)
+    }
+
+    @Override
+    void atualizarNivelCompetenciaCandidato(CandidatoCompetencia candidatoCompetencia) {
+        candidatoCompetenciaDao.atualizarNivelCompetenciaCandidato(candidatoCompetencia)
+    }
+
+    @Override
+    void excluirCompetenciaCandidato(Integer id) {
+        candidatoCompetenciaDao.excluirCompetenciaCandidato(id)
+    }
+}

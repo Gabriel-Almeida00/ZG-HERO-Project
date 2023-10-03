@@ -1,6 +1,6 @@
 package linketinder.dao.vaga
 
-import linketinder.Exception.DataBaseException
+import linketinder.exception.DataBaseException
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.VagaCompetencia
 import linketinder.entity.dto.CompetenciaDTO

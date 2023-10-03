@@ -1,6 +1,6 @@
 package linketinder.dao.candidato
 
-import linketinder.Exception.DataBaseException
+import linketinder.exception.DataBaseException
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCompetencia
 import linketinder.entity.dto.CompetenciaDTO

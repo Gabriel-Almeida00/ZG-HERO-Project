@@ -1,7 +1,7 @@
 package linketinder.dao.competencia
 
-import linketinder.Exception.CompetenciaNotFoundException
-import linketinder.Exception.DataBaseException
+import linketinder.exception.CompetenciaNotFoundException
+import linketinder.exception.DataBaseException
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Competencia
 

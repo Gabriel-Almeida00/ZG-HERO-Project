@@ -27,23 +27,11 @@ class CandidatoCompetencia {
         return idCandidato
     }
 
-    void setIdCandidato(Integer idCandidato) {
-        this.idCandidato = idCandidato
-    }
-
     Integer getIdCompetencia() {
         return idCompetencia
     }
 
-    void setIdCompetencia(Integer idCompetencia) {
-        this.idCompetencia = idCompetencia
-    }
-
     Integer getNivel() {
         return nivel
-    }
-
-    void setNivel(Integer nivel) {
-        this.nivel = nivel
     }
 }

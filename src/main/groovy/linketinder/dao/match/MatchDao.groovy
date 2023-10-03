@@ -1,6 +1,6 @@
 package linketinder.dao.match
 
-import linketinder.Exception.DataBaseException
+import linketinder.exception.DataBaseException
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.dto.MatchCandidatoDTO
 import linketinder.entity.dto.MatchEmpresaDTO

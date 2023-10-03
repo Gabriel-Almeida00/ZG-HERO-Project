@@ -1,7 +1,7 @@
 package linketinder.dao.candidato
 
-import linketinder.Exception.DataBaseException
-import linketinder.Exception.ExperienciaNotFoundException
+import linketinder.exception.DataBaseException
+import linketinder.exception.ExperienciaNotFoundException
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Experiencia
 

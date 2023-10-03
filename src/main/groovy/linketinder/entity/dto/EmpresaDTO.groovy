@@ -15,10 +15,6 @@ class EmpresaDTO {
         this.id = id
     }
 
-    Integer getId() {
-        return id
-    }
-
     String getPais() {
         return pais
     }

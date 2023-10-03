@@ -24,29 +24,12 @@ class MatchEmpresaDTO {
         this.descricaoVaga = descricaoVaga
     }
 
-    Integer getIdEmpresa() {
-        return idEmpresa
-    }
-
-    void setIdEmpresa(Integer idEmpresa) {
-        this.idEmpresa = idEmpresa
-    }
-
     String getNomeEmpresa() {
         return nomeEmpresa
     }
 
-
     String getDescricaoEmpresa() {
         return descricaoEmpresa
-    }
-
-    Integer getIdVaga() {
-        return idVaga
-    }
-
-    void setIdVaga(Integer idVaga) {
-        this.idVaga = idVaga
     }
 
     String getNomeVaga() {

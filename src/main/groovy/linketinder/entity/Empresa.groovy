@@ -25,8 +25,8 @@ class Empresa extends Pessoa {
 
     @Override
     String toString() {
-        return "cnpj=" + cnpj + '\'' +
-                "vagas=" + vagas
+        return "cnpj: " + cnpj + '\'' +
+                "vagas: " + vagas
 
     }
 }

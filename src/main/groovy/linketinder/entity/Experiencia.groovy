@@ -27,10 +27,6 @@ class Experiencia {
         return idCandidato
     }
 
-    void setIdCandidato(Integer idCandidato) {
-        this.idCandidato = idCandidato
-    }
-
     String getCargo() {
         return cargo
     }
@@ -39,15 +35,7 @@ class Experiencia {
         return empresa
     }
 
-    void setEmpresa(String empresa) {
-        this.empresa = empresa
-    }
-
     Integer getNivel() {
         return nivel
-    }
-
-    void setNivel(Integer nivel) {
-        this.nivel = nivel
     }
 }

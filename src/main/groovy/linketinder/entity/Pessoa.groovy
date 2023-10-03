@@ -41,18 +41,8 @@ class Pessoa implements PessoaBase {
     }
 
     @Override
-    void setNome(String nome) {
-        this.nome = nome
-    }
-
-    @Override
     String getEmail() {
         return email
-    }
-
-    @Override
-    void setEmail(String email) {
-        this.email = email
     }
 
     @Override
@@ -61,18 +51,8 @@ class Pessoa implements PessoaBase {
     }
 
     @Override
-    void setPais(String pais) {
-        this.pais = pais
-    }
-
-    @Override
     String getCep() {
         return cep
-    }
-
-    @Override
-    void setCep(String cep) {
-        this.cep = cep
     }
 
     @Override
@@ -81,17 +61,7 @@ class Pessoa implements PessoaBase {
     }
 
     @Override
-    void setDescricao(String descricao) {
-        this.descricao = descricao
-    }
-
-    @Override
     String getSenha() {
         return senha
-    }
-
-    @Override
-    void setSenha(String senha) {
-        this.senha = senha
     }
 }

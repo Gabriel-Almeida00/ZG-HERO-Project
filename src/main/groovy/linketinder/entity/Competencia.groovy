@@ -21,14 +21,4 @@ class Competencia {
     String getNome() {
         return nome
     }
-
-    void setNome(String nome) {
-        this.nome = nome
-    }
-
-
-    @Override
-    String toString() {
-        return nome
-    }
 }

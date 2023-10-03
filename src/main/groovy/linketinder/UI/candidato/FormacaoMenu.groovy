@@ -1,6 +1,6 @@
 package linketinder.UI.candidato
 
-import linketinder.config.Config
+import linketinder.db.ConfigDatabase
 import linketinder.dao.candidato.*
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
@@ -11,25 +11,22 @@ import linketinder.dao.vaga.VagaDao
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Formacao
-import linketinder.service.CandidatoService
+import linketinder.service.candidato.CandidatoFormacaoService
+import linketinder.service.candidato.CandidatoService
+import linketinder.service.candidato.ICandidatoFormacaoService
 
 class FormacaoMenu {
 
-    CandidatoService service
+    private ICandidatoFormacaoService candidatoFormacaoService
 
     FormacaoMenu() {
-        Config config = new Config()
+        ConfigDatabase config = new ConfigDatabase()
         IDatabaseConnection databaseConnection = new DatabaseConnection(config)
 
         ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection, candidatoDao)
-        IExperienciaDao experienciaDao = new ExperienciaDao(databaseConnection, candidatoDao)
         IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection, candidatoDao)
-        IVagaDao vagaDao = new VagaDao(databaseConnection)
-        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
 
-        service = new CandidatoService(candidatoDao, candidatoCompetenciaDao, experienciaDao, formacaoDao, vagaDao, curtidaDao)
+        candidatoFormacaoService = new CandidatoFormacaoService(formacaoDao)
     }
 
     void exibirMenuCandidato(Reader reader) {
@@ -90,7 +87,7 @@ class FormacaoMenu {
 
     void adicionarFormacao(Reader reader) {
         Formacao formacao = criarFormacao(reader)
-        service.adicionarFormacao(formacao)
+        candidatoFormacaoService.adicionarFormacao(formacao)
     }
 
     void atualizarFormacao(Reader reader) {
@@ -100,22 +97,21 @@ class FormacaoMenu {
         Formacao formacao = criarFormacao(reader)
         formacao.setId(id)
 
-        service.atualizarFormacao(formacao)
+        candidatoFormacaoService.atualizarFormacao(formacao)
     }
 
     void exluirFormacao(Reader reader) {
         println "Digite o id da formação que deseja excluir: "
         Integer id = Integer.parseInt(reader.readLine())
 
-
-        service.excluirFormacao(id)
+        candidatoFormacaoService.excluirFormacao(id)
     }
 
     void listarFormacaoDoCandidato(Reader reader) {
         println "Digite o id da candidato: "
         Integer id = Integer.parseInt(reader.readLine())
 
-        List<Formacao> formacaos = service.listarFormacoesPorCandidato(id)
+        List<Formacao> formacaos = candidatoFormacaoService.listarFormacoesPorCandidato(id)
 
         formacaos.each { formacao ->
             println "============================"
