@@ -16,24 +16,24 @@ import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.VagaCompetencia
 import linketinder.entity.dto.CompetenciaDTO
+import linketinder.service.vaga.IVagaCompetenciaService
+import linketinder.service.vaga.VagaCompetenciaService
 import linketinder.service.vaga.VagaService
 
 class CompetenciaVagaMenu {
 
-    VagaService vagaService
+   private IVagaCompetenciaService vagaCompetenciaService
     CompetenciaMenu competenciaMenu
 
     CompetenciaVagaMenu() {
         ConfigDatabase config = new ConfigDatabase()
         IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+
         IVagaDao vagaDao = new VagaDao(databaseConnection)
         IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(databaseConnection, vagaDao)
-        ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
 
         competenciaMenu = new CompetenciaMenu()
-        vagaService = new VagaService(vagaDao, vagaCompetenciaDao, curtidaDao)
+        vagaCompetenciaService = new VagaCompetenciaService(vagaCompetenciaDao)
     }
 
     void exibirMenuVaga(Reader reader) {
@@ -90,7 +90,7 @@ class CompetenciaVagaMenu {
         Integer id = Integer.parseInt(reader.readLine())
         List<CompetenciaDTO> vagaCompetencias = vagaService.listarCompetenciasPorVaga(id)
 
-        vagaCompetencias.each {competencia ->
+        vagaCompetenciaService.each {competencia ->
             println "========================="
             println "ID: ${competencia.getId()}"
             println "Nome: ${competencia.getNome()}"
@@ -102,8 +102,9 @@ class CompetenciaVagaMenu {
     void adicionarCompetenciaVaga(Reader reader){
         println "Competencia: "
         competenciaMenu.listarCompetencias()
+
         VagaCompetencia vagaCompetencia = criarCompetenciaVaga(reader)
-        vagaService.adicionarVagaCompetencia(vagaCompetencia)
+        vagaCompetenciaService.adicionarVagaCompetencia(vagaCompetencia)
     }
 
     void atualizarCompetenciaVaga(Reader reader){
@@ -113,13 +114,13 @@ class CompetenciaVagaMenu {
         VagaCompetencia vagaCompetencia = criarCompetenciaVaga(reader)
         vagaCompetencia.setId(id)
 
-        vagaService.atualizarNivelVagaCompetencia(vagaCompetencia)
+        vagaCompetenciaService.atualizarNivelVagaCompetencia(vagaCompetencia)
     }
 
     void excluirCompetencia(Reader reader){
         println "Digite o id da competencia da vaga:"
         Integer id = Integer.parseInt(reader.readLine())
 
-        vagaService.excluirVagaCompetencia(id)
+        vagaCompetenciaService.excluirVagaCompetencia(id)
     }
 }

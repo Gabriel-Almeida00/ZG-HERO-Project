@@ -16,23 +16,28 @@ import linketinder.db.IDatabaseConnection
 import linketinder.entity.Vaga
 import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.entity.dto.VagaDTO
+import linketinder.service.curtida.CurtidaService
+import linketinder.service.curtida.ICurtidaService
+import linketinder.service.vaga.IVagaService
 import linketinder.service.vaga.VagaService
 
 class VagaMenu {
 
-    VagaService vagaService
-    CompetenciaVagaMenu competenciaVagaMenu
+    private IVagaService vagaService
+    private ICurtidaService curtidaService
+    private CompetenciaVagaMenu competenciaVagaMenu
 
     VagaMenu() {
         ConfigDatabase config = new ConfigDatabase()
         IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+
         IVagaDao vagaDao = new VagaDao(databaseConnection)
-        IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(databaseConnection, vagaDao)
         ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
         IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
         ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
 
-        vagaService = new VagaService(vagaDao, vagaCompetenciaDao, curtidaDao)
+        vagaService = new VagaService(vagaDao)
+        curtidaService = new CurtidaService(curtidaDao, vagaDao)
         competenciaVagaMenu = new CompetenciaVagaMenu()
     }
 
@@ -167,7 +172,7 @@ class VagaMenu {
        println "Digite o id da vaga: "
        Integer id = Integer.parseInt(reader.readLine())
 
-       List<CandidatoQueCurtiuVagaDTO> candidatos = vagaService.listarCandidatosQueCurtiramVaga(id)
+       List<CandidatoQueCurtiuVagaDTO> candidatos = curtidaService.listarCandidatosQueCurtiramVaga(id)
        candidatos.forEach { candidato ->
            println("==============")
            println("ID: ${candidato.getIdCandidato()}")
