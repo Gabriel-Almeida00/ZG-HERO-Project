@@ -16,7 +16,7 @@ import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.VagaCompetencia
 import linketinder.entity.dto.CompetenciaDTO
-import linketinder.service.VagaService
+import linketinder.service.vaga.VagaService
 
 class CompetenciaVagaMenu {
 

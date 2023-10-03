@@ -9,6 +9,7 @@ import linketinder.entity.VagaCompetencia
 import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.entity.dto.VagaDTO
+import linketinder.service.vaga.VagaService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

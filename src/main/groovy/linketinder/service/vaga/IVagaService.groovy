@@ -1,4 +1,4 @@
-package linketinder.service
+package linketinder.service.vaga
 
 
 import linketinder.entity.Vaga
@@ -11,18 +11,11 @@ import java.sql.SQLException
 
 interface IVagaService {
     List<VagaDTO> listarTodasVagas() throws SQLException;
-    List<VagaDTO> listarVagasDaEmpresa(int idEmpresa) throws SQLException;
-
+    List<VagaDTO> listarVagasDaEmpresa(Integer idEmpresa) throws SQLException;
     Vaga buscarVagaPorId(Integer idVaga) throws SQLException;
     Integer obterIdEmpresaPorIdVaga(Integer idVaga)
+
     void adicionarVaga(Vaga vaga) throws SQLException;
     void atualizarVaga(Vaga vaga) throws SQLException;
     void excluirVaga(Integer idVaga) throws SQLException;
-
-    void adicionarVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException;
-    void atualizarNivelVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException;
-    void excluirVagaCompetencia(Integer idVagaCompetencia) throws SQLException;
-    List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) throws SQLException;
-
-    List<CandidatoQueCurtiuVagaDTO> listarCandidatosQueCurtiramVaga(Integer idVaga)
 }

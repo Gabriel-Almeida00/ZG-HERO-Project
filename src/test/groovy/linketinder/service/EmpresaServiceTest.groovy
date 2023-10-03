@@ -6,6 +6,7 @@ import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.empresa.IEmpresaDao
 import linketinder.entity.Candidato
 import linketinder.entity.Empresa
+import linketinder.service.empresa.EmpresaService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

@@ -3,6 +3,7 @@ package linketinder.service
 
 import linketinder.dao.competencia.ICompetenciaDao
 import linketinder.entity.Competencia
+import linketinder.service.competencia.CompetenciaService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

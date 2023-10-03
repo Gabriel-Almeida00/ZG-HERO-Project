@@ -6,7 +6,7 @@ import linketinder.dao.competencia.ICompetenciaDao
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Competencia
-import linketinder.service.CompetenciaService
+import linketinder.service.competencia.CompetenciaService
 
 class CompetenciaMenu {
 

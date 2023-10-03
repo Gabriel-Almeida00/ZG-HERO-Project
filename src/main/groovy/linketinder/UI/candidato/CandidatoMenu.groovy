@@ -18,8 +18,8 @@ import linketinder.entity.VagaCurtida
 import linketinder.entity.dto.CandidatoDTO
 import linketinder.entity.dto.EmpresaDTO
 import linketinder.entity.dto.MatchEmpresaDTO
-import linketinder.service.CandidatoService
-import linketinder.service.MatchService
+import linketinder.service.candidato.CandidatoService
+import linketinder.service.match.MatchService
 
 import java.text.SimpleDateFormat
 

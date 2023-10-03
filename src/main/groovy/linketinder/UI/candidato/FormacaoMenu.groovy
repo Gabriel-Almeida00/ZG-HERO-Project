@@ -11,7 +11,7 @@ import linketinder.dao.vaga.VagaDao
 import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
 import linketinder.entity.Formacao
-import linketinder.service.CandidatoService
+import linketinder.service.candidato.CandidatoService
 
 class FormacaoMenu {
 

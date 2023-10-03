@@ -4,6 +4,7 @@ package linketinder.service
 import linketinder.dao.match.IMatchDao
 import linketinder.entity.dto.MatchCandidatoDTO
 import linketinder.entity.dto.MatchEmpresaDTO
+import linketinder.service.match.MatchService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

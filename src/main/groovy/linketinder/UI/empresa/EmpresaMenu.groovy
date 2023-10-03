@@ -17,8 +17,8 @@ import linketinder.db.IDatabaseConnection
 import linketinder.entity.CandidatoCurtido
 import linketinder.entity.Empresa
 import linketinder.entity.dto.MatchCandidatoDTO
-import linketinder.service.EmpresaService
-import linketinder.service.MatchService
+import linketinder.service.empresa.EmpresaService
+import linketinder.service.match.MatchService
 
 class EmpresaMenu {
 

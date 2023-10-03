@@ -1,4 +1,4 @@
-package linketinder.service
+package linketinder.service.competencia
 
 
 import linketinder.entity.Competencia

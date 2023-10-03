@@ -1,4 +1,4 @@
-package linketinder.service
+package linketinder.service.match
 
 import linketinder.entity.dto.MatchCandidatoDTO
 import linketinder.entity.dto.MatchEmpresaDTO

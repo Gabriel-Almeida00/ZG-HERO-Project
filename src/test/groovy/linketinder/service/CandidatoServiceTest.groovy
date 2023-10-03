@@ -11,6 +11,7 @@ import linketinder.entity.*
 import linketinder.entity.dto.CandidatoDTO
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.entity.dto.EmpresaDTO
+import linketinder.service.candidato.CandidatoService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
