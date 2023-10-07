@@ -1,16 +1,20 @@
-package linketinder.db
+package linketinder.db.factory
 
+import linketinder.db.ConfigDatabase
+import linketinder.db.IDatabaseConnection
 import linketinder.exception.DataBaseException
 
 import java.sql.*
 
-class DatabaseConnection implements IDatabaseConnection {
+
+class PostgreSQLDatabaseConnection implements IDatabaseConnection {
     private final ConfigDatabase config
 
-    DatabaseConnection(ConfigDatabase config) {
+    PostgreSQLDatabaseConnection(ConfigDatabase config) {
         this.config = config
     }
 
+    @Override
     Connection getConnection() {
         try {
             String dbUrl = config.getUrlDB()
@@ -19,14 +23,16 @@ class DatabaseConnection implements IDatabaseConnection {
 
             return DriverManager.getConnection(dbUrl, dbUser, dbPassword)
         } catch (SQLException e) {
-            throw new DataBaseException("Erro ao obter a conexão com o banco de dados.", e)
+            throw new DataBaseException("Erro ao obter a conexão com o banco de dados." + e)
         }
     }
 
+    @Override
     PreparedStatement prepareStatement(String sql) throws SQLException {
         return getConnection().prepareStatement(sql)
     }
 
+    @Override
     ResultSet executeQuery(PreparedStatement statement) throws SQLException {
         return statement.executeQuery()
     }

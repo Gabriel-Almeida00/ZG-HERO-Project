@@ -1,30 +1,24 @@
 package linketinder.UI.candidato
 
+import linketinder.UI.validation.DatabaseFactory
 import linketinder.db.ConfigDatabase
 import linketinder.dao.candidato.*
-import linketinder.dao.curtida.CurtidaDao
-import linketinder.dao.curtida.ICurtidaDao
-import linketinder.dao.empresa.EmpresaDao
-import linketinder.dao.empresa.IEmpresaDao
-import linketinder.dao.vaga.IVagaDao
-import linketinder.dao.vaga.VagaDao
-import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
+import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.entity.Formacao
 import linketinder.service.candidato.CandidatoFormacaoService
-import linketinder.service.candidato.CandidatoService
 import linketinder.service.candidato.ICandidatoFormacaoService
 
 class FormacaoMenu {
-
     private ICandidatoFormacaoService candidatoFormacaoService
 
-    FormacaoMenu() {
-        ConfigDatabase config = new ConfigDatabase()
-        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+    FormacaoMenu(ConfigDatabase configDatabase) {
+        DatabaseFactory databaseFactory = new DatabaseFactory()
+        IDatabaseConnectionFactory factory = databaseFactory.createConnectionFactory(configDatabase)
+        IDatabaseConnection connection = factory.createConnection()
 
-        ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        IFormacaoDao formacaoDao = new FormacaoDao(databaseConnection, candidatoDao)
+        ICandidatoDao candidatoDao = new CandidatoDao(connection)
+        IFormacaoDao formacaoDao = new FormacaoDao(connection, candidatoDao)
 
         candidatoFormacaoService = new CandidatoFormacaoService(formacaoDao)
     }

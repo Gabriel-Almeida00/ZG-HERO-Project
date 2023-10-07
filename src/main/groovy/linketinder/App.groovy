@@ -4,11 +4,13 @@
 package linketinder
 
 import linketinder.UI.Menu
+import linketinder.db.ConfigDatabase
 
 class App {
     static void main(String[] args) {
-        Menu menu = new Menu()
+        ConfigDatabase configDatabase = ConfigDatabase.getInstance();
+        Menu menu = new Menu(configDatabase)
         Reader reader = new BufferedReader(new InputStreamReader(System.in))
-        menu.exibirMenuCandidato(reader)
+        menu.exibirMenu(reader)
     }
 }

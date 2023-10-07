@@ -1,5 +1,6 @@
 package linketinder.UI.empresa
 
+import linketinder.UI.validation.DatabaseFactory
 import linketinder.db.ConfigDatabase
 import linketinder.dao.candidato.CandidatoDao
 import linketinder.dao.candidato.ICandidatoDao
@@ -7,12 +8,11 @@ import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.empresa.EmpresaDao
 import linketinder.dao.empresa.IEmpresaDao
-import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao
-import linketinder.dao.vaga.VagaCompetenciaDao
 import linketinder.dao.vaga.VagaDao
-import linketinder.db.DatabaseConnection
+
 import linketinder.db.IDatabaseConnection
+import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.entity.Vaga
 import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.entity.dto.VagaDTO
@@ -22,23 +22,23 @@ import linketinder.service.vaga.IVagaService
 import linketinder.service.vaga.VagaService
 
 class VagaMenu {
-
     private IVagaService vagaService
     private ICurtidaService curtidaService
     private CompetenciaVagaMenu competenciaVagaMenu
 
-    VagaMenu() {
-        ConfigDatabase config = new ConfigDatabase()
-        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+    VagaMenu(ConfigDatabase configDatabase) {
+        DatabaseFactory databaseFactory = new DatabaseFactory()
+        IDatabaseConnectionFactory factory = databaseFactory.createConnectionFactory(configDatabase)
+        IDatabaseConnection connection = factory.createConnection()
 
-        IVagaDao vagaDao = new VagaDao(databaseConnection)
-        ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
+        IVagaDao vagaDao = new VagaDao(connection)
+        ICandidatoDao candidatoDao = new CandidatoDao(connection)
+        IEmpresaDao empresaDao = new EmpresaDao(connection)
+        ICurtidaDao curtidaDao = new CurtidaDao(connection, candidatoDao, vagaDao, empresaDao)
 
         vagaService = new VagaService(vagaDao)
         curtidaService = new CurtidaService(curtidaDao, vagaDao)
-        competenciaVagaMenu = new CompetenciaVagaMenu()
+        competenciaVagaMenu = new CompetenciaVagaMenu(configDatabase)
     }
 
     void exibirMenuVaga(Reader reader) {

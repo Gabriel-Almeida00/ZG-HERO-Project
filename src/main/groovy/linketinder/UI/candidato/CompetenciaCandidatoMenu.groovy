@@ -1,20 +1,14 @@
 package linketinder.UI.candidato
 
 import linketinder.UI.competencia.CompetenciaMenu
+import linketinder.UI.validation.DatabaseFactory
 import linketinder.db.ConfigDatabase
 import linketinder.dao.candidato.*
-import linketinder.dao.curtida.CurtidaDao
-import linketinder.dao.curtida.ICurtidaDao
-import linketinder.dao.empresa.EmpresaDao
-import linketinder.dao.empresa.IEmpresaDao
-import linketinder.dao.vaga.IVagaDao
-import linketinder.dao.vaga.VagaDao
-import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
+import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.entity.CandidatoCompetencia
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.service.candidato.CandidatoCompetenciaService
-import linketinder.service.candidato.CandidatoService
 import linketinder.service.candidato.ICandidatoCompetenciaService
 
 class CompetenciaCandidatoMenu {
@@ -22,14 +16,15 @@ class CompetenciaCandidatoMenu {
     private ICandidatoCompetenciaService candidatoCompetenciaService
     private CompetenciaMenu competenciaMenu
 
-    CompetenciaCandidatoMenu() {
-        ConfigDatabase config = new ConfigDatabase()
-        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+    CompetenciaCandidatoMenu(ConfigDatabase configDatabase) {
+        DatabaseFactory databaseFactory = new DatabaseFactory()
+        IDatabaseConnectionFactory factory = databaseFactory.createConnectionFactory(configDatabase)
+        IDatabaseConnection connection = factory.createConnection()
 
-        ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(databaseConnection, candidatoDao)
+        ICandidatoDao candidatoDao = new CandidatoDao(connection)
+        ICandidatoCompetenciaDao candidatoCompetenciaDao = new CandidatoCompetenciaDao(connection, candidatoDao)
 
-        competenciaMenu = new CompetenciaMenu()
+        competenciaMenu = new CompetenciaMenu(configDatabase)
         candidatoCompetenciaService = new CandidatoCompetenciaService(candidatoCompetenciaDao)
     }
 

@@ -3,6 +3,7 @@ package linketinder.UI
 import linketinder.UI.candidato.CandidatoMenu
 import linketinder.UI.competencia.CompetenciaMenu
 import linketinder.UI.empresa.EmpresaMenu
+import linketinder.db.ConfigDatabase
 
 class Menu {
 
@@ -10,13 +11,13 @@ class Menu {
     EmpresaMenu empresaMenu
     CompetenciaMenu competenciaMenu
 
-    Menu() {
-        candidatoMenu = new CandidatoMenu()
-        empresaMenu = new EmpresaMenu()
-        competenciaMenu = new CompetenciaMenu()
+    Menu(ConfigDatabase configDatabase) {
+        candidatoMenu = new CandidatoMenu(configDatabase)
+        empresaMenu = new EmpresaMenu(configDatabase)
+        competenciaMenu = new CompetenciaMenu(configDatabase)
     }
 
-    void exibirMenuCandidato(Reader reader) {
+    void exibirMenu(Reader reader) {
         while (true) {
             println "Menu :"
             println "1. Gerenciar candidatos"
