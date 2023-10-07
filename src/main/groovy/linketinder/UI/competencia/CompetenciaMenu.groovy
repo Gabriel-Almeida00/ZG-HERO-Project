@@ -1,21 +1,23 @@
 package linketinder.UI.competencia
 
+import linketinder.UI.validation.DatabaseFactory
 import linketinder.db.ConfigDatabase
 import linketinder.dao.competencia.CompetenciaDao
 import linketinder.dao.competencia.ICompetenciaDao
-import linketinder.db.DatabaseConnection
+
 import linketinder.db.IDatabaseConnection
+import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.entity.Competencia
 import linketinder.service.competencia.CompetenciaService
 
 class CompetenciaMenu {
-
     CompetenciaService competenciaService
 
-    CompetenciaMenu() {
-        ConfigDatabase config = new ConfigDatabase()
-        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
-        ICompetenciaDao competenciaDao = new CompetenciaDao(databaseConnection)
+    CompetenciaMenu(ConfigDatabase configDatabase) {
+        DatabaseFactory databaseFactory = new DatabaseFactory()
+        IDatabaseConnectionFactory factory = databaseFactory.createConnectionFactory(configDatabase)
+        IDatabaseConnection connection = factory.createConnection()
+        ICompetenciaDao competenciaDao = new CompetenciaDao(connection)
 
         competenciaService = new CompetenciaService(competenciaDao)
     }

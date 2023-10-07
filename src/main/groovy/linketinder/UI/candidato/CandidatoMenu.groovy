@@ -1,6 +1,7 @@
 package linketinder.UI.candidato
 
 import linketinder.UI.empresa.VagaMenu
+import linketinder.UI.validation.DatabaseFactory
 import linketinder.dao.candidato.CandidatoDao
 import linketinder.dao.candidato.ICandidatoDao
 import linketinder.dao.curtida.CurtidaDao
@@ -12,8 +13,8 @@ import linketinder.dao.match.MatchDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaDao
 import linketinder.db.ConfigDatabase
-import linketinder.db.DatabaseConnection
 import linketinder.db.IDatabaseConnection
+import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.entity.Candidato
 import linketinder.entity.VagaCurtida
 import linketinder.entity.dto.CandidatoDTO
@@ -39,20 +40,21 @@ class CandidatoMenu {
     private ICurtidaService curtidaService
     private IMatchService matchService
 
-    CandidatoMenu() {
-        competenciaCandidatoMenu = new CompetenciaCandidatoMenu()
-        experienciaMenu = new ExperienciaMenu()
-        formacaoMenu = new FormacaoMenu()
-        vagaMenu = new VagaMenu()
+    CandidatoMenu(ConfigDatabase configDatabase) {
+        competenciaCandidatoMenu = new CompetenciaCandidatoMenu(configDatabase)
+        experienciaMenu = new ExperienciaMenu(configDatabase)
+        formacaoMenu = new FormacaoMenu(configDatabase)
+        vagaMenu = new VagaMenu(configDatabase)
 
-        ConfigDatabase configDatabase = new ConfigDatabase()
-        IDatabaseConnection databaseConnection = new DatabaseConnection(configDatabase)
+        DatabaseFactory databaseFactory = new DatabaseFactory()
+        IDatabaseConnectionFactory factory = databaseFactory.createConnectionFactory(configDatabase)
+        IDatabaseConnection connection = factory.createConnection()
 
-        ICandidatoDao candidatoDao = new CandidatoDao(databaseConnection)
-        IVagaDao vagaDao = new VagaDao(databaseConnection)
-        IEmpresaDao empresaDao = new EmpresaDao(databaseConnection)
-        ICurtidaDao curtidaDao = new CurtidaDao(databaseConnection, candidatoDao, vagaDao, empresaDao)
-        IMatchDao matchDao = new MatchDao(databaseConnection)
+        ICandidatoDao candidatoDao = new CandidatoDao(connection)
+        IVagaDao vagaDao = new VagaDao(connection)
+        IEmpresaDao empresaDao = new EmpresaDao(connection)
+        ICurtidaDao curtidaDao = new CurtidaDao(connection, candidatoDao, vagaDao, empresaDao)
+        IMatchDao matchDao = new MatchDao(connection)
 
         candidatoService = new CandidatoService(candidatoDao)
         curtidaService = new CurtidaService(curtidaDao, vagaDao)

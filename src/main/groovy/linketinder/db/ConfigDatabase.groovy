@@ -5,12 +5,21 @@ import groovy.json.JsonSlurper
 import linketinder.exception.ConfigDataBaseException
 
 class ConfigDatabase {
+    private static ConfigDatabase instance
+    private String dbType
     private String urlDB
     private String userDB
     private String senhaDB
 
-    ConfigDatabase() {
-       loadConfigFromFile()
+    private ConfigDatabase() {
+        loadConfigFromFile()
+    }
+
+    static ConfigDatabase getInstance() {
+        if (instance == null) {
+            instance = new ConfigDatabase()
+        }
+        return instance
     }
 
     private void loadConfigFromFile() throws ConfigDataBaseException {
@@ -19,6 +28,7 @@ class ConfigDatabase {
             JsonSlurper jsonSlurper = new JsonSlurper()
             Object configData = jsonSlurper.parse(configFile)
 
+            dbType = configData.dbType
             urlDB = configData.url
             userDB = configData.user
             senhaDB = configData.senha
@@ -30,6 +40,10 @@ class ConfigDatabase {
         } catch (JsonException e) {
             throw new ConfigDataBaseException("Erro ao analisar o arquivo JSON de configuração", e)
         }
+    }
+
+    String getDbType() {
+        return dbType
     }
 
     String getUrlDB() {

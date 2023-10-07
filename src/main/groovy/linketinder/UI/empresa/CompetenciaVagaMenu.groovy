@@ -1,38 +1,33 @@
 package linketinder.UI.empresa
 
 import linketinder.UI.competencia.CompetenciaMenu
+import linketinder.UI.validation.DatabaseFactory
 import linketinder.db.ConfigDatabase
-import linketinder.dao.candidato.CandidatoDao
-import linketinder.dao.candidato.ICandidatoDao
-import linketinder.dao.curtida.CurtidaDao
-import linketinder.dao.curtida.ICurtidaDao
-import linketinder.dao.empresa.EmpresaDao
-import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.dao.vaga.VagaCompetenciaDao
 import linketinder.dao.vaga.VagaDao
-import linketinder.db.DatabaseConnection
+
 import linketinder.db.IDatabaseConnection
+import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.entity.VagaCompetencia
 import linketinder.entity.dto.CompetenciaDTO
 import linketinder.service.vaga.IVagaCompetenciaService
 import linketinder.service.vaga.VagaCompetenciaService
-import linketinder.service.vaga.VagaService
 
 class CompetenciaVagaMenu {
-
    private IVagaCompetenciaService vagaCompetenciaService
     CompetenciaMenu competenciaMenu
 
-    CompetenciaVagaMenu() {
-        ConfigDatabase config = new ConfigDatabase()
-        IDatabaseConnection databaseConnection = new DatabaseConnection(config)
+    CompetenciaVagaMenu(ConfigDatabase configDatabase) {
+        DatabaseFactory databaseFactory = new DatabaseFactory()
+        IDatabaseConnectionFactory factory = databaseFactory.createConnectionFactory(configDatabase)
+        IDatabaseConnection connection = factory.createConnection()
 
-        IVagaDao vagaDao = new VagaDao(databaseConnection)
-        IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(databaseConnection, vagaDao)
+        IVagaDao vagaDao = new VagaDao(connection)
+        IVagaCompetenciaDao vagaCompetenciaDao = new VagaCompetenciaDao(connection, vagaDao)
 
-        competenciaMenu = new CompetenciaMenu()
+        competenciaMenu = new CompetenciaMenu(configDatabase)
         vagaCompetenciaService = new VagaCompetenciaService(vagaCompetenciaDao)
     }
 
