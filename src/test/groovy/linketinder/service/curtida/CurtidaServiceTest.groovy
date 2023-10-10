@@ -2,11 +2,11 @@ package linketinder.service.curtida
 
 
 import linketinder.dao.curtida.ICurtidaDao
-import linketinder.entity.Candidato
-import linketinder.entity.Empresa
-import linketinder.entity.Vaga
-import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
-import linketinder.entity.dto.EmpresaDTO
+import linketinder.model.Candidato
+import linketinder.model.Empresa
+import linketinder.model.Vaga
+import linketinder.model.dto.CandidatoQueCurtiuVagaDTO
+import linketinder.model.dto.EmpresaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

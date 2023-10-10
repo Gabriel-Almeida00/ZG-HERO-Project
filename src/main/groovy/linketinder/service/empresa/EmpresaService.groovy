@@ -2,7 +2,7 @@ package linketinder.service.empresa
 
 
 import linketinder.dao.empresa.IEmpresaDao
-import linketinder.entity.Empresa
+import linketinder.model.Empresa
 
 class EmpresaService implements IEmpresaService {
 

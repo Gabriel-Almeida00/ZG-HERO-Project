@@ -2,9 +2,8 @@ package linketinder.service.match
 
 
 import linketinder.dao.match.IMatchDao
-import linketinder.entity.dto.MatchCandidatoDTO
-import linketinder.entity.dto.MatchEmpresaDTO
-import linketinder.service.match.MatchService
+import linketinder.model.dto.MatchCandidatoDTO
+import linketinder.model.dto.MatchEmpresaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

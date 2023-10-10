@@ -1,7 +1,7 @@
 package linketinder.dao.candidato
 
 
-import linketinder.entity.Formacao
+import linketinder.model.Formacao
 
 interface IFormacaoDao {
     List<Formacao> listarFormacoesPorCandidato(Integer idCandidato);

@@ -1,7 +1,7 @@
 package linketinder.service.competencia
 
 
-import linketinder.entity.Competencia
+import linketinder.model.Competencia
 
 interface ICompetenciaService {
     List<Competencia> listarCompetencias()

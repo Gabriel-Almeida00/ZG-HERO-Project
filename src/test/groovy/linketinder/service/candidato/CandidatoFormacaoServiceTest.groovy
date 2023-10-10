@@ -1,8 +1,8 @@
 package linketinder.service.candidato
 
 
-import linketinder.entity.Candidato
-import linketinder.entity.Formacao
+import linketinder.model.Candidato
+import linketinder.model.Formacao
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

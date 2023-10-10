@@ -4,8 +4,8 @@ import linketinder.exception.DataBaseException
 import linketinder.exception.EmpresasNotFoundException
 import linketinder.exception.VagaNotFoundException
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.Vaga
-import linketinder.entity.dto.VagaDTO
+import linketinder.model.Vaga
+import linketinder.model.dto.VagaDTO
 
 import java.sql.Connection
 import java.sql.PreparedStatement

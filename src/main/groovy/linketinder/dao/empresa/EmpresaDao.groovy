@@ -3,7 +3,7 @@ package linketinder.dao.empresa
 import linketinder.exception.DataBaseException
 import linketinder.exception.EmpresasNotFoundException
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.Empresa
+import linketinder.model.Empresa
 
 import java.sql.PreparedStatement
 import java.sql.ResultSet

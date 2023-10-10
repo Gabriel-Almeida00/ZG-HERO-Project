@@ -2,8 +2,8 @@ package linketinder.service.match
 
 
 import linketinder.dao.match.IMatchDao
-import linketinder.entity.dto.MatchCandidatoDTO
-import linketinder.entity.dto.MatchEmpresaDTO
+import linketinder.model.dto.MatchCandidatoDTO
+import linketinder.model.dto.MatchEmpresaDTO
 
 class MatchService implements IMatchService {
 

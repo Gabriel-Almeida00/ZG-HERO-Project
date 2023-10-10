@@ -1,8 +1,8 @@
 package linketinder.dao.candidato
 
 
-import linketinder.entity.Candidato
-import linketinder.entity.dto.CandidatoDTO
+import linketinder.model.Candidato
+import linketinder.model.dto.CandidatoDTO
 
 interface ICandidatoDao {
 

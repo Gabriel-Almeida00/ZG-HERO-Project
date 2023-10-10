@@ -3,7 +3,7 @@ package linketinder.dao.candidato
 import linketinder.exception.DataBaseException
 import linketinder.exception.FormacaoNotFoundException
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.Formacao
+import linketinder.model.Formacao
 
 import java.sql.Connection
 import java.sql.PreparedStatement

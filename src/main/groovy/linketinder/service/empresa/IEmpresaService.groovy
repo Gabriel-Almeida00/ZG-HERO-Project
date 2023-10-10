@@ -1,7 +1,7 @@
 package linketinder.service.empresa
 
 
-import linketinder.entity.Empresa
+import linketinder.model.Empresa
 
 interface IEmpresaService {
     List<Empresa> listarTodasEmpresas()

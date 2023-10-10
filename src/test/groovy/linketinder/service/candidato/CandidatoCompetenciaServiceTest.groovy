@@ -1,9 +1,9 @@
 package linketinder.service.candidato
 
 
-import linketinder.entity.Candidato
-import linketinder.entity.CandidatoCompetencia
-import linketinder.entity.dto.CompetenciaDTO
+import linketinder.model.Candidato
+import linketinder.model.CandidatoCompetencia
+import linketinder.model.dto.CompetenciaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

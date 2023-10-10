@@ -1,6 +1,6 @@
 package linketinder.service.candidato
 
-import linketinder.entity.Formacao
+import linketinder.model.Formacao
 
 interface ICandidatoFormacaoService {
     void adicionarFormacao(Formacao formacao);

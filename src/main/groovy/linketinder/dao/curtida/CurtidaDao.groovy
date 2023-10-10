@@ -5,8 +5,8 @@ import linketinder.dao.candidato.ICandidatoDao
 import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
-import linketinder.entity.dto.EmpresaDTO
+import linketinder.model.dto.CandidatoQueCurtiuVagaDTO
+import linketinder.model.dto.EmpresaDTO
 
 import java.sql.Connection
 import java.sql.PreparedStatement

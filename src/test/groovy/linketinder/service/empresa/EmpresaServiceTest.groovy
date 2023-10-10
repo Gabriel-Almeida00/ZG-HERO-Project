@@ -1,6 +1,6 @@
 package linketinder.service.empresa
 
-import linketinder.entity.Empresa
+import linketinder.model.Empresa
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

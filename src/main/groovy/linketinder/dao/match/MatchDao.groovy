@@ -2,8 +2,8 @@ package linketinder.dao.match
 
 import linketinder.exception.DataBaseException
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.dto.MatchCandidatoDTO
-import linketinder.entity.dto.MatchEmpresaDTO
+import linketinder.model.dto.MatchCandidatoDTO
+import linketinder.model.dto.MatchEmpresaDTO
 
 import java.sql.Connection
 import java.sql.PreparedStatement

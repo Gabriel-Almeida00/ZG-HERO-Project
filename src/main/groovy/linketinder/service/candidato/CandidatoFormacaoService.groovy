@@ -1,7 +1,7 @@
 package linketinder.service.candidato
 
 import linketinder.dao.candidato.IFormacaoDao
-import linketinder.entity.Formacao
+import linketinder.model.Formacao
 
 class CandidatoFormacaoService implements ICandidatoFormacaoService {
     private final IFormacaoDao formacaoDao

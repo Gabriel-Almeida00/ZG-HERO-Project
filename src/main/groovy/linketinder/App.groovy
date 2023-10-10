@@ -3,7 +3,7 @@
  */
 package linketinder
 
-import linketinder.UI.Menu
+import linketinder.view.Menu
 import linketinder.db.ConfigDatabase
 
 class App {

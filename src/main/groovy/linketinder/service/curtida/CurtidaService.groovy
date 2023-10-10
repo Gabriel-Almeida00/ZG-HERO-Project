@@ -3,8 +3,8 @@ package linketinder.service.curtida
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaDao
-import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
-import linketinder.entity.dto.EmpresaDTO
+import linketinder.model.dto.CandidatoQueCurtiuVagaDTO
+import linketinder.model.dto.EmpresaDTO
 
 class CurtidaService implements ICurtidaService{
     private final ICurtidaDao curtidaDao

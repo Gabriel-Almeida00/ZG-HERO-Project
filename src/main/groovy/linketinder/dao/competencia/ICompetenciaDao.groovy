@@ -1,7 +1,7 @@
 package linketinder.dao.competencia
 
 
-import linketinder.entity.Competencia
+import linketinder.model.Competencia
 
 interface ICompetenciaDao {
     List<Competencia> listarTodasCompetencias()

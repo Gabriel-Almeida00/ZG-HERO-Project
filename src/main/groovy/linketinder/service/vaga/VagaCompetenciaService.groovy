@@ -1,8 +1,8 @@
 package linketinder.service.vaga
 
 import linketinder.dao.vaga.IVagaCompetenciaDao
-import linketinder.entity.VagaCompetencia
-import linketinder.entity.dto.CompetenciaDTO
+import linketinder.model.VagaCompetencia
+import linketinder.model.dto.CompetenciaDTO
 
 class VagaCompetenciaService implements IVagaCompetenciaService{
     private IVagaCompetenciaDao vagaCompetenciaDao

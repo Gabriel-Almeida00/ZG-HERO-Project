@@ -3,7 +3,7 @@ package linketinder.dao.candidato
 import linketinder.exception.DataBaseException
 import linketinder.exception.ExperienciaNotFoundException
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.Experiencia
+import linketinder.model.Experiencia
 
 import java.sql.Connection
 import java.sql.PreparedStatement

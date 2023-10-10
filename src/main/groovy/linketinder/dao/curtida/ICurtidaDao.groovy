@@ -1,7 +1,7 @@
 package linketinder.dao.curtida
 
-import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
-import linketinder.entity.dto.EmpresaDTO
+import linketinder.model.dto.CandidatoQueCurtiuVagaDTO
+import linketinder.model.dto.EmpresaDTO
 
 interface ICurtidaDao {
     void curtirVaga(Integer idCandidato, Integer idVaga)

@@ -1,7 +1,7 @@
 package linketinder.service.candidato
 
 import linketinder.dao.candidato.IExperienciaDao
-import linketinder.entity.Experiencia
+import linketinder.model.Experiencia
 
 class CandidatoExperienciaService implements ICandidatoExperienciaService {
     private final IExperienciaDao experienciaDao

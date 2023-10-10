@@ -1,6 +1,6 @@
 package linketinder.service.candidato
 
-import linketinder.entity.Experiencia
+import linketinder.model.Experiencia
 
 interface ICandidatoExperienciaService {
     void adicionarExperiencia(Experiencia experiencia);

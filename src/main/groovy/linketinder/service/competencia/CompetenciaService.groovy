@@ -2,7 +2,7 @@ package linketinder.service.competencia
 
 
 import linketinder.dao.competencia.ICompetenciaDao
-import linketinder.entity.Competencia
+import linketinder.model.Competencia
 
 class CompetenciaService implements ICompetenciaService {
     private ICompetenciaDao competenciaDao

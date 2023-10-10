@@ -1,7 +1,7 @@
 package linketinder.dao.empresa
 
 
-import linketinder.entity.Empresa
+import linketinder.model.Empresa
 
 interface IEmpresaDao {
     void adicionarEmpresa(Empresa empresa);

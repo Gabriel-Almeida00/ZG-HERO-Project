@@ -1,8 +1,8 @@
 package linketinder.service.candidato
 
 import linketinder.dao.candidato.ICandidatoCompetenciaDao
-import linketinder.entity.CandidatoCompetencia
-import linketinder.entity.dto.CompetenciaDTO
+import linketinder.model.CandidatoCompetencia
+import linketinder.model.dto.CompetenciaDTO
 
 class CandidatoCompetenciaService implements ICandidatoCompetenciaService {
     private final ICandidatoCompetenciaDao candidatoCompetenciaDao

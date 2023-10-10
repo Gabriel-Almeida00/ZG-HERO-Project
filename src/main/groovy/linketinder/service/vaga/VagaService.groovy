@@ -2,8 +2,8 @@ package linketinder.service.vaga
 
 
 import linketinder.dao.vaga.IVagaDao
-import linketinder.entity.Vaga
-import linketinder.entity.dto.VagaDTO
+import linketinder.model.Vaga
+import linketinder.model.dto.VagaDTO
 
 import java.sql.SQLException
 

@@ -3,7 +3,7 @@ package linketinder.dao.competencia
 import linketinder.exception.CompetenciaNotFoundException
 import linketinder.exception.DataBaseException
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.Competencia
+import linketinder.model.Competencia
 
 import java.sql.Connection
 import java.sql.PreparedStatement

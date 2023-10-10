@@ -1,7 +1,7 @@
 package linketinder.service.candidato
 
-import linketinder.entity.CandidatoCompetencia
-import linketinder.entity.dto.CompetenciaDTO
+import linketinder.model.CandidatoCompetencia
+import linketinder.model.dto.CompetenciaDTO
 
 interface ICandidatoCompetenciaService {
     List<CompetenciaDTO> listarCompetenciasPorCandidato(Integer idCandidato)

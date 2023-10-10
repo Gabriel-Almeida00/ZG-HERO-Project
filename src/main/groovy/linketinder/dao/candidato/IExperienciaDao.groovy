@@ -1,7 +1,7 @@
 package linketinder.dao.candidato
 
 
-import linketinder.entity.Experiencia
+import linketinder.model.Experiencia
 
 import java.sql.SQLException
 

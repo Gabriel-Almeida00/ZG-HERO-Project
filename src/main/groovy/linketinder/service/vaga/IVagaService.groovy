@@ -1,11 +1,8 @@
 package linketinder.service.vaga
 
 
-import linketinder.entity.Vaga
-import linketinder.entity.VagaCompetencia
-import linketinder.entity.dto.CandidatoQueCurtiuVagaDTO
-import linketinder.entity.dto.CompetenciaDTO
-import linketinder.entity.dto.VagaDTO
+import linketinder.model.Vaga
+import linketinder.model.dto.VagaDTO
 
 import java.sql.SQLException
 

@@ -2,8 +2,8 @@ package linketinder.dao.candidato
 
 import linketinder.exception.DataBaseException
 import linketinder.db.IDatabaseConnection
-import linketinder.entity.CandidatoCompetencia
-import linketinder.entity.dto.CompetenciaDTO
+import linketinder.model.CandidatoCompetencia
+import linketinder.model.dto.CompetenciaDTO
 
 import java.sql.Connection
 import java.sql.PreparedStatement
