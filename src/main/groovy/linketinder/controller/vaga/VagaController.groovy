@@ -21,14 +21,6 @@ class VagaController {
         return vagaService.listarVagasDaEmpresa(idEmpresa)
     }
 
-    Integer obterIdEmpresaPorIdVaga(Integer idVaga) {
-        return vagaService.obterIdEmpresaPorIdVaga(idVaga)
-    }
-
-    Vaga buscarVagaPorId(Integer idVaga) {
-        return vagaService.buscarVagaPorId(idVaga)
-    }
-
     void adicionarVaga(Vaga vaga) {
         vagaService.adicionarVaga(vaga)
     }
