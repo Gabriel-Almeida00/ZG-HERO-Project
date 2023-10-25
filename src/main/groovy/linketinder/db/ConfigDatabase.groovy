@@ -5,21 +5,13 @@ import groovy.json.JsonSlurper
 import linketinder.exception.ConfigDataBaseException
 
 class ConfigDatabase {
-    private static ConfigDatabase instance
     private String dbType
     private String urlDB
     private String userDB
     private String senhaDB
 
-    private ConfigDatabase() {
+     ConfigDatabase() {
         loadConfigFromFile()
-    }
-
-    static ConfigDatabase getInstance() {
-        if (instance == null) {
-            instance = new ConfigDatabase()
-        }
-        return instance
     }
 
     private void loadConfigFromFile() throws ConfigDataBaseException {

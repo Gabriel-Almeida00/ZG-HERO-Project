@@ -2,7 +2,7 @@ package linketinder.view.empresa
 
 import linketinder.controller.curtida.CurtidaController
 import linketinder.controller.vaga.VagaController
-import linketinder.view.validation.DatabaseFactory
+import linketinder.db.factory.DatabaseFactory
 import linketinder.db.ConfigDatabase
 import linketinder.dao.candidato.CandidatoDao
 import linketinder.dao.candidato.ICandidatoDao

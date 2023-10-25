@@ -2,7 +2,7 @@ package linketinder.view.empresa
 
 import linketinder.controller.vaga.VagaCompetenciaController
 import linketinder.view.competencia.CompetenciaView
-import linketinder.view.validation.DatabaseFactory
+import linketinder.db.factory.DatabaseFactory
 import linketinder.db.ConfigDatabase
 import linketinder.dao.vaga.IVagaCompetenciaDao
 import linketinder.dao.vaga.IVagaDao

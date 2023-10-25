@@ -1,7 +1,7 @@
 package linketinder.view.candidato
 
 import linketinder.controller.candidato.CandidatoFormacaoController
-import linketinder.view.validation.DatabaseFactory
+import linketinder.db.factory.DatabaseFactory
 import linketinder.db.ConfigDatabase
 import linketinder.dao.candidato.*
 import linketinder.db.IDatabaseConnection

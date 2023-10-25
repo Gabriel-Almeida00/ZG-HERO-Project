@@ -4,7 +4,7 @@ import linketinder.controller.curtida.CurtidaController
 import linketinder.controller.empresa.EmpresaController
 import linketinder.controller.match.MatchController
 import linketinder.view.candidato.CandidatoView
-import linketinder.view.validation.DatabaseFactory
+import linketinder.db.factory.DatabaseFactory
 import linketinder.db.ConfigDatabase
 import linketinder.dao.candidato.CandidatoDao
 import linketinder.dao.candidato.ICandidatoDao

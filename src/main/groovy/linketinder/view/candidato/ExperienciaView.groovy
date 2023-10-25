@@ -11,7 +11,7 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Experiencia
 import linketinder.service.candidato.CandidatoExperienciaService
 import linketinder.service.candidato.ICandidatoExperienciaService
-import linketinder.view.validation.DatabaseFactory
+import linketinder.db.factory.DatabaseFactory
 
 class ExperienciaView {
 

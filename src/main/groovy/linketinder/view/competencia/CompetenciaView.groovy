@@ -9,7 +9,7 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Competencia
 import linketinder.service.competencia.CompetenciaService
 import linketinder.service.competencia.ICompetenciaService
-import linketinder.view.validation.DatabaseFactory
+import linketinder.db.factory.DatabaseFactory
 
 class CompetenciaView {
     private ICompetenciaService competenciaService

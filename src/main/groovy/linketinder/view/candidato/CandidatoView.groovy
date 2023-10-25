@@ -1,7 +1,7 @@
 package linketinder.view.candidato
 
 import linketinder.view.empresa.VagaView
-import linketinder.view.validation.DatabaseFactory
+import linketinder.db.factory.DatabaseFactory
 import linketinder.controller.candidato.CandidatoController
 import linketinder.controller.curtida.CurtidaController
 import linketinder.controller.match.MatchController
