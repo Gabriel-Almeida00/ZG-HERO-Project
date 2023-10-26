@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="linketinder:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/linketinder_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="mockito.core" />
+          <element id="library" level="project" name="groovy-4.0.2" />
+          <element id="library" level="project" name="postgresql" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="linketinder/web/Web" />
+    </root>
+  </artifact>
+</component>
