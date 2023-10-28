@@ -3,14 +3,10 @@
  */
 package linketinder
 
-import linketinder.view.Menu
-import linketinder.db.ConfigDatabase
+
 
 class App {
     static void main(String[] args) {
-        ConfigDatabase configDatabase = new ConfigDatabase()
-        Menu menu = new Menu(configDatabase)
-        Reader reader = new BufferedReader(new InputStreamReader(System.in))
-        menu.exibirMenu(reader)
+
     }
 }
