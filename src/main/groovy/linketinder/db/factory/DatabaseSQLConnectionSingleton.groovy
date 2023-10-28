@@ -30,6 +30,8 @@ class DatabaseSQLConnectionSingleton implements IDatabaseConnection {
                 String dbUrl = config.getUrlDB()
                 String dbUser = config.getUserDB()
                 String dbPassword = config.getSenhaDB()
+
+                Class.forName("org.postgresql.Driver")
                 connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword)
             } catch (SQLException e) {
                 throw new DataBaseException("Erro ao obter a conexão com o banco de dados." + e)

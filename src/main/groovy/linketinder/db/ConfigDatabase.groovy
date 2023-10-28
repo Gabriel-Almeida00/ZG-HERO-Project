@@ -1,38 +1,34 @@
 package linketinder.db
 
-import groovy.json.JsonException
-import groovy.json.JsonSlurper
-import linketinder.exception.ConfigDataBaseException
-
 class ConfigDatabase {
-    private String dbType
-    private String urlDB
-    private String userDB
-    private String senhaDB
+    private String dbType = "PostgreSQL"
+    private String urlDB = "jdbc:postgresql://localhost:5432/linketinder"
+    private String userDB = "postgres"
+    private String senhaDB = "postgres"
 
      ConfigDatabase() {
-        loadConfigFromFile()
+        //loadConfigFromFile()
     }
 
-    private void loadConfigFromFile() throws ConfigDataBaseException {
-        try {
-            File configFile = new File("config.json")
-            JsonSlurper jsonSlurper = new JsonSlurper()
-            Object configData = jsonSlurper.parse(configFile)
-
-            dbType = configData.dbType
-            urlDB = configData.url
-            userDB = configData.user
-            senhaDB = configData.senha
-
-        } catch (FileNotFoundException e) {
-            throw new ConfigDataBaseException("Arquivo de configuração não encontrado", e)
-        } catch (IOException e) {
-            throw new ConfigDataBaseException("Erro de leitura do arquivo de configuração", e)
-        } catch (JsonException e) {
-            throw new ConfigDataBaseException("Erro ao analisar o arquivo JSON de configuração", e)
-        }
-    }
+//    private void loadConfigFromFile() throws ConfigDataBaseException {
+//        try {
+//            File configFile = new File("config.json")
+//            JsonSlurper jsonSlurper = new JsonSlurper()
+//            Object configData = jsonSlurper.parse(configFile)
+//
+//            dbType = configData.dbType
+//            urlDB = configData.url
+//            userDB = configData.user
+//            senhaDB = configData.senha
+//
+//        } catch (FileNotFoundException e) {
+//            throw new ConfigDataBaseException("Arquivo de configuração não encontrado", e)
+//        } catch (IOException e) {
+//            throw new ConfigDataBaseException("Erro de leitura do arquivo de configuração", e)
+//        } catch (JsonException e) {
+//            throw new ConfigDataBaseException("Erro ao analisar o arquivo JSON de configuração", e)
+//        }
+//    }
 
     String getDbType() {
         return dbType
