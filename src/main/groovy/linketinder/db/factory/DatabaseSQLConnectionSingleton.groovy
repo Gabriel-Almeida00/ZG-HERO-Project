@@ -25,7 +25,6 @@ class DatabaseSQLConnectionSingleton implements IDatabaseConnection {
 
     @Override
     Connection getConnection() {
-        if (connection == null) {
             try {
                 String dbUrl = config.getUrlDB()
                 String dbUser = config.getUserDB()
@@ -36,8 +35,6 @@ class DatabaseSQLConnectionSingleton implements IDatabaseConnection {
             } catch (SQLException e) {
                 throw new DataBaseException("Erro ao obter a conexão com o banco de dados." + e)
             }
-        }
-        return connection
     }
 
     @Override

@@ -9,14 +9,16 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Candidato
 import linketinder.model.dto.CandidatoDTO
 import linketinder.service.candidato.CandidatoService
+import java.util.stream.Collectors
+
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-@WebServlet(name = "CandidatoController", urlPatterns = "/candidatos")
-class CandidatoController extends HttpServlet  {
+@WebServlet(name = "CandidatoController", urlPatterns = "/candidatos/*")
+class CandidatoController extends HttpServlet {
     private Gson gson = new Gson()
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -26,14 +28,13 @@ class CandidatoController extends HttpServlet  {
     CandidatoService candidatoService = new CandidatoService(dao)
 
 
-
     CandidatoController() {
     }
 
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        List<CandidatoDTO> candidatos = this.listarCandidatos()
+        List<CandidatoDTO> candidatos = this.candidatoService.listarCandidatos()
 
         String json = this.gson.toJson(candidatos)
 
@@ -46,19 +47,58 @@ class CandidatoController extends HttpServlet  {
         out.flush()
     }
 
-    List<CandidatoDTO> listarCandidatos(){
-        return this.candidatoService.listarCandidatos()
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String requestBody = request.getReader().lines()
+                    .collect(Collectors.joining(System.lineSeparator()))
+            Candidato candidato = gson.fromJson(requestBody, Candidato.class)
+
+            this.candidatoService.cadastrarCandidato(candidato)
+
+            response.setStatus(HttpServletResponse.SC_CREATED)
+        } catch (IOException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
+        }
     }
 
-    void criarCandidato(Candidato candidato){
-        candidatoService.cadastrarCandidato(candidato)
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String pathInfo = request.getPathInfo()
+            String[] pathParts = pathInfo.split("/")
+            if (pathParts.length == 2) {
+                int candidatoId = Integer.parseInt(pathParts[1])
+
+                String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()))
+                Candidato candidato = gson.fromJson(requestBody, Candidato.class)
+
+                candidato.setId(candidatoId)
+                this.candidatoService.atualizarCandidato(candidato)
+
+                response.setStatus(HttpServletResponse.SC_OK)
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
+            }
+        } catch (IOException | NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
+        }
     }
 
-    void atualizarCandidato(Candidato candidato){
-        candidatoService.atualizarCandidato(candidato)
-    }
 
-    void excluirCandidato(Integer candidatoId){
-        candidatoService.deletarCandidato(candidatoId)
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String pathInfo = request.getPathInfo()
+            String[] pathParts = pathInfo.split("/")
+            int candidatoId = Integer.parseInt(pathParts[1])
+
+            this.candidatoService.deletarCandidato(candidatoId)
+
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT)
+        } catch (NumberFormatException | IOException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
+        }
     }
 }
