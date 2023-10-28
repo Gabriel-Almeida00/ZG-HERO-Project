@@ -9,6 +9,8 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Candidato
 import linketinder.model.dto.CandidatoDTO
 import linketinder.service.candidato.CandidatoService
+import linketinder.utils.ServletUtils
+
 import java.util.stream.Collectors
 
 
@@ -20,6 +22,8 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "CandidatoController", urlPatterns = "/candidatos/*")
 class CandidatoController extends HttpServlet {
     private Gson gson = new Gson()
+    private ServletUtils servletUtils = new ServletUtils()
+
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
     IDatabaseConnectionFactory factory = databaseFactory.createConnectionFactory(configDatabase)
@@ -57,7 +61,7 @@ class CandidatoController extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_CREATED)
         } catch (IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage());
+            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
         }
     }
 
@@ -65,7 +69,7 @@ class CandidatoController extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         try {
-            int candidatoId = this.extractCandidatoId(request)
+            int candidatoId = servletUtils.pegarIdDaUrl(request)
 
             String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()))
             Candidato candidato = gson.fromJson(requestBody, Candidato.class)
@@ -76,7 +80,7 @@ class CandidatoController extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_OK)
         } catch (IOException | NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage());
+            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
         }
     }
 
@@ -84,27 +88,13 @@ class CandidatoController extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
         try {
-            int candidatoId = this.extractCandidatoId(request)
+            int candidatoId = servletUtils.pegarIdDaUrl(request)
             this.candidatoService.deletarCandidato(candidatoId)
 
             response.setStatus(HttpServletResponse.SC_NO_CONTENT)
         } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage());
+            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
         }
     }
-
-    private int extractCandidatoId(HttpServletRequest request) {
-        String pathInfo = request.getPathInfo()
-        String[] pathParts = pathInfo.split("/")
-        if (pathParts.length == 2) {
-            try {
-                return Integer.parseInt(pathParts[1])
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("O valor passado deve ser numérico " + e.getMessage())
-            }
-        }
-        return -1
-    }
-
 }
