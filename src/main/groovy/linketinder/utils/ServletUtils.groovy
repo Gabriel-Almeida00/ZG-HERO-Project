@@ -42,4 +42,14 @@ class ServletUtils {
         }
     }
 
+    void writeErrorResponse(HttpServletResponse response, int statusCode, String errorMessage) throws IOException {
+        response.setStatus(statusCode)
+        response.setCharacterEncoding("UTF-8")
+        response.setContentType("application/json; charset=UTF-8")
+
+        String errorResponse = "{ \"error\": \"" + errorMessage + "\" }"
+        response.getWriter().write(errorResponse)
+    }
+
+
 }

@@ -7,10 +7,7 @@ import linketinder.db.IDatabaseConnection
 import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Candidato
-import linketinder.model.CandidatoCompetencia
-import linketinder.model.Experiencia
 import linketinder.model.dto.CandidatoDTO
-import linketinder.model.dto.CompetenciaDTO
 import linketinder.service.candidato.CandidatoService
 import linketinder.utils.ServletUtils
 
@@ -18,7 +15,6 @@ import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import java.util.stream.Collectors
 
 @WebServlet(name = "CandidatoController", urlPatterns = "/candidatos/*")
 class CandidatoController extends HttpServlet {
@@ -39,13 +35,12 @@ class CandidatoController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
-            List<CandidatoDTO> candidatos = candidatoService.listarCandidatos()
+            List<CandidatoDTO> candidatos = this.candidatoService.listarCandidatos()
 
-            String json = gson.toJson(candidatos)
-            servletUtils.writeResponse(response, json)
+            String json = this.gson.toJson(candidatos)
+            this.servletUtils.writeResponse(response, json)
         } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
+           this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -57,9 +52,8 @@ class CandidatoController extends HttpServlet {
 
             servletUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
-        } catch (IOException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
+        } catch (Exception e) {
+            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -75,9 +69,8 @@ class CandidatoController extends HttpServlet {
 
             this.servletUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
-        } catch (IOException | NumberFormatException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
+        } catch (Exception e) {
+            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -89,9 +82,8 @@ class CandidatoController extends HttpServlet {
             this.candidatoService.deletarCandidato(candidatoId)
 
             response.setStatus(HttpServletResponse.SC_NO_CONTENT)
-        } catch (NumberFormatException | IOException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
+        } catch (Exception e) {
+            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 }

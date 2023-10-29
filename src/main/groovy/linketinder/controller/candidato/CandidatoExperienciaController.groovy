@@ -39,9 +39,8 @@ class CandidatoExperienciaController extends HttpServlet {
 
             this.servletUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
-        } catch (IOException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
+        } catch (Exception e) {
+            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -57,9 +56,8 @@ class CandidatoExperienciaController extends HttpServlet {
 
             this.servletUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
-        } catch (IOException | NumberFormatException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
+        } catch (Exception e) {
+            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -73,8 +71,7 @@ class CandidatoExperienciaController extends HttpServlet {
             String json = gson.toJson(experiencias)
             servletUtils.writeResponse(response, json)
         } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
+            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -86,9 +83,8 @@ class CandidatoExperienciaController extends HttpServlet {
             this.candidatoExperienciaService.excluirExperiencia(idExperiencia)
 
             response.setStatus(HttpServletResponse.SC_NO_CONTENT)
-        } catch (NumberFormatException | IOException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
+        } catch (Exception e) {
+            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 }
