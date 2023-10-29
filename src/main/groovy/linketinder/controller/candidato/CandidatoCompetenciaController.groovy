@@ -16,7 +16,6 @@ import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import java.util.stream.Collectors
 
 @WebServlet(name = "CandidatoCompetenciaController", urlPatterns = "/candidatoCompetencia/*")
 class CandidatoCompetenciaController extends HttpServlet {
@@ -35,32 +34,27 @@ class CandidatoCompetenciaController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        int idCandidato = servletUtils.pegarIdDaUrl(request)
-        List<CompetenciaDTO> competenciaDTOS = this.candidatoCompetenciaService.listarCompetenciasPorCandidato(idCandidato)
-        String json = this.gson.toJson(competenciaDTOS)
+        try {
+            int idCandidato = servletUtils.pegarIdDaUrl(request)
+            List<CompetenciaDTO> candidatoCompetencias = candidatoCompetenciaService.listarCompetenciasPorCandidato(idCandidato)
 
-        response.setCharacterEncoding("UTF-8")
-        response.setContentType("application/json; charset=UTF-8")
-        response.setStatus(HttpServletResponse.SC_OK)
-
-        PrintWriter out = response.getWriter()
-        out.print(json)
-        out.flush()
+            String json = gson.toJson(candidatoCompetencias)
+            servletUtils.writeResponse(response, json)
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
+            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
+        }
     }
+
 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.setCharacterEncoding("UTF-8")
-            String requestBody = request.getReader().lines()
-                    .collect(Collectors.joining(System.lineSeparator()))
-
-            CandidatoCompetencia candidatoCompetencia = gson.fromJson(new String(requestBody
-                    .getBytes("UTF-8"), "UTF-8"), CandidatoCompetencia.class)
-
+            CandidatoCompetencia candidatoCompetencia = servletUtils.parseObjectFromRequest(request, CandidatoCompetencia.class)
             this.candidatoCompetenciaService.adicionarCandidatoCompetencia(candidatoCompetencia)
 
+            servletUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
         } catch (IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
@@ -68,22 +62,17 @@ class CandidatoCompetenciaController extends HttpServlet {
         }
     }
 
+
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         try {
-            int idCompetencia = servletUtils.pegarIdDaUrl(request)
-            request.setCharacterEncoding("UTF-8")
+            int competenciaId = this.servletUtils.pegarIdDaUrl(request)
+            CandidatoCompetencia candidatoCompetencia = this.servletUtils.parseObjectFromRequest(request, CandidatoCompetencia.class)
 
-            String requestBody = request.getReader().lines()
-                    .collect(Collectors.joining(System.lineSeparator()))
-
-            CandidatoCompetencia candidatoCompetencia = gson.fromJson(new String(requestBody
-                    .getBytes("UTF-8"), "UTF-8"), CandidatoCompetencia.class)
-
-
-            candidatoCompetencia.setId(idCompetencia)
+            candidatoCompetencia.setId(competenciaId)
             this.candidatoCompetenciaService.atualizarNivelCompetenciaCandidato(candidatoCompetencia)
 
+            this.servletUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
         } catch (IOException | NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST)

@@ -7,7 +7,10 @@ import linketinder.db.IDatabaseConnection
 import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Candidato
+import linketinder.model.CandidatoCompetencia
+import linketinder.model.Experiencia
 import linketinder.model.dto.CandidatoDTO
+import linketinder.model.dto.CompetenciaDTO
 import linketinder.service.candidato.CandidatoService
 import linketinder.utils.ServletUtils
 
@@ -35,30 +38,24 @@ class CandidatoController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        List<CandidatoDTO> candidatos = this.candidatoService.listarCandidatos()
-        String json = this.gson.toJson(candidatos)
+        try {
+            List<CandidatoDTO> candidatos = candidatoService.listarCandidatos()
 
-        response.setCharacterEncoding("UTF-8")
-        response.setContentType("application/json; charset=UTF-8")
-        response.setStatus(HttpServletResponse.SC_OK)
-
-        PrintWriter out = response.getWriter()
-        out.print(json)
-        out.flush()
+            String json = gson.toJson(candidatos)
+            servletUtils.writeResponse(response, json)
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
+            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.setCharacterEncoding("UTF-8")
-            String requestBody = request.getReader().lines()
-                    .collect(Collectors.joining(System.lineSeparator()))
-
-            Candidato candidato = gson.fromJson(new String(requestBody
-                    .getBytes("UTF-8"), "UTF-8"), Candidato.class)
-
+            Candidato candidato = servletUtils.parseObjectFromRequest(request, Candidato.class)
             this.candidatoService.cadastrarCandidato(candidato)
 
+            servletUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
         } catch (IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
@@ -70,18 +67,13 @@ class CandidatoController extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         try {
-            int candidatoId = servletUtils.pegarIdDaUrl(request)
-            request.setCharacterEncoding("UTF-8")
+            int idCandidato = this.servletUtils.pegarIdDaUrl(request)
+            Candidato candidato = this.servletUtils.parseObjectFromRequest(request, Candidato.class)
 
-            String requestBody = request.getReader().lines()
-                    .collect(Collectors.joining(System.lineSeparator()))
-
-            Candidato candidato = gson.fromJson(new String(requestBody
-                    .getBytes("UTF-8"), "UTF-8"), Candidato.class)
-
-            candidato.setId(candidatoId)
+            candidato.setId(idCandidato)
             this.candidatoService.atualizarCandidato(candidato)
 
+            this.servletUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
         } catch (IOException | NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST)

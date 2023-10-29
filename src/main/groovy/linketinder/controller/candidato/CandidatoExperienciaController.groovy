@@ -15,7 +15,6 @@ import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import java.util.stream.Collectors
 
 @WebServlet(name = "CandidatoExperienciaController", urlPatterns = "/candidatoExperiencia/*")
 class CandidatoExperienciaController extends HttpServlet {
@@ -35,38 +34,28 @@ class CandidatoExperienciaController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.setCharacterEncoding("UTF-8")
-
-            String requestBody = request.getReader().lines()
-                    .collect(Collectors.joining(System.lineSeparator()))
-
-            Experiencia experiencia = gson.fromJson(new String(requestBody
-                    .getBytes("UTF-8"), "UTF-8"), Experiencia.class)
-
+            Experiencia experiencia = this.servletUtils.parseObjectFromRequest(request, Experiencia.class)
             this.candidatoExperienciaService.adicionarExperiencia(experiencia)
+
+            this.servletUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
         } catch (IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            response.setCharacterEncoding("UTF-8")
             response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
         }
     }
 
+
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         try {
-            int experienciaId = servletUtils.pegarIdDaUrl(request)
-            request.setCharacterEncoding("UTF-8")
-
-            String requestBody = request.getReader().lines()
-                    .collect(Collectors.joining(System.lineSeparator()))
-
-            Experiencia experiencia = gson.fromJson(new String(requestBody
-                    .getBytes("UTF-8"), "UTF-8"), Experiencia.class)
+            int experienciaId = this.servletUtils.pegarIdDaUrl(request)
+            Experiencia experiencia = this.servletUtils.parseObjectFromRequest(request, Experiencia.class)
 
             experiencia.setId(experienciaId)
             this.candidatoExperienciaService.atualizarExperiencia(experiencia)
 
+            this.servletUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
         } catch (IOException | NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
@@ -74,19 +63,19 @@ class CandidatoExperienciaController extends HttpServlet {
         }
     }
 
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        int idCandidato = servletUtils.pegarIdDaUrl(request)
-        List<Experiencia> experiencias = this.candidatoExperienciaService.listarExperienciasPorCandidato(idCandidato)
+        try {
+            int idCandidato = servletUtils.pegarIdDaUrl(request)
+            List<Experiencia> experiencias = candidatoExperienciaService.listarExperienciasPorCandidato(idCandidato)
 
-        response.setCharacterEncoding("UTF-8")
-        response.setContentType("application/json; charset=UTF-8")
-        response.setStatus(HttpServletResponse.SC_OK)
-
-        PrintWriter out = response.getWriter()
-        String json = this.gson.toJson(experiencias)
-        out.print(json)
-
+            String json = gson.toJson(experiencias)
+            servletUtils.writeResponse(response, json)
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
+            response.getWriter().write("Erro ao processar a solicitação: " + e.getMessage())
+        }
     }
 
 

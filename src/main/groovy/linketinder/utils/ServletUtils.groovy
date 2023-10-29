@@ -1,8 +1,13 @@
 package linketinder.utils
 
+import com.google.gson.Gson
+
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+import java.util.stream.Collectors
 
 class ServletUtils {
+    private Gson gson = new Gson()
 
      int pegarIdDaUrl(HttpServletRequest request) {
         String pathInfo = request.getPathInfo()
@@ -16,4 +21,25 @@ class ServletUtils {
         }
         return -1
     }
+
+    <T> T parseObjectFromRequest(HttpServletRequest request, Class<T> objectClass) throws IOException {
+        request.setCharacterEncoding("UTF-8")
+        String requestBody = request.getReader().lines()
+                .collect(Collectors.joining(System.lineSeparator()))
+        return gson.fromJson(new String(requestBody.getBytes("UTF-8"), "UTF-8"), objectClass)
+    }
+
+     void configureResponse(HttpServletResponse response) {
+        response.setCharacterEncoding("UTF-8")
+        response.setContentType("application/json; charset=UTF-8")
+    }
+
+     void writeResponse(HttpServletResponse response, String jsonResponse) throws IOException {
+        configureResponse(response)
+        response.setStatus(HttpServletResponse.SC_OK)
+        try (PrintWriter out = response.getWriter()) {
+            out.print(jsonResponse)
+        }
+    }
+
 }
