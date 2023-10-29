@@ -39,8 +39,8 @@ class CandidatoCompetenciaController extends HttpServlet {
         List<CompetenciaDTO> competenciaDTOS = this.candidatoCompetenciaService.listarCompetenciasPorCandidato(idCandidato)
         String json = this.gson.toJson(competenciaDTOS)
 
-        response.setContentType("application/json")
         response.setCharacterEncoding("UTF-8")
+        response.setContentType("application/json; charset=UTF-8")
         response.setStatus(HttpServletResponse.SC_OK)
 
         PrintWriter out = response.getWriter()
@@ -52,9 +52,12 @@ class CandidatoCompetenciaController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
+            request.setCharacterEncoding("UTF-8")
             String requestBody = request.getReader().lines()
                     .collect(Collectors.joining(System.lineSeparator()))
-            CandidatoCompetencia candidatoCompetencia = gson.fromJson(requestBody, CandidatoCompetencia.class)
+
+            CandidatoCompetencia candidatoCompetencia = gson.fromJson(new String(requestBody
+                    .getBytes("UTF-8"), "UTF-8"), CandidatoCompetencia.class)
 
             this.candidatoCompetenciaService.adicionarCandidatoCompetencia(candidatoCompetencia)
 
@@ -69,9 +72,14 @@ class CandidatoCompetenciaController extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         try {
             int idCompetencia = servletUtils.pegarIdDaUrl(request)
+            request.setCharacterEncoding("UTF-8")
 
-            String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()))
-            CandidatoCompetencia candidatoCompetencia = gson.fromJson(requestBody, CandidatoCompetencia.class)
+            String requestBody = request.getReader().lines()
+                    .collect(Collectors.joining(System.lineSeparator()))
+
+            CandidatoCompetencia candidatoCompetencia = gson.fromJson(new String(requestBody
+                    .getBytes("UTF-8"), "UTF-8"), CandidatoCompetencia.class)
+
 
             candidatoCompetencia.setId(idCompetencia)
             this.candidatoCompetenciaService.atualizarNivelCompetenciaCandidato(candidatoCompetencia)

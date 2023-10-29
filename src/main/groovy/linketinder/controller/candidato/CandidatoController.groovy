@@ -11,13 +11,11 @@ import linketinder.model.dto.CandidatoDTO
 import linketinder.service.candidato.CandidatoService
 import linketinder.utils.ServletUtils
 
-import java.util.stream.Collectors
-
-
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import java.util.stream.Collectors
 
 @WebServlet(name = "CandidatoController", urlPatterns = "/candidatos/*")
 class CandidatoController extends HttpServlet {
@@ -40,8 +38,8 @@ class CandidatoController extends HttpServlet {
         List<CandidatoDTO> candidatos = this.candidatoService.listarCandidatos()
         String json = this.gson.toJson(candidatos)
 
-        response.setContentType("application/json")
         response.setCharacterEncoding("UTF-8")
+        response.setContentType("application/json; charset=UTF-8")
         response.setStatus(HttpServletResponse.SC_OK)
 
         PrintWriter out = response.getWriter()
@@ -52,9 +50,12 @@ class CandidatoController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
+            request.setCharacterEncoding("UTF-8")
             String requestBody = request.getReader().lines()
                     .collect(Collectors.joining(System.lineSeparator()))
-            Candidato candidato = gson.fromJson(requestBody, Candidato.class)
+
+            Candidato candidato = gson.fromJson(new String(requestBody
+                    .getBytes("UTF-8"), "UTF-8"), Candidato.class)
 
             this.candidatoService.cadastrarCandidato(candidato)
 
@@ -70,9 +71,13 @@ class CandidatoController extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         try {
             int candidatoId = servletUtils.pegarIdDaUrl(request)
+            request.setCharacterEncoding("UTF-8")
 
-            String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()))
-            Candidato candidato = gson.fromJson(requestBody, Candidato.class)
+            String requestBody = request.getReader().lines()
+                    .collect(Collectors.joining(System.lineSeparator()))
+
+            Candidato candidato = gson.fromJson(new String(requestBody
+                    .getBytes("UTF-8"), "UTF-8"), Candidato.class)
 
             candidato.setId(candidatoId)
             this.candidatoService.atualizarCandidato(candidato)
