@@ -1,4 +1,4 @@
-package linketinder.utils.servlet
+package linketinder.servlet
 
 import com.google.gson.Gson
 

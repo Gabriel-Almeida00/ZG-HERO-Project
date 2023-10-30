@@ -9,8 +9,9 @@ import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Formacao
 import linketinder.service.candidato.CandidatoFormacaoService
-import linketinder.utils.servlet.ServletResponseUtils
-import linketinder.utils.servlet.ServletUtils
+import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponseUtils
+import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -22,6 +23,7 @@ class CandidatoFormacaoController extends HttpServlet {
     private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
     private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
+    private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -43,7 +45,7 @@ class CandidatoFormacaoController extends HttpServlet {
             servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
         } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
         }
     }
 
@@ -59,7 +61,7 @@ class CandidatoFormacaoController extends HttpServlet {
             this.servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
         } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
         }
     }
 
@@ -71,21 +73,14 @@ class CandidatoFormacaoController extends HttpServlet {
 
             response.setStatus(HttpServletResponse.SC_NO_CONTENT)
         } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            int idCandidato = servletUtils.pegarIdDaUrl(request)
-            List<Formacao> formacaos = this.candidatoFormacaoService.listarFormacoesPorCandidato(idCandidato)
-
-            String json = gson.toJson(formacaos)
-            servletResponseUtils.writeResponse(response, json)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
-        }
+        int idCandidato = servletUtils.pegarIdDaUrl(request)
+        List<Formacao> formacaos = this.candidatoFormacaoService.listarFormacoesPorCandidato(idCandidato)
+        servletGet.methodGet(response, formacaos)
     }
-
 }

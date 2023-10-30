@@ -1,6 +1,5 @@
 package linketinder.controller.match
 
-import com.google.gson.Gson
 import linketinder.dao.match.MatchDao
 import linketinder.db.ConfigDatabase
 import linketinder.db.IDatabaseConnection
@@ -8,8 +7,8 @@ import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.dto.MatchEmpresaDTO
 import linketinder.service.match.MatchService
-import linketinder.utils.servlet.ServletResponseUtils
-import linketinder.utils.servlet.ServletUtils
+import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -18,9 +17,8 @@ import javax.servlet.http.HttpServletResponse
 
 @WebServlet(name = "MatchCandidatoController", urlPatterns = "/match/candidato/*")
 class MatchCandidatoController extends HttpServlet {
-    private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
+    private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -33,14 +31,8 @@ class MatchCandidatoController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            int idCandidato = this.servletUtils.pegarIdDaUrl(request)
-            List<MatchEmpresaDTO> empresas = this.matchService.encontrarMatchesPeloCandidato(idCandidato)
-            String json = this.gson.toJson(empresas)
-            this.servletResponseUtils.writeResponse(response, json)
-
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        int idCandidato = this.servletUtils.pegarIdDaUrl(request)
+        List<MatchEmpresaDTO> empresas = this.matchService.encontrarMatchesPeloCandidato(idCandidato)
+        servletGet.methodGet(response, empresas)
     }
 }

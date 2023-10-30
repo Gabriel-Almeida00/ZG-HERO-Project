@@ -10,8 +10,9 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.CandidatoCompetencia
 import linketinder.model.dto.CompetenciaDTO
 import linketinder.service.candidato.CandidatoCompetenciaService
-import linketinder.utils.servlet.ServletResponseUtils
-import linketinder.utils.servlet.ServletUtils
+import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponseUtils
+import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -23,6 +24,7 @@ class CandidatoCompetenciaController extends HttpServlet {
     private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
     private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
+    private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -37,15 +39,9 @@ class CandidatoCompetenciaController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            int idCandidato = servletUtils.pegarIdDaUrl(request)
-            List<CompetenciaDTO> candidatoCompetencias = candidatoCompetenciaService.listarCompetenciasPorCandidato(idCandidato)
-
-            String json = gson.toJson(candidatoCompetencias)
-            servletResponseUtils.writeResponse(response, json)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
-        }
+        int idCandidato = servletUtils.pegarIdDaUrl(request)
+        List<CompetenciaDTO> candidatoCompetencias = candidatoCompetenciaService.listarCompetenciasPorCandidato(idCandidato)
+        servletGet.methodGet( response, candidatoCompetencias)
     }
 
     @Override
@@ -57,7 +53,7 @@ class CandidatoCompetenciaController extends HttpServlet {
             servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
         } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
         }
     }
 
@@ -74,7 +70,7 @@ class CandidatoCompetenciaController extends HttpServlet {
             this.servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
         } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
         }
     }
 
@@ -87,7 +83,7 @@ class CandidatoCompetenciaController extends HttpServlet {
 
             response.setStatus(HttpServletResponse.SC_NO_CONTENT)
         } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
         }
     }
 }

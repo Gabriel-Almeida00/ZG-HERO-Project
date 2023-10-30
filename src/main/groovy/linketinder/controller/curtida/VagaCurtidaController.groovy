@@ -1,6 +1,6 @@
 package linketinder.controller.curtida
 
-import com.google.gson.Gson
+
 import linketinder.dao.candidato.CandidatoDao
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.empresa.EmpresaDao
@@ -9,13 +9,12 @@ import linketinder.db.ConfigDatabase
 import linketinder.db.IDatabaseConnection
 import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
-import linketinder.model.CandidatoCurtido
 import linketinder.model.VagaCurtida
 import linketinder.model.dto.CandidatoQueCurtiuVagaDTO
-import linketinder.model.dto.EmpresaDTO
 import linketinder.service.curtida.CurtidaService
-import linketinder.utils.servlet.ServletResponseUtils
-import linketinder.utils.servlet.ServletUtils
+import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponseUtils
+import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -24,9 +23,9 @@ import javax.servlet.http.HttpServletResponse
 
 @WebServlet(name = "VagaCurtidaController", urlPatterns = "/curtida/vaga/*")
 class VagaCurtidaController extends HttpServlet {
-    private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
     private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
+    private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -57,14 +56,8 @@ class VagaCurtidaController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            int idVaga = this.servletUtils.pegarIdDaUrl(request)
-            List<CandidatoQueCurtiuVagaDTO> candidatos = this.curtidaService.listarCandidatosQueCurtiramVaga(idVaga)
-
-            String json = this.gson.toJson(candidatos)
-            this.servletResponseUtils.writeResponse(response, json)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        int idVaga = this.servletUtils.pegarIdDaUrl(request)
+        List<CandidatoQueCurtiuVagaDTO> candidatos = this.curtidaService.listarCandidatosQueCurtiramVaga(idVaga)
+        servletGet.methodGet(response, candidatos)
     }
 }

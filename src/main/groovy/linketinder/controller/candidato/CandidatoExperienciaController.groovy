@@ -9,8 +9,9 @@ import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Experiencia
 import linketinder.service.candidato.CandidatoExperienciaService
-import linketinder.utils.servlet.ServletResponseUtils
-import linketinder.utils.servlet.ServletUtils
+import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponseUtils
+import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -22,6 +23,7 @@ class CandidatoExperienciaController extends HttpServlet {
     private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
     private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
+    private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -66,15 +68,9 @@ class CandidatoExperienciaController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
             int idCandidato = servletUtils.pegarIdDaUrl(request)
             List<Experiencia> experiencias = candidatoExperienciaService.listarExperienciasPorCandidato(idCandidato)
-
-            String json = gson.toJson(experiencias)
-            servletResponseUtils.writeResponse(response, json)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
-        }
+            servletGet.methodGet(response, experiencias)
     }
 
 

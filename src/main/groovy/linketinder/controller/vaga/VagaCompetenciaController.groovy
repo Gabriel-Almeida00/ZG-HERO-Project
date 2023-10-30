@@ -1,6 +1,6 @@
 package linketinder.controller.vaga
 
-import com.google.gson.Gson
+
 import linketinder.dao.vaga.VagaCompetenciaDao
 import linketinder.dao.vaga.VagaDao
 import linketinder.db.ConfigDatabase
@@ -10,8 +10,9 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.VagaCompetencia
 import linketinder.model.dto.CompetenciaDTO
 import linketinder.service.vaga.VagaCompetenciaService
-import linketinder.utils.servlet.ServletResponseUtils
-import linketinder.utils.servlet.ServletUtils
+import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponseUtils
+import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -20,9 +21,9 @@ import javax.servlet.http.HttpServletResponse
 
 @WebServlet(name = "VagaCompetenciaController", urlPatterns = "/vagaCompetencia/*")
 class VagaCompetenciaController extends HttpServlet {
-    private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
     private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
+    private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -36,15 +37,9 @@ class VagaCompetenciaController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            int idCompetencia = this.servletUtils.pegarIdDaUrl(request)
-            List<CompetenciaDTO> competencia = this.vagaCompetenciaService.listarCompetenciasPorVaga(idCompetencia)
-            String json = gson.toJson(competencia)
-            servletResponseUtils.writeResponse(response, json)
-
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        int idCompetencia = this.servletUtils.pegarIdDaUrl(request)
+        List<CompetenciaDTO> competencia = this.vagaCompetenciaService.listarCompetenciasPorVaga(idCompetencia)
+        servletGet.methodGet(response, competencia)
     }
 
     @Override

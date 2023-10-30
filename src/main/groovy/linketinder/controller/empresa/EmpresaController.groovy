@@ -1,6 +1,6 @@
 package linketinder.controller.empresa
 
-import com.google.gson.Gson
+
 import linketinder.dao.empresa.EmpresaDao
 import linketinder.db.ConfigDatabase
 import linketinder.db.IDatabaseConnection
@@ -8,8 +8,9 @@ import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Empresa
 import linketinder.service.empresa.EmpresaService
-import linketinder.utils.servlet.ServletResponseUtils
-import linketinder.utils.servlet.ServletUtils
+import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponseUtils
+import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -18,9 +19,9 @@ import javax.servlet.http.HttpServletResponse
 
 @WebServlet(name = "EmpresaController", urlPatterns = "/empresa/*")
 class EmpresaController extends HttpServlet {
-    private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
     private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
+    private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -33,20 +34,14 @@ class EmpresaController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            String pathInfo = request.getPathInfo()
-            if (pathInfo == null ) {
-                List<Empresa> empresas = this.empresaService.listarTodasEmpresas()
-                String json = this.gson.toJson(empresas)
-                this.servletResponseUtils.writeResponse(response, json)
-            } else {
-                int idEmpresa = this.servletUtils.pegarIdDaUrl(request)
-                Empresa empresa = this.empresaService.obterEmpresaPorId(idEmpresa)
-                String json = gson.toJson(empresa)
-                servletResponseUtils.writeResponse(response, json)
-            }
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
+        String pathInfo = request.getPathInfo()
+        if (pathInfo == null) {
+            List<Empresa> empresas = this.empresaService.listarTodasEmpresas()
+            servletGet.methodGet(response, empresas)
+        } else {
+            int idEmpresa = this.servletUtils.pegarIdDaUrl(request)
+            Empresa empresa = this.empresaService.obterEmpresaPorId(idEmpresa)
+            servletGet.methodGet(response, empresa)
         }
     }
 
@@ -59,7 +54,7 @@ class EmpresaController extends HttpServlet {
             servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
         } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
         }
     }
 
@@ -75,7 +70,7 @@ class EmpresaController extends HttpServlet {
             this.servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
         } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
         }
     }
 
@@ -87,7 +82,7 @@ class EmpresaController extends HttpServlet {
 
             response.setStatus(HttpServletResponse.SC_NO_CONTENT)
         } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
         }
     }
 }

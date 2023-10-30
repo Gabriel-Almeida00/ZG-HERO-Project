@@ -8,8 +8,9 @@ import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Competencia
 import linketinder.service.competencia.CompetenciaService
-import linketinder.utils.servlet.ServletResponseUtils
-import linketinder.utils.servlet.ServletUtils
+import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponseUtils
+import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -21,6 +22,7 @@ class CompetenciaController extends HttpServlet {
     private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
     private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
+    private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -33,21 +35,15 @@ class CompetenciaController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
             String pathInfo = request.getPathInfo()
             if (pathInfo == null ) {
                 List<Competencia> competencias = this.competenciaService.listarCompetencias()
-                String json = this.gson.toJson(competencias)
-                this.servletResponseUtils.writeResponse(response, json)
+                servletGet.methodGet(response, competencias)
             } else {
                 int idCompetencia = this.servletUtils.pegarIdDaUrl(request)
                 Competencia competencia = this.competenciaService.buscarCompetenciaPorId(idCompetencia)
-                String json = gson.toJson(competencia)
-                servletResponseUtils.writeResponse(response, json)
+                servletGet.methodGet(response, competencia)
             }
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
     }
 
     @Override

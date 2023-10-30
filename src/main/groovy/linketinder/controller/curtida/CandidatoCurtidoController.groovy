@@ -12,8 +12,9 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.CandidatoCurtido
 import linketinder.model.dto.EmpresaDTO
 import linketinder.service.curtida.CurtidaService
-import linketinder.utils.servlet.ServletResponseUtils
-import linketinder.utils.servlet.ServletUtils
+import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponseUtils
+import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -25,6 +26,7 @@ class CandidatoCurtidoController extends HttpServlet {
     private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
     private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
+    private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -55,14 +57,8 @@ class CandidatoCurtidoController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            int idCandidato = this.servletUtils.pegarIdDaUrl(request)
-            List<EmpresaDTO> empresas = this.curtidaService.listarEmpresasQueCurtiramCandidato(idCandidato)
-
-            String json = this.gson.toJson(empresas)
-            this.servletResponseUtils.writeResponse(response, json)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        int idCandidato = this.servletUtils.pegarIdDaUrl(request)
+        List<EmpresaDTO> empresas = this.curtidaService.listarEmpresasQueCurtiramCandidato(idCandidato)
+        servletGet.methodGet(response, empresas)
     }
 }

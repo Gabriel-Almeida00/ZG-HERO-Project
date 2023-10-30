@@ -1,6 +1,6 @@
 package linketinder.controller.vaga
 
-import com.google.gson.Gson
+
 import linketinder.dao.vaga.VagaDao
 import linketinder.db.ConfigDatabase
 import linketinder.db.IDatabaseConnection
@@ -9,8 +9,9 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Vaga
 import linketinder.model.dto.VagaDTO
 import linketinder.service.vaga.VagaService
-import linketinder.utils.servlet.ServletResponseUtils
-import linketinder.utils.servlet.ServletUtils
+import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponseUtils
+import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -19,9 +20,9 @@ import javax.servlet.http.HttpServletResponse
 
 @WebServlet(name = "VagaController", urlPatterns = "/vaga/*")
 class VagaController extends HttpServlet {
-    private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
     private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
+    private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -34,20 +35,14 @@ class VagaController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            String pathInfo = request.getPathInfo()
-            if (pathInfo == null ) {
-                List<VagaDTO> vagas = this.vagaService.listarTodasVagas()
-                String json = this.gson.toJson(vagas)
-                this.servletResponseUtils.writeResponse(response, json)
-            } else {
-                int idEmpresa = this.servletUtils.pegarIdDaUrl(request)
-                List<VagaDTO> vagas = this.vagaService.listarVagasDaEmpresa(idEmpresa)
-                String json = gson.toJson(vagas)
-                servletResponseUtils.writeResponse(response, json)
-            }
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
+        String pathInfo = request.getPathInfo()
+        if (pathInfo == null) {
+            List<VagaDTO> vagas = this.vagaService.listarTodasVagas()
+            servletGet.methodGet(response, vagas)
+        } else {
+            int idEmpresa = this.servletUtils.pegarIdDaUrl(request)
+            List<VagaDTO> vagas = this.vagaService.listarVagasDaEmpresa(idEmpresa)
+            servletGet.methodGet(response, vagas)
         }
     }
 
@@ -55,7 +50,7 @@ class VagaController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
             Vaga vaga = this.servletUtils.parseObjectFromRequest(request, Vaga.class)
-            this. vagaService.adicionarVaga(vaga)
+            this.vagaService.adicionarVaga(vaga)
 
             servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
@@ -71,7 +66,7 @@ class VagaController extends HttpServlet {
             Vaga vaga = this.servletUtils.parseObjectFromRequest(request, Vaga.class)
 
             vaga.setId(idVaga)
-            this. vagaService.atualizarVaga(vaga)
+            this.vagaService.atualizarVaga(vaga)
 
             this.servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
