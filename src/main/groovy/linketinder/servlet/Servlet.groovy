@@ -1,21 +1,12 @@
 package linketinder.servlet
 
-
 import javax.servlet.http.HttpServletResponse
 
-class ServletResponseUtils {
+class Servlet {
 
-     void configureResponse(HttpServletResponse response) {
+    void writeResponse(HttpServletResponse response){
         response.setCharacterEncoding("UTF-8")
         response.setContentType("application/json; charset=UTF-8")
-    }
-
-     void writeResponse(HttpServletResponse response, String jsonResponse) throws IOException {
-        configureResponse(response)
-        response.setStatus(HttpServletResponse.SC_OK)
-        try (PrintWriter out = response.getWriter()) {
-            out.print(jsonResponse)
-        }
     }
 
     void writeErrorResponse(HttpServletResponse response, int statusCode, String errorMessage) throws IOException {

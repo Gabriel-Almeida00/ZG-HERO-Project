@@ -10,7 +10,7 @@ import linketinder.model.Vaga
 import linketinder.model.dto.VagaDTO
 import linketinder.service.vaga.VagaService
 import linketinder.servlet.ServletGet
-import linketinder.servlet.ServletResponseUtils
+
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "VagaController", urlPatterns = "/vaga/*")
 class VagaController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
     private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()

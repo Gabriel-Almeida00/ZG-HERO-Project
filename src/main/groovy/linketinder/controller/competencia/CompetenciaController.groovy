@@ -1,6 +1,6 @@
 package linketinder.controller.competencia
 
-import com.google.gson.Gson
+
 import linketinder.dao.competencia.CompetenciaDao
 import linketinder.db.ConfigDatabase
 import linketinder.db.IDatabaseConnection
@@ -9,7 +9,6 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Competencia
 import linketinder.service.competencia.CompetenciaService
 import linketinder.servlet.ServletGet
-import linketinder.servlet.ServletResponseUtils
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -19,9 +18,7 @@ import javax.servlet.http.HttpServletResponse
 
 @WebServlet(name = "CompetenciaController", urlPatterns = "/competencia/*")
 class CompetenciaController extends HttpServlet {
-    private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
     private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()

@@ -1,6 +1,6 @@
 package linketinder.controller.candidato
 
-import com.google.gson.Gson
+
 import linketinder.dao.candidato.CandidatoDao
 import linketinder.db.ConfigDatabase
 import linketinder.db.IDatabaseConnection
@@ -10,7 +10,6 @@ import linketinder.model.Candidato
 import linketinder.model.dto.CandidatoDTO
 import linketinder.service.candidato.CandidatoService
 import linketinder.servlet.ServletGet
-import linketinder.servlet.ServletResponseUtils
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -20,9 +19,7 @@ import javax.servlet.http.HttpServletResponse
 
 @WebServlet(name = "CandidatoController", urlPatterns = "/candidatos/*")
 class CandidatoController extends HttpServlet {
-    private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
     private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()

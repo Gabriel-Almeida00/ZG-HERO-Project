@@ -9,7 +9,7 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Empresa
 import linketinder.service.empresa.EmpresaService
 import linketinder.servlet.ServletGet
-import linketinder.servlet.ServletResponseUtils
+
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "EmpresaController", urlPatterns = "/empresa/*")
 class EmpresaController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
     private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()

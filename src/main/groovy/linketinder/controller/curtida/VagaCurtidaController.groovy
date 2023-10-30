@@ -13,7 +13,7 @@ import linketinder.model.VagaCurtida
 import linketinder.model.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.service.curtida.CurtidaService
 import linketinder.servlet.ServletGet
-import linketinder.servlet.ServletResponseUtils
+
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "VagaCurtidaController", urlPatterns = "/curtida/vaga/*")
 class VagaCurtidaController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
     private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()

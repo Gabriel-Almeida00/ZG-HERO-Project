@@ -11,7 +11,7 @@ import linketinder.model.VagaCompetencia
 import linketinder.model.dto.CompetenciaDTO
 import linketinder.service.vaga.VagaCompetenciaService
 import linketinder.servlet.ServletGet
-import linketinder.servlet.ServletResponseUtils
+
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "VagaCompetenciaController", urlPatterns = "/vagaCompetencia/*")
 class VagaCompetenciaController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
     private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()

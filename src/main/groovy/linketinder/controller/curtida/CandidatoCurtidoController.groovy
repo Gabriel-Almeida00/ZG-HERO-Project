@@ -1,6 +1,6 @@
 package linketinder.controller.curtida
 
-import com.google.gson.Gson
+
 import linketinder.dao.candidato.CandidatoDao
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.empresa.EmpresaDao
@@ -13,7 +13,6 @@ import linketinder.model.CandidatoCurtido
 import linketinder.model.dto.EmpresaDTO
 import linketinder.service.curtida.CurtidaService
 import linketinder.servlet.ServletGet
-import linketinder.servlet.ServletResponseUtils
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -23,9 +22,7 @@ import javax.servlet.http.HttpServletResponse
 
 @WebServlet(name = "CandidatoCurtidoController", urlPatterns = "/curtida/candidato/*")
 class CandidatoCurtidoController extends HttpServlet {
-    private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
     private ServletGet servletGet = new ServletGet()
 
     ConfigDatabase configDatabase = new ConfigDatabase()

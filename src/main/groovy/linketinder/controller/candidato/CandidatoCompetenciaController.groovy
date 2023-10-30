@@ -1,6 +1,5 @@
 package linketinder.controller.candidato
 
-import com.google.gson.Gson
 import linketinder.dao.candidato.CandidatoCompetenciaDao
 import linketinder.dao.candidato.CandidatoDao
 import linketinder.db.ConfigDatabase
@@ -11,7 +10,8 @@ import linketinder.model.CandidatoCompetencia
 import linketinder.model.dto.CompetenciaDTO
 import linketinder.service.candidato.CandidatoCompetenciaService
 import linketinder.servlet.ServletGet
-import linketinder.servlet.ServletResponseUtils
+import linketinder.servlet.ServletPost
+
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -21,10 +21,9 @@ import javax.servlet.http.HttpServletResponse
 
 @WebServlet(name = "CandidatoCompetenciaController", urlPatterns = "/candidatoCompetencia/*")
 class CandidatoCompetenciaController extends HttpServlet {
-    private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
     private ServletGet servletGet = new ServletGet()
+    private ServletPost servletPost = new ServletPost()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -41,20 +40,15 @@ class CandidatoCompetenciaController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         int idCandidato = servletUtils.pegarIdDaUrl(request)
         List<CompetenciaDTO> candidatoCompetencias = candidatoCompetenciaService.listarCompetenciasPorCandidato(idCandidato)
-        servletGet.methodGet( response, candidatoCompetencias)
+        servletGet.methodGet(response, candidatoCompetencias)
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletPost.methodPost(response, () -> {
             CandidatoCompetencia candidatoCompetencia = servletUtils.parseObjectFromRequest(request, CandidatoCompetencia.class)
             this.candidatoCompetenciaService.adicionarCandidatoCompetencia(candidatoCompetencia)
-
-            servletResponseUtils.configureResponse(response)
-            response.setStatus(HttpServletResponse.SC_CREATED)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        })
     }
 
 
