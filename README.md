@@ -9,7 +9,7 @@ O Linketinder é um sistema de contratação de funcionários inspirado no Linke
 - Cadastrar novo candidato (Pessoa Física)
 - Cadastrar nova empresa (Pessoa Jurídica)
 - Encontrar match de candidatos com base nas competências desejadas
-- Sair do programa
+
 
 ## Funcionalidade de Curtidas e Matches
 
@@ -33,6 +33,13 @@ Internamente na aplicação, os matches são representados através da classe `C
 
 ### Gradle
 Inicialmente o projeto foi feito com maven mas mudou para gradle apartir do commit : https://github.com/Gabriel-Almeida00/ZG-HERO-Project/commit/ec9a86053a36ed6dde1be7e67d165d93c8515fa5
+
+### API REST
+Na Atual versão do projeto foi desenvolvida uma API sem framework, foi necesario o tomcat e Servlet
+1. versão Ultimate Intellij , é possível consguir a versão com a licença de estudante : https://www.jetbrains.com/pt-br/community/education/#students
+2. Tomcat na versão 8  https://tomcat.apache.org/tomcat-8.5-doc/index.html
+3. configurar o tomcat no intellij > https://www.jetbrains.com/idea/guide/tutorials/working-with-apache-tomcat/using-existing-application/ e https://www.youtube.com/watch?v=ThBw3WBTw9Q&t=343s
+4. criar endpoins com servlet > https://www.youtube.com/watch?v=ThBw3WBTw9Q&t=343s
 
 ## Como Executar
 
@@ -71,27 +78,12 @@ Este documento descreve a lógica de matches implementada no sistema Linketinder
 
 A lógica de matches no Linketinder envolve a criação de curtidas tanto por parte dos candidatos em vagas quanto por parte das empresas em candidatos. A partir dessas curtidas, é possível identificar matchs e permitir que as partes entrem em contato.
 
-### Tabelas Intermediárias
-
-Foram criadas duas tabelas intermediárias para registrar as curtidas:
-
-1. Tabela `vagas_curtidas`: Relaciona candidatos e vagas que foram curtidas. Possui colunas `idCandidato` e `idVaga`.
-
-2. Tabela `candidatos_curtidos`: Relaciona empresas e candidatos que foram curtidos. Possui colunas `idCandidato` e `idEmpresa`.
 
 ## Identificação de Matchs
 
 A identificação de matchs ocorre quando tanto o candidato quanto a empresa têm um interesse mútuo. Isso é verificado através de uma consulta SQL que junta as duas tabelas intermediárias, verificando se há correspondência nas curtidas.
 
-### Exemplo de Consulta SQL
 
-A seguinte consulta SQL é usada para identificar matchs:
-
-```sql
-SELECT vc.idCandidato, vc.idVaga
-FROM vagas_curtidas vc
-JOIN candidatos_curtidos cc ON vc.idCandidato = cc.idCandidato AND vc.idVaga = cc.idEmpresa;
-```
 
 ## PostgreSQL
 
