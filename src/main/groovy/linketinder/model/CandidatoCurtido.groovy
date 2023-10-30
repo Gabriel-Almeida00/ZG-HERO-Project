@@ -1,7 +1,6 @@
 package linketinder.model
 
 class CandidatoCurtido {
-    private Integer id
     private Integer idCandidato
     private Integer idEmpresa
 
@@ -10,13 +9,7 @@ class CandidatoCurtido {
         this.idEmpresa = idEmpresa
     }
 
-    Integer getId() {
-        return id
-    }
 
-    void setId(Integer id) {
-        this.id = id
-    }
 
     Integer getIdCandidato() {
         return idCandidato

@@ -3,6 +3,8 @@ package linketinder.service.curtida
 import linketinder.dao.curtida.CurtidaDao
 import linketinder.dao.curtida.ICurtidaDao
 import linketinder.dao.vaga.IVagaDao
+import linketinder.model.CandidatoCurtido
+import linketinder.model.VagaCurtida
 import linketinder.model.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.model.dto.EmpresaDTO
 
@@ -16,24 +18,24 @@ class CurtidaService implements ICurtidaService{
     }
 
     @Override
-    void curtirVaga(Integer idCandidato, Integer idVaga) {
-        Integer idEmpresa = vagaDao.obterIdEmpresaPorIdVaga(idVaga)
-        Integer empresaQueCurtiu = curtidaDao.verificaCurtidaDaEmpresa(idEmpresa, idCandidato)
+    void curtirVaga(VagaCurtida vagaCurtida) {
+        Integer idEmpresa = vagaDao.obterIdEmpresaPorIdVaga(vagaCurtida.idVaga)
+        Integer empresaQueCurtiu = curtidaDao.verificaCurtidaDaEmpresa(idEmpresa, vagaCurtida.idCandidata)
 
         if (empresaQueCurtiu == CurtidaDao.CURTIDA_NAO_ENCONTRADA) {
-            curtidaDao.curtirVaga(idCandidato, idVaga)
+            curtidaDao.curtirVaga(vagaCurtida)
         } else {
-            curtidaDao.AtualizarCurtidaComIdVaga(idVaga, idEmpresa, idCandidato)
+            curtidaDao.AtualizarCurtidaComIdVaga(vagaCurtida.idVaga, idEmpresa, vagaCurtida.idCandidata)
         }
     }
 
     @Override
-    void curtirCandidato(Integer idCandidato, Integer idEmpresa) {
-        Integer idVaga = curtidaDao.verificaCurtidaDoCandidato(idCandidato)
+    void curtirCandidato(CandidatoCurtido candidatoCurtido) {
+        Integer idVaga = curtidaDao.verificaCurtidaDoCandidato(candidatoCurtido.idCandidato)
         if (idVaga == CurtidaDao.CURTIDA_NAO_ENCONTRADA) {
-            curtidaDao.curtirCandidato(idCandidato, idEmpresa)
+            curtidaDao.curtirCandidato(candidatoCurtido)
         } else {
-            curtidaDao.AtualizarCurtidaComIdEmpresa(idVaga, idEmpresa, idCandidato)
+            curtidaDao.AtualizarCurtidaComIdEmpresa(idVaga, candidatoCurtido.idEmpresa, candidatoCurtido.idCandidato)
         }
     }
 

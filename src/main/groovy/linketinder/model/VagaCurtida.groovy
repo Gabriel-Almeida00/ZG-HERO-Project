@@ -1,7 +1,6 @@
 package linketinder.model
 
 class VagaCurtida {
-    private Integer id
     private Integer idCandidata
     private Integer idVaga
 

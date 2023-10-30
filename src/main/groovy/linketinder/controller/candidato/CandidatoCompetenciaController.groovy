@@ -28,6 +28,7 @@ class CandidatoCompetenciaController extends HttpServlet {
     DatabaseFactory databaseFactory = new DatabaseFactory()
     IDatabaseConnectionFactory factory = databaseFactory.createConnectionFactory(configDatabase)
     IDatabaseConnection connection = factory.createConnection()
+
     CandidatoDao candidatoDao = new CandidatoDao(connection)
     CandidatoCompetenciaDao dao = new CandidatoCompetenciaDao(connection, candidatoDao)
     CandidatoCompetenciaService candidatoCompetenciaService = new CandidatoCompetenciaService(dao)
@@ -46,8 +47,6 @@ class CandidatoCompetenciaController extends HttpServlet {
             this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
-
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
