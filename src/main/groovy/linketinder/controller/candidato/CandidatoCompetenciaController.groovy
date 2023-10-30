@@ -10,7 +10,8 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.CandidatoCompetencia
 import linketinder.model.dto.CompetenciaDTO
 import linketinder.service.candidato.CandidatoCompetenciaService
-import linketinder.utils.ServletUtils
+import linketinder.utils.servlet.ServletResponseUtils
+import linketinder.utils.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse
 class CandidatoCompetenciaController extends HttpServlet {
     private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
+    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -39,9 +41,9 @@ class CandidatoCompetenciaController extends HttpServlet {
             List<CompetenciaDTO> candidatoCompetencias = candidatoCompetenciaService.listarCompetenciasPorCandidato(idCandidato)
 
             String json = gson.toJson(candidatoCompetencias)
-            servletUtils.writeResponse(response, json)
+            servletResponseUtils.writeResponse(response, json)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -53,10 +55,10 @@ class CandidatoCompetenciaController extends HttpServlet {
             CandidatoCompetencia candidatoCompetencia = servletUtils.parseObjectFromRequest(request, CandidatoCompetencia.class)
             this.candidatoCompetenciaService.adicionarCandidatoCompetencia(candidatoCompetencia)
 
-            servletUtils.configureResponse(response)
+            servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -70,10 +72,10 @@ class CandidatoCompetenciaController extends HttpServlet {
             candidatoCompetencia.setId(competenciaId)
             this.candidatoCompetenciaService.atualizarNivelCompetenciaCandidato(candidatoCompetencia)
 
-            this.servletUtils.configureResponse(response)
+            this.servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -86,7 +88,7 @@ class CandidatoCompetenciaController extends HttpServlet {
 
             response.setStatus(HttpServletResponse.SC_NO_CONTENT)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 }

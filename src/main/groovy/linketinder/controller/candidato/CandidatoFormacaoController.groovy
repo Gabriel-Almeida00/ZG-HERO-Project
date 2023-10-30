@@ -9,7 +9,8 @@ import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Formacao
 import linketinder.service.candidato.CandidatoFormacaoService
-import linketinder.utils.ServletUtils
+import linketinder.utils.servlet.ServletResponseUtils
+import linketinder.utils.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse
 class CandidatoFormacaoController extends HttpServlet {
     private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
+    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -38,10 +40,10 @@ class CandidatoFormacaoController extends HttpServlet {
             Formacao formacao = servletUtils.parseObjectFromRequest(request, Formacao.class)
             this.candidatoFormacaoService.adicionarFormacao(formacao)
 
-            servletUtils.configureResponse(response)
+            servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -54,10 +56,10 @@ class CandidatoFormacaoController extends HttpServlet {
             formacao.setId(formacaoId)
             this.candidatoFormacaoService.atualizarFormacao(formacao)
 
-            this.servletUtils.configureResponse(response)
+            this.servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -69,7 +71,7 @@ class CandidatoFormacaoController extends HttpServlet {
 
             response.setStatus(HttpServletResponse.SC_NO_CONTENT)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -80,9 +82,9 @@ class CandidatoFormacaoController extends HttpServlet {
             List<Formacao> formacaos = this.candidatoFormacaoService.listarFormacoesPorCandidato(idCandidato)
 
             String json = gson.toJson(formacaos)
-            servletUtils.writeResponse(response, json)
+            servletResponseUtils.writeResponse(response, json)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 

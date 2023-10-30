@@ -1,4 +1,4 @@
-package linketinder.utils
+package linketinder.utils.servlet
 
 import com.google.gson.Gson
 
@@ -28,28 +28,4 @@ class ServletUtils {
                 .collect(Collectors.joining(System.lineSeparator()))
         return gson.fromJson(new String(requestBody.getBytes("UTF-8"), "UTF-8"), objectClass)
     }
-
-     void configureResponse(HttpServletResponse response) {
-        response.setCharacterEncoding("UTF-8")
-        response.setContentType("application/json; charset=UTF-8")
-    }
-
-     void writeResponse(HttpServletResponse response, String jsonResponse) throws IOException {
-        configureResponse(response)
-        response.setStatus(HttpServletResponse.SC_OK)
-        try (PrintWriter out = response.getWriter()) {
-            out.print(jsonResponse)
-        }
-    }
-
-    void writeErrorResponse(HttpServletResponse response, int statusCode, String errorMessage) throws IOException {
-        response.setStatus(statusCode)
-        response.setCharacterEncoding("UTF-8")
-        response.setContentType("application/json; charset=UTF-8")
-
-        String errorResponse = "{ \"error\": \"" + errorMessage + "\" }"
-        response.getWriter().write(errorResponse)
-    }
-
-
 }

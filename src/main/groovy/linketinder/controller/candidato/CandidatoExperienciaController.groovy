@@ -9,7 +9,8 @@ import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Experiencia
 import linketinder.service.candidato.CandidatoExperienciaService
-import linketinder.utils.ServletUtils
+import linketinder.utils.servlet.ServletResponseUtils
+import linketinder.utils.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse
 class CandidatoExperienciaController extends HttpServlet {
     private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
+    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -37,10 +39,10 @@ class CandidatoExperienciaController extends HttpServlet {
             Experiencia experiencia = this.servletUtils.parseObjectFromRequest(request, Experiencia.class)
             this.candidatoExperienciaService.adicionarExperiencia(experiencia)
 
-            this.servletUtils.configureResponse(response)
+            this.servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -54,10 +56,10 @@ class CandidatoExperienciaController extends HttpServlet {
             experiencia.setId(experienciaId)
             this.candidatoExperienciaService.atualizarExperiencia(experiencia)
 
-            this.servletUtils.configureResponse(response)
+            this.servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -69,9 +71,9 @@ class CandidatoExperienciaController extends HttpServlet {
             List<Experiencia> experiencias = candidatoExperienciaService.listarExperienciasPorCandidato(idCandidato)
 
             String json = gson.toJson(experiencias)
-            servletUtils.writeResponse(response, json)
+            servletResponseUtils.writeResponse(response, json)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -84,7 +86,7 @@ class CandidatoExperienciaController extends HttpServlet {
 
             response.setStatus(HttpServletResponse.SC_NO_CONTENT)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 }

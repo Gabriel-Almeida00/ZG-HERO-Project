@@ -9,7 +9,8 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Candidato
 import linketinder.model.dto.CandidatoDTO
 import linketinder.service.candidato.CandidatoService
-import linketinder.utils.ServletUtils
+import linketinder.utils.servlet.ServletResponseUtils
+import linketinder.utils.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse
 class CandidatoController extends HttpServlet {
     private Gson gson = new Gson()
     private ServletUtils servletUtils = new ServletUtils()
+    private ServletResponseUtils servletResponseUtils = new ServletResponseUtils()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -38,9 +40,9 @@ class CandidatoController extends HttpServlet {
             List<CandidatoDTO> candidatos = this.candidatoService.listarCandidatos()
 
             String json = this.gson.toJson(candidatos)
-            this.servletUtils.writeResponse(response, json)
+            this.servletResponseUtils.writeResponse(response, json)
         } catch (Exception e) {
-           this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+           this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -50,10 +52,10 @@ class CandidatoController extends HttpServlet {
             Candidato candidato = servletUtils.parseObjectFromRequest(request, Candidato.class)
             this.candidatoService.cadastrarCandidato(candidato)
 
-            servletUtils.configureResponse(response)
+            servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_CREATED)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -67,10 +69,10 @@ class CandidatoController extends HttpServlet {
             candidato.setId(idCandidato)
             this.candidatoService.atualizarCandidato(candidato)
 
-            this.servletUtils.configureResponse(response)
+            this.servletResponseUtils.configureResponse(response)
             response.setStatus(HttpServletResponse.SC_OK)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 
@@ -83,7 +85,7 @@ class CandidatoController extends HttpServlet {
 
             response.setStatus(HttpServletResponse.SC_NO_CONTENT)
         } catch (Exception e) {
-            this.servletUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
+            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
         }
     }
 }
