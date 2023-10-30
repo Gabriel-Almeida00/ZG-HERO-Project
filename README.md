@@ -37,10 +37,11 @@ Inicialmente o projeto foi feito com maven mas mudou para gradle apartir do comm
 ### API REST
 Na Atual versão do projeto foi desenvolvida uma API sem framework, foi necesario o tomcat e Servlet
 1. versão Ultimate Intellij , é possível consguir a versão com a licença de estudante : https://www.jetbrains.com/pt-br/community/education/#students
-2. Tomcat na versão 8  https://tomcat.apache.org/tomcat-8.5-doc/index.html
+2. Tomcat na versão 8  https://tomcat.apache.org/tomcat-8.5-doc/index.html baixar e descompactar em alguma pasta.
 3. configurar o tomcat no intellij > https://www.jetbrains.com/idea/guide/tutorials/working-with-apache-tomcat/using-existing-application/ e https://www.youtube.com/watch?v=ThBw3WBTw9Q&t=343s
-4. criar endpoins com servlet > https://www.youtube.com/watch?v=ThBw3WBTw9Q&t=343s
-
+4. criar endpoins com servlet > https://www.youtube.com/watch?v=ThBw3WBTw9Q&t=343s. neste projeto apartir desse commit na pasta controllers tem exemplo de como implemnetar API com servlet > https://github.com/Gabriel-Almeida00/ZG-HERO-Project/commit/49ac78ffecb19da94a309215614d67fd1b690b9e
+5. bibiotecas adicionadas no build.gradle ``   compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+   implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2' ``
 ## Como Executar
 
 1. Certifique-se de ter o Groovy instalado em sua máquina. Você pode baixá-lo [aqui](https://groovy.apache.org/download.html) e seguir as instruções de instalação.
