@@ -9,9 +9,7 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.CandidatoCompetencia
 import linketinder.model.dto.CompetenciaDTO
 import linketinder.service.candidato.CandidatoCompetenciaService
-import linketinder.servlet.ServletGet
-import linketinder.servlet.ServletPost
-
+import linketinder.servlet.ServletResponse
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -22,8 +20,7 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "CandidatoCompetenciaController", urlPatterns = "/candidatoCompetencia/*")
 class CandidatoCompetenciaController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletGet servletGet = new ServletGet()
-    private ServletPost servletPost = new ServletPost()
+    private ServletResponse servletResponse = new ServletResponse()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -40,12 +37,12 @@ class CandidatoCompetenciaController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         int idCandidato = servletUtils.pegarIdDaUrl(request)
         List<CompetenciaDTO> candidatoCompetencias = candidatoCompetenciaService.listarCompetenciasPorCandidato(idCandidato)
-        servletGet.methodGet(response, candidatoCompetencias)
+        servletResponse.methodGet(response, candidatoCompetencias)
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        servletPost.methodPost(response, () -> {
+        servletResponse.methodPost(response, () -> {
             CandidatoCompetencia candidatoCompetencia = servletUtils.parseObjectFromRequest(request, CandidatoCompetencia.class)
             this.candidatoCompetenciaService.adicionarCandidatoCompetencia(candidatoCompetencia)
         })
@@ -54,30 +51,21 @@ class CandidatoCompetenciaController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodPut(response, () -> {
             int competenciaId = this.servletUtils.pegarIdDaUrl(request)
             CandidatoCompetencia candidatoCompetencia = this.servletUtils.parseObjectFromRequest(request, CandidatoCompetencia.class)
 
             candidatoCompetencia.setId(competenciaId)
             this.candidatoCompetenciaService.atualizarNivelCompetenciaCandidato(candidatoCompetencia)
-
-            this.servletResponseUtils.configureResponse(response)
-            response.setStatus(HttpServletResponse.SC_OK)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        })
     }
 
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodDelete(response , () -> {
             int idCompetencia = servletUtils.pegarIdDaUrl(request)
             this.candidatoCompetenciaService.excluirCompetenciaCandidato(idCompetencia)
-
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        })
     }
 }

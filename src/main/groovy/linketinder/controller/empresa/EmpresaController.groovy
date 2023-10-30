@@ -8,8 +8,7 @@ import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Empresa
 import linketinder.service.empresa.EmpresaService
-import linketinder.servlet.ServletGet
-
+import linketinder.servlet.ServletResponse
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "EmpresaController", urlPatterns = "/empresa/*")
 class EmpresaController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletGet servletGet = new ServletGet()
+    private ServletResponse servletResponse = new ServletResponse()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -36,52 +35,38 @@ class EmpresaController extends HttpServlet {
         String pathInfo = request.getPathInfo()
         if (pathInfo == null) {
             List<Empresa> empresas = this.empresaService.listarTodasEmpresas()
-            servletGet.methodGet(response, empresas)
+            servletResponse.methodGet(response, empresas)
         } else {
             int idEmpresa = this.servletUtils.pegarIdDaUrl(request)
             Empresa empresa = this.empresaService.obterEmpresaPorId(idEmpresa)
-            servletGet.methodGet(response, empresa)
+            servletResponse.methodGet(response, empresa)
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodPost(response, () -> {
             Empresa empresa = servletUtils.parseObjectFromRequest(request, Empresa.class)
             this.empresaService.adicionarEmpresa(empresa)
-
-            servletResponseUtils.configureResponse(response)
-            response.setStatus(HttpServletResponse.SC_CREATED)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        })
     }
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodPut(response, () -> {
             int empresaId = this.servletUtils.pegarIdDaUrl(request)
             Empresa empresa = this.servletUtils.parseObjectFromRequest(request, Empresa.class)
 
             empresa.setId(empresaId)
             this.empresaService.atualizarEmpresa(empresa)
-
-            this.servletResponseUtils.configureResponse(response)
-            response.setStatus(HttpServletResponse.SC_OK)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        })
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodDelete(response, () -> {
             int empresaId = this.servletUtils.pegarIdDaUrl(request)
             this.empresaService.excluirEmpresa(empresaId)
-
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        })
     }
 }

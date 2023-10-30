@@ -9,7 +9,7 @@ import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Experiencia
 import linketinder.service.candidato.CandidatoExperienciaService
-import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponse
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "CandidatoExperienciaController", urlPatterns = "/candidatoExperiencia/*")
 class CandidatoExperienciaController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletGet servletGet = new ServletGet()
+    private ServletResponse servletResponse = new ServletResponse()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -34,52 +34,38 @@ class CandidatoExperienciaController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodPost(response, () -> {
             Experiencia experiencia = this.servletUtils.parseObjectFromRequest(request, Experiencia.class)
             this.candidatoExperienciaService.adicionarExperiencia(experiencia)
-
-            this.servletResponseUtils.configureResponse(response)
-            response.setStatus(HttpServletResponse.SC_CREATED)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
-        }
+        })
     }
 
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodPut(response, () -> {
             int experienciaId = this.servletUtils.pegarIdDaUrl(request)
             Experiencia experiencia = this.servletUtils.parseObjectFromRequest(request, Experiencia.class)
 
             experiencia.setId(experienciaId)
             this.candidatoExperienciaService.atualizarExperiencia(experiencia)
-
-            this.servletResponseUtils.configureResponse(response)
-            response.setStatus(HttpServletResponse.SC_OK)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
-        }
+        })
     }
 
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-            int idCandidato = servletUtils.pegarIdDaUrl(request)
-            List<Experiencia> experiencias = candidatoExperienciaService.listarExperienciasPorCandidato(idCandidato)
-            servletGet.methodGet(response, experiencias)
+        int idCandidato = servletUtils.pegarIdDaUrl(request)
+        List<Experiencia> experiencias = candidatoExperienciaService.listarExperienciasPorCandidato(idCandidato)
+        servletResponse.methodGet(response, experiencias)
     }
 
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodDelete(response, () -> {
             int idExperiencia = servletUtils.pegarIdDaUrl(request)
             this.candidatoExperienciaService.excluirExperiencia(idExperiencia)
-
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST,e.getMessage())
-        }
+        })
     }
 }

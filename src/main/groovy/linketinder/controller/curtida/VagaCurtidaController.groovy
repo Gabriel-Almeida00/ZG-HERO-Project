@@ -12,8 +12,7 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.VagaCurtida
 import linketinder.model.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.service.curtida.CurtidaService
-import linketinder.servlet.ServletGet
-
+import linketinder.servlet.ServletResponse
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -24,7 +23,7 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "VagaCurtidaController", urlPatterns = "/curtida/vaga/*")
 class VagaCurtidaController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletGet servletGet = new ServletGet()
+    private ServletResponse servletResponse = new ServletResponse()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -41,22 +40,16 @@ class VagaCurtidaController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodPost(response, () -> {
             VagaCurtida vagaCurtida = servletUtils.parseObjectFromRequest(request, VagaCurtida.class)
             this.curtidaService.curtirVaga(vagaCurtida)
-
-            servletResponseUtils.configureResponse(response)
-            response.setStatus(HttpServletResponse.SC_CREATED)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
-
+        })
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         int idVaga = this.servletUtils.pegarIdDaUrl(request)
         List<CandidatoQueCurtiuVagaDTO> candidatos = this.curtidaService.listarCandidatosQueCurtiramVaga(idVaga)
-        servletGet.methodGet(response, candidatos)
+        servletResponse.methodGet(response, candidatos)
     }
 }

@@ -10,8 +10,7 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.VagaCompetencia
 import linketinder.model.dto.CompetenciaDTO
 import linketinder.service.vaga.VagaCompetenciaService
-import linketinder.servlet.ServletGet
-
+import linketinder.servlet.ServletResponse
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -22,7 +21,7 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "VagaCompetenciaController", urlPatterns = "/vagaCompetencia/*")
 class VagaCompetenciaController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletGet servletGet = new ServletGet()
+    private ServletResponse servletResponse = new ServletResponse()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -38,47 +37,33 @@ class VagaCompetenciaController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         int idCompetencia = this.servletUtils.pegarIdDaUrl(request)
         List<CompetenciaDTO> competencia = this.vagaCompetenciaService.listarCompetenciasPorVaga(idCompetencia)
-        servletGet.methodGet(response, competencia)
+        servletResponse.methodGet(response, competencia)
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodPost(response, () -> {
             VagaCompetencia competencia = this.servletUtils.parseObjectFromRequest(request, VagaCompetencia.class)
             this.vagaCompetenciaService.adicionarVagaCompetencia(competencia)
-
-            servletResponseUtils.configureResponse(response)
-            response.setStatus(HttpServletResponse.SC_CREATED)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        })
     }
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodPut(response, () -> {
             int competenciaId = this.servletUtils.pegarIdDaUrl(request)
             VagaCompetencia competencia = this.servletUtils.parseObjectFromRequest(request, VagaCompetencia.class)
 
             competencia.setId(competenciaId)
             this.vagaCompetenciaService.atualizarNivelVagaCompetencia(competencia)
-
-            this.servletResponseUtils.configureResponse(response)
-            response.setStatus(HttpServletResponse.SC_OK)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        })
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodDelete(response, () -> {
             int idCompetencia = servletUtils.pegarIdDaUrl(request)
             this.vagaCompetenciaService.excluirVagaCompetencia(idCompetencia)
-
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        })
     }
 }

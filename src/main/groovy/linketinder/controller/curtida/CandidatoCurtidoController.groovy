@@ -12,7 +12,7 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.CandidatoCurtido
 import linketinder.model.dto.EmpresaDTO
 import linketinder.service.curtida.CurtidaService
-import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponse
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "CandidatoCurtidoController", urlPatterns = "/curtida/candidato/*")
 class CandidatoCurtidoController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletGet servletGet = new ServletGet()
+    private ServletResponse servletResponse = new ServletResponse()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -40,22 +40,16 @@ class CandidatoCurtidoController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodPost(response, () -> {
             CandidatoCurtido candidatoCurtido = servletUtils.parseObjectFromRequest(request, CandidatoCurtido.class)
             this.curtidaService.curtirCandidato(candidatoCurtido)
-
-            servletResponseUtils.configureResponse(response)
-            response.setStatus(HttpServletResponse.SC_CREATED)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
-
+        })
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         int idCandidato = this.servletUtils.pegarIdDaUrl(request)
         List<EmpresaDTO> empresas = this.curtidaService.listarEmpresasQueCurtiramCandidato(idCandidato)
-        servletGet.methodGet(response, empresas)
+        servletResponse.methodGet(response, empresas)
     }
 }

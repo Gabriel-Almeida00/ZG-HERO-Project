@@ -9,7 +9,7 @@ import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.Candidato
 import linketinder.model.dto.CandidatoDTO
 import linketinder.service.candidato.CandidatoService
-import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponse
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "CandidatoController", urlPatterns = "/candidatos/*")
 class CandidatoController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletGet servletGet = new ServletGet()
+    private ServletResponse servletResponse = new ServletResponse()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -36,49 +36,35 @@ class CandidatoController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         List<CandidatoDTO> candidatos = this.candidatoService.listarCandidatos()
-        servletGet.methodGet(response, candidatos)
+        servletResponse.methodGet(response, candidatos)
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodPost(response, () -> {
             Candidato candidato = servletUtils.parseObjectFromRequest(request, Candidato.class)
             this.candidatoService.cadastrarCandidato(candidato)
-
-            servletResponseUtils.configureResponse(response)
-            response.setStatus(HttpServletResponse.SC_CREATED)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        })
     }
 
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodPut(response, () -> {
             int idCandidato = this.servletUtils.pegarIdDaUrl(request)
             Candidato candidato = this.servletUtils.parseObjectFromRequest(request, Candidato.class)
 
             candidato.setId(idCandidato)
             this.candidatoService.atualizarCandidato(candidato)
-
-            this.servletResponseUtils.configureResponse(response)
-            response.setStatus(HttpServletResponse.SC_OK)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        })
     }
 
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        servletResponse.methodDelete(response, () -> {
             int candidatoId = servletUtils.pegarIdDaUrl(request)
             this.candidatoService.deletarCandidato(candidatoId)
-
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT)
-        } catch (Exception e) {
-            this.servletResponseUtils.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
-        }
+        })
     }
 }

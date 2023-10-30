@@ -7,7 +7,7 @@ import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.dto.MatchCandidatoDTO
 import linketinder.service.match.MatchService
-import linketinder.servlet.ServletGet
+import linketinder.servlet.ServletResponse
 import linketinder.servlet.ServletUtils
 
 import javax.servlet.annotation.WebServlet
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse
 @WebServlet(name = "MatchEmpresaController", urlPatterns = "/match/empresa/*")
 class MatchEmpresaController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
-    private ServletGet servletGet = new ServletGet()
+    private ServletResponse servletResponse = new ServletResponse()
 
     ConfigDatabase configDatabase = new ConfigDatabase()
     DatabaseFactory databaseFactory = new DatabaseFactory()
@@ -33,6 +33,6 @@ class MatchEmpresaController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         int idEmpresa = this.servletUtils.pegarIdDaUrl(request)
         List<MatchCandidatoDTO> candidatos = this.matchService.encontrarMatchesPelaEmpresa(idEmpresa)
-        servletGet.methodGet(response, candidatos)
+        servletResponse.methodGet(response, candidatos)
     }
 }
