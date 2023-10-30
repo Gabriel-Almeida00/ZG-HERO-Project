@@ -1,0 +1,6 @@
+{
+  "dbType" : "PostgreSQL",
+  "url" : "jdbc:postgresql://localhost:5432/linketinder",
+  "user": "postgres",
+  "senha": "postgres"
+}

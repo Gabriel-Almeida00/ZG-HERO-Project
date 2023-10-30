@@ -5,6 +5,8 @@ import linketinder.dao.candidato.ICandidatoDao
 import linketinder.dao.empresa.IEmpresaDao
 import linketinder.dao.vaga.IVagaDao
 import linketinder.db.IDatabaseConnection
+import linketinder.model.CandidatoCurtido
+import linketinder.model.VagaCurtida
 import linketinder.model.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.model.dto.EmpresaDTO
 
@@ -30,14 +32,14 @@ class CurtidaDao implements ICurtidaDao {
     }
 
     @Override
-    void curtirVaga(Integer idCandidato, Integer idVaga) {
-        candidatoDao.obterCandidatoPorId(idCandidato)
-        vagaDao.buscarVagaPorId(idVaga)
+    void curtirVaga(VagaCurtida vagaCurtida) {
+        candidatoDao.obterCandidatoPorId(vagaCurtida.idCandidata)
+        vagaDao.buscarVagaPorId(vagaCurtida.idVaga)
 
         String sql = "INSERT INTO curtidas (idCandidato, idVaga , idStatus) VALUES (?, ?, 1)"
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
-            statement.setInt(1, idCandidato)
-            statement.setInt(2, idVaga)
+            statement.setInt(1, vagaCurtida.idCandidata)
+            statement.setInt(2, vagaCurtida.idVaga)
             statement.executeUpdate()
         }
         catch (SQLException e) {
@@ -123,15 +125,15 @@ class CurtidaDao implements ICurtidaDao {
 
 
     @Override
-    void curtirCandidato(Integer idCandidato, Integer idEmpresa) {
-        candidatoDao.obterCandidatoPorId(idCandidato)
-        empresaDao.buscarEmpresaPorId(idEmpresa)
+    void curtirCandidato(CandidatoCurtido candidatoCurtido) {
+        candidatoDao.obterCandidatoPorId(candidatoCurtido.idCandidato)
+        empresaDao.buscarEmpresaPorId(candidatoCurtido.idEmpresa)
 
         String sql = "INSERT INTO curtidas (idCandidato, idEmpresa, idStatus) VALUES (?, ?,  1)"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
-            statement.setInt(1, idCandidato)
-            statement.setInt(2, idEmpresa)
+            statement.setInt(1, candidatoCurtido.idCandidato)
+            statement.setInt(2, candidatoCurtido.idEmpresa)
             statement.executeUpdate()
         }
         catch (SQLException e) {
