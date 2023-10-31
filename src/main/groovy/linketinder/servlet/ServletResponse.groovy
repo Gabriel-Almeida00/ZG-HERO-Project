@@ -51,7 +51,7 @@ class ServletResponse {
             operation.run()
             response.setStatus(HttpServletResponse.SC_OK)
         } catch (Exception e) {
-            this.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
+            this.writeErrorResponse(response, HttpServletResponse.SC_NOT_FOUND, e.getMessage())
         }
     }
 
@@ -60,7 +60,7 @@ class ServletResponse {
             operation.run()
             response.setStatus(HttpServletResponse.SC_NO_CONTENT)
         } catch (Exception e) {
-            this.writeErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage())
+            this.writeErrorResponse(response, HttpServletResponse.SC_NOT_FOUND, e.getMessage())
         }
     }
 }
