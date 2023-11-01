@@ -35,8 +35,15 @@ class CandidatoController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        List<CandidatoDTO> candidatos = this.candidatoService.listarCandidatos()
-        servletResponse.methodGet(response, candidatos)
+        String pathInfo = request.getPathInfo()
+        if(pathInfo == null){
+            List<CandidatoDTO> candidatos = this.candidatoService.listarCandidatos()
+            servletResponse.methodGet(response, candidatos)
+        } else {
+            int idCandidato = this.servletUtils.pegarIdDaUrl(request)
+            Candidato candidato = this.candidatoService.obterCandidatoPorId(idCandidato)
+            servletResponse.methodGet(response, candidato)
+        }
     }
 
     @Override
