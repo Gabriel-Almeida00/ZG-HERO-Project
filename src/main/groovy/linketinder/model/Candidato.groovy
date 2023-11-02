@@ -32,6 +32,10 @@ class Candidato extends Pessoa {
         this.experiencias = []
     }
 
+    String getRedeSocial() {
+        return redeSocial
+    }
+
     String getSobrenome() {
         return sobrenome
     }
