@@ -46,6 +46,7 @@ class CandidatoDao implements ICandidatoDao {
                     resultSet.getString("senha"),
                     resultSet.getString("sobrenome"),
                     resultSet.getDate("dataNascimento"),
+                    resultSet.getString("redeSocial"),
                     resultSet.getString("cpf")
             )
             candidato.setId(resultSet.getInt("id"))

@@ -2,7 +2,7 @@ package linketinder.db
 
 class ConfigDatabase {
     private String dbType = "PostgreSQL"
-    private String urlDB = "jdbc:postgresql://localhost:5432/linketinder"
+    private String urlDB = "jdbc:postgresql://localhost:5432/linketinder.sql"
     private String userDB = "postgres"
     private String senhaDB = "postgres"
 
