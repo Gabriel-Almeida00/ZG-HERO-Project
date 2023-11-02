@@ -102,7 +102,7 @@ class CandidatoDao implements ICandidatoDao {
     @Override
     void adicionarCandidato(Candidato candidato) {
         String sql = "INSERT INTO candidatos (nome, sobrenome, dataNascimento, email,redeSocial, telefone, cpf, pais, cep, descricao, senha) " +
-                "VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?)"
+                "VALUES (?, ?,? ,?,?, ?, ?, ?, ?, ?, ?)"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
             statement.setString(1, candidato.getNome())
@@ -128,7 +128,7 @@ class CandidatoDao implements ICandidatoDao {
     void atualizarCandidato(Candidato candidato) {
         obterCandidatoPorId(candidato.getId())
 
-        String sql = "UPDATE candidatos SET nome=?, sobrenome=?, dataNascimento=?, email=?, cpf=?, pais=?, cep=?, descricao=?, senha=? WHERE id=?"
+        String sql = "UPDATE candidatos SET nome=?, sobrenome=?, dataNascimento=?, email=?,redeSocial=?,telefone=? cpf=?, pais=?, cep=?, descricao=?, senha=? WHERE id=?"
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -136,12 +136,14 @@ class CandidatoDao implements ICandidatoDao {
             statement.setString(2, candidato.getSobrenome())
             statement.setDate(3, new java.sql.Date(candidato.getDataNascimento().getTime()))
             statement.setString(4, candidato.getEmail())
-            statement.setString(5, candidato.getCpf())
-            statement.setString(6, candidato.getPais())
-            statement.setString(7, candidato.getCep())
-            statement.setString(8, candidato.getDescricao())
-            statement.setString(9, candidato.getSenha())
-            statement.setInt(10, candidato.getId())
+            statement.setString(5, candidato.getRedeSocial())
+            statement.setString(6, candidato.getTelefone())
+            statement.setString(7, candidato.getCpf())
+            statement.setString(8, candidato.getPais())
+            statement.setString(9, candidato.getCep())
+            statement.setString(10, candidato.getDescricao())
+            statement.setString(11, candidato.getSenha())
+            statement.setInt(12, candidato.getId())
             statement.executeUpdate()
 
         }  catch (SQLException e) {

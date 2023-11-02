@@ -8,10 +8,6 @@ class ServletResponse {
     Gson gson = new Gson()
 
     void writeResponse(HttpServletResponse response){
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8080")
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization")
-
         response.setCharacterEncoding("UTF-8")
         response.setContentType("application/json; charset=UTF-8")
     }
