@@ -47,6 +47,7 @@ class CandidatoDao implements ICandidatoDao {
                     resultSet.getString("sobrenome"),
                     resultSet.getDate("dataNascimento"),
                     resultSet.getString("redeSocial"),
+                    resultSet.getString("telefone"),
                     resultSet.getString("cpf")
             )
             candidato.setId(resultSet.getInt("id"))
@@ -100,7 +101,7 @@ class CandidatoDao implements ICandidatoDao {
 
     @Override
     void adicionarCandidato(Candidato candidato) {
-        String sql = "INSERT INTO candidatos (nome, sobrenome, dataNascimento, email,redeSocial, cpf, pais, cep, descricao, senha) " +
+        String sql = "INSERT INTO candidatos (nome, sobrenome, dataNascimento, email,redeSocial, telefone, cpf, pais, cep, descricao, senha) " +
                 "VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?)"
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
@@ -109,11 +110,12 @@ class CandidatoDao implements ICandidatoDao {
             statement.setDate(3, new java.sql.Date(candidato.getDataNascimento().time))
             statement.setString(4, candidato.getEmail())
             statement.setString(5 , candidato.getRedeSocial())
-            statement.setString(6, candidato.getCpf())
-            statement.setString(7, candidato.getPais())
-            statement.setString(8, candidato.getCep())
-            statement.setString(9, candidato.getDescricao())
-            statement.setString(10, candidato.getSenha())
+            statement.setString(6 , candidato.getTelefone())
+            statement.setString(7, candidato.getCpf())
+            statement.setString(8, candidato.getPais())
+            statement.setString(9, candidato.getCep())
+            statement.setString(10, candidato.getDescricao())
+            statement.setString(11, candidato.getSenha())
             statement.executeUpdate()
 
         } catch (SQLException e) {
