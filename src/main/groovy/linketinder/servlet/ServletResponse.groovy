@@ -1,11 +1,13 @@
 package linketinder.servlet
 
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 import javax.servlet.http.HttpServletResponse
 
 class ServletResponse {
-    Gson gson = new Gson()
+    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create()
+
 
     void writeResponse(HttpServletResponse response){
         response.setCharacterEncoding("UTF-8")
