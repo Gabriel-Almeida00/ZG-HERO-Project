@@ -45,6 +45,16 @@ class ServletResponse {
         }
     }
 
+    void methodPostLogin(HttpServletResponse response, Runnable operation) {
+        try {
+            writeResponse(response)
+            operation.run()
+            response.setStatus(HttpServletResponse.SC_OK)
+        } catch (Exception e) {
+            this.writeErrorResponse(response, HttpServletResponse.SC_NOT_FOUND, e.getMessage())
+        }
+    }
+
     void methodPut(HttpServletResponse response, Runnable operation) {
         try {
             writeResponse(response)
