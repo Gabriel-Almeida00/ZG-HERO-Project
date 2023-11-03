@@ -17,6 +17,11 @@ class CandidatoCompetenciaService implements ICandidatoCompetenciaService {
     }
 
     @Override
+    CompetenciaDTO buscarCompetenciaDoCandidatoPorId(Integer id) {
+        return this.candidatoCompetenciaDao.buscarCompetenciaDoCandidatoPorId(id)
+    }
+
+    @Override
     void adicionarCandidatoCompetencia(CandidatoCompetencia candidatoCompetencia) {
         candidatoCompetenciaDao.adicionarCandidatoCompetencia(candidatoCompetencia)
     }
