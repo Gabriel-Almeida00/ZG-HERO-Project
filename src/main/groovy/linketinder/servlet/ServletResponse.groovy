@@ -55,6 +55,20 @@ class ServletResponse {
         }
     }
 
+
+    void methodPostLoginSuccess(HttpServletResponse response, int candidatoId) {
+        try {
+            writeResponse(response)
+            response.setStatus(HttpServletResponse.SC_OK)
+
+            try (PrintWriter out = response.getWriter()) {
+                out.print(candidatoId)
+            }
+        } catch (Exception e) {
+            this.writeErrorResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage())
+        }
+    }
+
     void methodPut(HttpServletResponse response, Runnable operation) {
         try {
             writeResponse(response)

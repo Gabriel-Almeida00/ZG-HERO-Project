@@ -18,8 +18,8 @@ class LoginDao implements ILoginDao{
     }
 
     @Override
-    boolean loginCandidato(LoginDTO loginDTO) {
-        String sql = "SELECT email, senha FROM candidatos WHERE email=? AND senha=?"
+    Integer loginCandidato(LoginDTO loginDTO) {
+        String sql = "SELECT id FROM candidatos WHERE email=? AND senha=?"
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -28,7 +28,7 @@ class LoginDao implements ILoginDao{
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return true
+                    return resultSet.getInt("id")
                 } else {
                     throw new LoginException("Email e/ou senha inválidos")
                 }
@@ -39,8 +39,8 @@ class LoginDao implements ILoginDao{
     }
 
     @Override
-    boolean loginEmpresa(LoginDTO loginDTO) {
-        String sql = "SELECT email, senha FROM empresas WHERE email=? AND senha=?"
+    Integer loginEmpresa(LoginDTO loginDTO) {
+        String sql = "SELECT id FROM empresas WHERE email=? AND senha=?"
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -49,7 +49,7 @@ class LoginDao implements ILoginDao{
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return true
+                    return resultSet.getInt("id")
                 } else {
                     throw new LoginException("Email e/ou senha inválidos")
                 }

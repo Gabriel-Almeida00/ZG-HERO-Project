@@ -36,7 +36,8 @@ class LoginEmpresaController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         servletResponse.methodPostLogin(response, () -> {
             LoginDTO loginDTO  = servletUtils.parseObjectFromRequest(request, LoginDTO.class)
-            this.loginService.loginEmpresa(loginDTO)
+            Integer id = this.loginService.loginCandidato(loginDTO)
+            servletResponse.methodPostLoginSuccess(response, id)
         })
     }
 }

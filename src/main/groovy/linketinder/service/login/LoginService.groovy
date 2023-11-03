@@ -3,7 +3,7 @@ package linketinder.service.login
 import linketinder.dao.login.ILoginDao
 import linketinder.model.dto.LoginDTO
 
-class LoginService implements ILoginDao {
+class LoginService implements ILoginService {
     ILoginDao loginDao
 
     LoginService(ILoginDao loginDao) {
@@ -11,12 +11,12 @@ class LoginService implements ILoginDao {
     }
 
     @Override
-    boolean loginCandidato(LoginDTO loginDTO) {
+    Integer loginCandidato(LoginDTO loginDTO) {
         return this.loginDao.loginCandidato(loginDTO)
     }
 
     @Override
-    boolean loginEmpresa(LoginDTO loginDTO) {
+    Integer loginEmpresa(LoginDTO loginDTO) {
         return this.loginDao.loginEmpresa(loginDTO)
     }
 }
