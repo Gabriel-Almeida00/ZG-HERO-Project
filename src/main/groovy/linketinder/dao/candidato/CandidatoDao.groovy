@@ -128,7 +128,7 @@ class CandidatoDao implements ICandidatoDao {
     void atualizarCandidato(Candidato candidato) {
         obterCandidatoPorId(candidato.getId())
 
-        String sql = "UPDATE candidatos SET nome=?, sobrenome=?, dataNascimento=?, email=?,redeSocial=?,telefone=? cpf=?, pais=?, cep=?, descricao=?, senha=? WHERE id=?"
+        String sql = "UPDATE candidatos SET nome=?, sobrenome=?, dataNascimento=?, email=?,redeSocial=?,telefone=?, cpf=?, pais=?, cep=?, descricao=?, senha=? WHERE id=?"
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
