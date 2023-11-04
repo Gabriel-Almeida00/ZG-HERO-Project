@@ -6,6 +6,7 @@ import linketinder.exception.DataBaseException
 import linketinder.db.IDatabaseConnection
 import linketinder.model.Candidato
 import linketinder.model.CandidatoCompetencia
+import linketinder.model.dto.CandidatoCompetenciaDTO
 import linketinder.model.dto.CompetenciaDTO
 
 import java.sql.Connection
@@ -61,13 +62,9 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
     }
 
     @Override
-    CompetenciaDTO buscarCompetenciaDoCandidatoPorId(Integer id){
+    CandidatoCompetenciaDTO buscarCompetenciaDoCandidatoPorId(Integer id){
         String sql =
-                "SELECT cc.id AS id, c.nome AS nome, nc.nivel AS nivel_competencia " +
-                "                FROM candidato_competencia cc " +
-                "                JOIN competencias c ON cc.idCompetencia = c.id " +
-                "                JOIN nivel_competencia nc ON cc.idNivelCompetencia = nc.id " +
-                "                WHERE cc.id = ?"
+                "SELECT * FROM candidato_competencia WHERE id=?"
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -81,12 +78,13 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
         }
     }
 
-    private CompetenciaDTO retornarCompetenciaResultSet(ResultSet resultSet) {
+    private CandidatoCompetenciaDTO retornarCompetenciaResultSet(ResultSet resultSet) {
         if (resultSet.next()) {
-            CompetenciaDTO competencia = new CompetenciaDTO(
+            CandidatoCompetenciaDTO competencia = new CandidatoCompetenciaDTO(
                     resultSet.getInt("id"),
-                    resultSet.getString("nome"),
-                    resultSet.getString("nivel_competencia")
+                    resultSet.getInt("idCandidato"),
+                    resultSet.getInt("idCompetencia"),
+                    resultSet.getInt("idNivelCompetencia")
             )
 
             return competencia

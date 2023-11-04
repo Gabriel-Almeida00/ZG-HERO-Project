@@ -7,6 +7,7 @@ import linketinder.db.IDatabaseConnection
 import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
 import linketinder.model.CandidatoCompetencia
+import linketinder.model.dto.CandidatoCompetenciaDTO
 import linketinder.model.dto.CompetenciaDTO
 import linketinder.service.candidato.CandidatoCompetenciaService
 import linketinder.servlet.ServletResponse
@@ -37,7 +38,7 @@ class CandidatoCompetenciasController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         int id = servletUtils.pegarIdDaUrl(request)
-        CompetenciaDTO competencia = candidatoCompetenciaService.buscarCompetenciaDoCandidatoPorId(id)
+        CandidatoCompetenciaDTO competencia = candidatoCompetenciaService.buscarCompetenciaDoCandidatoPorId(id)
         servletResponse.methodGet(response, competencia)
     }
 }
