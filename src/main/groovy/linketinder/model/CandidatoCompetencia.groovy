@@ -5,14 +5,14 @@ class CandidatoCompetencia {
     private Integer id
     private Integer idCandidato
     private Integer idCompetencia
-    private Integer nivel
+    private Integer idNivelCompetencia
 
 
 
-    CandidatoCompetencia(Integer idCandidato, Integer idCompetencia, Integer nivel) {
+    CandidatoCompetencia(Integer idCandidato, Integer idCompetencia, Integer idNivelCompetencia) {
         this.idCandidato = idCandidato
         this.idCompetencia = idCompetencia
-        this.nivel = nivel
+        this.idNivelCompetencia = idNivelCompetencia
     }
 
     Integer getId() {
@@ -31,7 +31,7 @@ class CandidatoCompetencia {
         return idCompetencia
     }
 
-    Integer getNivel() {
-        return nivel
+    Integer getIdNivelCompetencia() {
+        return idNivelCompetencia
     }
 }

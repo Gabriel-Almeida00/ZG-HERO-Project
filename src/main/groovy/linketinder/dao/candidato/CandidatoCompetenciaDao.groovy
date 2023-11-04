@@ -117,7 +117,7 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement updateStatement = connection.prepareStatement(updateSql)) {
 
-            updateStatement.setInt(1, candidatoCompetencia.getNivel())
+            updateStatement.setInt(1, candidatoCompetencia.getIdNivelCompetencia())
             updateStatement.setInt(2, candidatoCompetencia.getId())
 
             updateStatement.executeUpdate()
