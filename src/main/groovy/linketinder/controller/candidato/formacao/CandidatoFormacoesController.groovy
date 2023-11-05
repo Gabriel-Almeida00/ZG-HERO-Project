@@ -1,15 +1,14 @@
-package linketinder.controller.candidato
+package linketinder.controller.candidato.formacao
 
-import linketinder.dao.candidato.CandidatoCompetenciaDao
+
 import linketinder.dao.candidato.CandidatoDao
+import linketinder.dao.candidato.FormacaoDao
 import linketinder.db.ConfigDatabase
 import linketinder.db.IDatabaseConnection
 import linketinder.db.factory.DatabaseFactory
 import linketinder.db.factory.IDatabaseConnectionFactory
-import linketinder.model.CandidatoCompetencia
-import linketinder.model.dto.CandidatoCompetenciaDTO
-import linketinder.model.dto.CompetenciaDTO
-import linketinder.service.candidato.CandidatoCompetenciaService
+import linketinder.model.Formacao
+import linketinder.service.candidato.CandidatoFormacaoService
 import linketinder.servlet.ServletResponse
 import linketinder.servlet.ServletUtils
 
@@ -18,8 +17,8 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-@WebServlet(name = "CandidatoCompetenciasController", urlPatterns = "/candidato/competencia/*")
-class CandidatoCompetenciasController extends HttpServlet {
+@WebServlet(name = "CandidatoFormacoesController", urlPatterns = "/candidato/formacao/*")
+class CandidatoFormacoesController extends HttpServlet {
     private ServletUtils servletUtils = new ServletUtils()
     private ServletResponse servletResponse = new ServletResponse()
 
@@ -27,18 +26,17 @@ class CandidatoCompetenciasController extends HttpServlet {
     DatabaseFactory databaseFactory = new DatabaseFactory()
     IDatabaseConnectionFactory factory = databaseFactory.createConnectionFactory(configDatabase)
     IDatabaseConnection connection = factory.createConnection()
-
     CandidatoDao candidatoDao = new CandidatoDao(connection)
-    CandidatoCompetenciaDao dao = new CandidatoCompetenciaDao(connection, candidatoDao)
-    CandidatoCompetenciaService candidatoCompetenciaService = new CandidatoCompetenciaService(dao)
+    FormacaoDao formacaoDao = new FormacaoDao(connection, candidatoDao)
+    CandidatoFormacaoService candidatoFormacaoService = new CandidatoFormacaoService(formacaoDao)
 
-    CandidatoCompetenciasController() {
-    }
+    CandidatoFormacoesController() {}
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        int id = servletUtils.pegarIdDaUrl(request)
-        CandidatoCompetenciaDTO competencia = candidatoCompetenciaService.buscarCompetenciaDoCandidatoPorId(id)
-        servletResponse.methodGet(response, competencia)
+        int idFormacao = servletUtils.pegarIdDaUrl(request)
+        Formacao formacao = this.candidatoFormacaoService.buscarFormacaoPorId(idFormacao)
+        servletResponse.methodGet(response, formacao)
     }
 }
