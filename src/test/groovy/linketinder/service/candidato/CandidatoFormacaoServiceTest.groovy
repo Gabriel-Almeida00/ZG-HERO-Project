@@ -75,6 +75,8 @@ class CandidatoFormacaoServiceTest {
                 "123teste",
                 "almeida",
                 new Date(System.currentTimeMillis()),
+                "teste",
+                "121212",
                 "321321311"
         )
         candidatoMock.setId(idCandidato)

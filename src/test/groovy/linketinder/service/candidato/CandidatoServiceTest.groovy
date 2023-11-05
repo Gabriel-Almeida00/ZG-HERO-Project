@@ -44,6 +44,8 @@ class CandidatoServiceTest {
                 "123teste",
                 "almeida",
                 new Date(System.currentTimeMillis()),
+                "teste",
+                "111111",
                 "321321311"
 
         )
@@ -65,6 +67,8 @@ class CandidatoServiceTest {
                 "123teste",
                 "almeida",
                 new Date(System.currentTimeMillis()),
+                "teste",
+                "11232323",
                 "321321311"
         )
 
@@ -85,6 +89,8 @@ class CandidatoServiceTest {
                 "123teste",
                 "almeida",
                 new Date(System.currentTimeMillis()),
+                "tete",
+                "11232323",
                 "321321311"
         )
         candidatoMock.setId(1)
@@ -105,6 +111,8 @@ class CandidatoServiceTest {
                 "123teste",
                 "almeida",
                 new Date(System.currentTimeMillis()),
+                "teste",
+                "112323",
                 "321321311"
         )
         Integer idCandidato = 1
