@@ -82,22 +82,8 @@ class VagaDao implements IVagaDao {
     }
 
     @Override
-    List<VagaDTO> listarVagasDaEmpresa(int idEmpresa) throws SQLException {
-        String sql = "SELECT " +
-                "    v.id AS id_vaga, " +
-                "    v.nome AS nome_vaga, " +
-                "    v.descricao, " +
-                "    STRING_AGG(comp.nome, ', ') AS nomes_competencia " +
-                "FROM " +
-                "    vagas v " +
-                "LEFT JOIN " +
-                "    vaga_competencia cv ON v.id = cv.idVaga " +
-                "LEFT JOIN " +
-                "    competencias comp ON cv.idCompetencia = comp.id " +
-                "WHERE " +
-                "    v.idEmpresa = ? " +
-                "GROUP BY " +
-                "    v.id, v.nome, v.descricao;"
+    List<Vaga> listarVagasDaEmpresa(int idEmpresa) throws SQLException {
+        String sql = "select * from vagas where idempresa =?"
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -110,34 +96,32 @@ class VagaDao implements IVagaDao {
         }
     }
 
-    private List<VagaDTO> retornarVagasDtoResultSet(ResultSet resultSet) throws SQLException {
-        List<VagaDTO> vagaDTOsList = new ArrayList<>()
+    private List<Vaga> retornarVagasDtoResultSet(ResultSet resultSet) throws SQLException {
+        List<Vaga> vagaList = new ArrayList<>()
 
         while (resultSet.next()) {
-            Integer idVaga = resultSet.getInt("id_vaga")
-            String nomeVaga = resultSet.getString("nome_vaga")
+            Integer id = resultSet.getInt("id")
+            Integer idEmpresa = resultSet.getInt("idempresa")
+            String nome = resultSet.getString("nome")
             String descricao = resultSet.getString("descricao")
-            String nomesCompetencia = resultSet.getString("nomes_competencia")
+            String cidade = resultSet.getString("cidade")
+            Integer nivelFormacao = resultSet.getInt("idnivelformacao")
+            Integer nivelExperiencia = resultSet.getInt("idnivelexperiencia")
 
-            List<String> nomeCompetenciaList = extrairNomesCompetencia(nomesCompetencia)
-            VagaDTO vagaDTO = new VagaDTO(
-                    idVaga,
-                    nomeVaga,
+            Vaga vaga = new Vaga(
+                    idEmpresa,
+                    nome,
                     descricao,
-                    nomeCompetenciaList
+                    cidade,
+                    nivelFormacao,
+                    nivelExperiencia
             )
-            vagaDTOsList.add(vagaDTO)
+            vaga.setId(id)
+            vagaList.add(vaga)
         }
-        return vagaDTOsList
+        return vagaList
     }
 
-    private List<String> extrairNomesCompetencia(String nomesCompetencia) {
-        if (nomesCompetencia != null) {
-            return Arrays.asList(nomesCompetencia.split(", "))
-        } else {
-            return Collections.emptyList()
-        }
-    }
 
     @Override
     Vaga buscarVagaPorId(Integer idVaga) throws SQLException {

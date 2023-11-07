@@ -39,7 +39,7 @@ class VagaController extends HttpServlet {
             servletResponse.methodGet(response, vagas)
         } else {
             int idEmpresa = this.servletUtils.pegarIdDaUrl(request)
-            List<VagaDTO> vagas = this.vagaService.listarVagasDaEmpresa(idEmpresa)
+            List<Vaga> vagas = this.vagaService.listarVagasDaEmpresa(idEmpresa)
             servletResponse.methodGet(response, vagas)
         }
     }

@@ -21,7 +21,7 @@ class VagaService implements IVagaService {
     }
 
     @Override
-    List<VagaDTO> listarVagasDaEmpresa(Integer idEmpresa) throws SQLException {
+    List<Vaga> listarVagasDaEmpresa(Integer idEmpresa) throws SQLException {
         return vagaDao.listarVagasDaEmpresa(idEmpresa)
     }
 

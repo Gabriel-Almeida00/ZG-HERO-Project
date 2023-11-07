@@ -8,7 +8,7 @@ import java.sql.SQLException
 
 interface IVagaService {
     List<VagaDTO> listarTodasVagas() throws SQLException;
-    List<VagaDTO> listarVagasDaEmpresa(Integer idEmpresa) throws SQLException;
+    List<Vaga> listarVagasDaEmpresa(Integer idEmpresa) throws SQLException;
     Vaga buscarVagaPorId(Integer idVaga) throws SQLException;
     Integer obterIdEmpresaPorIdVaga(Integer idVaga)
 
