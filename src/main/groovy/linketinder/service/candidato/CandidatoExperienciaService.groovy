@@ -26,6 +26,11 @@ class CandidatoExperienciaService implements ICandidatoExperienciaService {
     }
 
     @Override
+    Experiencia buscarExperienciaPorId(Integer idExperiencia) {
+        return this.experienciaDao.buscarExperienciaPorId(idExperiencia)
+    }
+
+    @Override
     void excluirExperiencia(Integer idExperiencia) {
         experienciaDao.excluirExperiencia(idExperiencia)
     }
