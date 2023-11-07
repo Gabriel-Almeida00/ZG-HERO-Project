@@ -10,4 +10,5 @@ interface IVagaCompetenciaService {
     void atualizarNivelVagaCompetencia(VagaCompetencia vagaCompetencia) throws SQLException;
     void excluirVagaCompetencia(Integer idVagaCompetencia) throws SQLException;
     List<CompetenciaDTO> listarCompetenciasPorVaga(Integer idVaga) throws SQLException;
+    VagaCompetencia buscarCompetenciaDaVagaporId(Integer id)
 }

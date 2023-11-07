@@ -1,5 +1,6 @@
 package linketinder.dao.vaga
 
+import linketinder.exception.CompetenciaNotFoundException
 import linketinder.exception.DataBaseException
 import linketinder.db.IDatabaseConnection
 import linketinder.model.VagaCompetencia
@@ -59,6 +60,38 @@ class VagaCompetenciaDao implements IVagaCompetenciaDao {
             statement.executeUpdate()
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        }
+    }
+
+    @Override
+    VagaCompetencia buscarCompetenciaDaVagaporId(Integer id) {
+        String sql = "SELECT * FROM vaga_competencia WHERE id = ?"
+
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id)
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return retornarCompetenciaDaVaga(resultSet)
+            }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        }
+    }
+
+    private VagaCompetencia retornarCompetenciaDaVaga(ResultSet resultSet) throws SQLException {
+        if (resultSet.next()) {
+            VagaCompetencia competencia = new VagaCompetencia(
+                    resultSet.getInt("idvaga"),
+                    resultSet.getInt("idcompetencia"),
+                    resultSet.getInt("idnivelcompetencia")
+            )
+            Integer id = resultSet.getInt("id")
+
+            competencia.setId(id)
+            return competencia
+        }else {
+            throw new CompetenciaNotFoundException("Competencia não encontrada")
         }
     }
 

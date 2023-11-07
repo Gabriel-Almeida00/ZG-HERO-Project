@@ -33,4 +33,9 @@ class VagaCompetenciaService implements IVagaCompetenciaService{
         return vagaCompetenciaList
 
     }
+
+    @Override
+    VagaCompetencia buscarCompetenciaDaVagaporId(Integer id) {
+        return this.vagaCompetenciaDao.buscarCompetenciaDaVagaporId(id)
+    }
 }
