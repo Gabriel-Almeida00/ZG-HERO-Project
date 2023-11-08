@@ -5,6 +5,7 @@ import linketinder.exception.DataBaseException
 import linketinder.db.IDatabaseConnection
 import linketinder.model.Candidato
 import linketinder.model.dto.CandidatoDTO
+import linketinder.model.dto.CompetenciaCandidatoDTO
 import linketinder.model.dto.ExperienciaDTO
 import linketinder.model.dto.FormacaoDTO
 
@@ -61,21 +62,24 @@ class CandidatoDao implements ICandidatoDao {
 
     @Override
     List<CandidatoDTO> listarCandidatos() {
-        String sql = "SELECT  " +
-                "    c.id , " +
-                "    c.nome, " +
-                "    c.descricao, " +
-                "    f.instituicao AS instituicao_formacao, " +
-                "    f.curso AS curso_formacao, " +
-                "    f.anoConclusao AS ano_conclusao_formacao, " +
-                "    e.cargo AS cargo_experiencia, " +
-                "    e.empresa AS empresa_experiencia, " +
-                "    comp.nome AS competencia " +
-                "FROM candidatos c " +
-                "   LEFT JOIN formacoes f ON c.id = f.idCandidato " +
-                "   LEFT JOIN experiencias e ON c.id = e.idCandidato " +
-                "   LEFT JOIN candidato_competencia vc ON c.id = vc.idCandidato " +
-                "   LEFT JOIN competencias comp ON vc.idCompetencia = comp.id; "
+        String sql = "SELECT " +
+                "         c.id , " +
+                "         c.nome, " +
+                "         c.descricao, " +
+                "         f.idnivelformacao as nivelFormacao, " +
+                "         f.instituicao AS instituicao_formacao, " +
+                "         f.curso AS curso_formacao, " +
+                "         f.anoConclusao AS ano_conclusao_formacao, " +
+                "         e.idnivelexperiencia as nivelExperiencia, " +
+                "         e.cargo AS cargo_experiencia, " +
+                "         e.empresa AS empresa_experiencia, " +
+                "         vc.idnivelcompetencia as nivelCompetencia, " +
+                "         comp.nome AS competencia " +
+                "       FROM candidatos c " +
+                "            LEFT JOIN formacoes f ON c.id = f.idCandidato " +
+                "            LEFT JOIN experiencias e ON c.id = e.idCandidato " +
+                "            LEFT JOIN candidato_competencia vc ON c.id = vc.idCandidato " +
+                "            LEFT JOIN competencias comp ON vc.idCompetencia = comp.id;"
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)
@@ -97,9 +101,12 @@ class CandidatoDao implements ICandidatoDao {
 
             List<FormacaoDTO> formacoes = new ArrayList<>()
             List<ExperienciaDTO> experiencias = new ArrayList<>()
-            List<String> competencias = new ArrayList<>()
+            List<CompetenciaCandidatoDTO> competencias = new ArrayList<>()
 
             do {
+                Integer nivelFormacao = resultSet.getInt("nivelformacao")
+                Integer nivelExperiencia = resultSet.getInt("nivelexperiencia")
+                Integer nivelCompetencia = resultSet.getInt("nivelcompetencia")
                 String instituicaoFormacao = resultSet.getString("instituicao_formacao")
                 String cursoFormacao = resultSet.getString("curso_formacao")
                 String anoConclusaoFormacao = resultSet.getString("ano_conclusao_formacao")
@@ -108,13 +115,13 @@ class CandidatoDao implements ICandidatoDao {
                 String competencia = resultSet.getString("competencia")
 
                 if (instituicaoFormacao != null) {
-                    formacoes.add(new FormacaoDTO(instituicaoFormacao, cursoFormacao, anoConclusaoFormacao))
+                    formacoes.add(new FormacaoDTO(instituicaoFormacao, cursoFormacao, anoConclusaoFormacao,nivelFormacao))
                 }
                 if (cargoExperiencia != null) {
-                    experiencias.add(new ExperienciaDTO(cargoExperiencia, empresaExperiencia))
+                    experiencias.add(new ExperienciaDTO(cargoExperiencia, empresaExperiencia, nivelExperiencia))
                 }
                 if (competencia != null) {
-                    competencias.add(competencia)
+                    competencias.add(new CompetenciaCandidatoDTO(competencia, nivelCompetencia))
                 }
             } while (resultSet.next() && resultSet.getInt("id") == candidatoId)
 

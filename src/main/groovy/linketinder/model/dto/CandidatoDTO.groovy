@@ -6,9 +6,9 @@ class CandidatoDTO {
     private String descricao
     private List<FormacaoDTO> formacoes
     private List<ExperienciaDTO> experiencias
-    private List<String> competencias
+    private List<CompetenciaCandidatoDTO> competencias
 
-    CandidatoDTO(Integer id, String nome, String descricao, List<FormacaoDTO> formacoes, List<ExperienciaDTO> experiencias, List<String> competencias) {
+    CandidatoDTO(Integer id, String nome, String descricao, List<FormacaoDTO> formacoes, List<ExperienciaDTO> experiencias, List<CompetenciaCandidatoDTO> competencias) {
         this.id = id
         this.nome = nome
         this.descricao = descricao

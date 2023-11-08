@@ -1,10 +1,8 @@
 package linketinder.dao.candidato
 
-import linketinder.exception.CandidatosNotFoundException
+import linketinder.db.IDatabaseConnection
 import linketinder.exception.CompetenciaNotFoundException
 import linketinder.exception.DataBaseException
-import linketinder.db.IDatabaseConnection
-import linketinder.model.Candidato
 import linketinder.model.CandidatoCompetencia
 import linketinder.model.dto.CandidatoCompetenciaDTO
 import linketinder.model.dto.CompetenciaDTO
