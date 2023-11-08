@@ -5,6 +5,8 @@ import linketinder.exception.DataBaseException
 import linketinder.db.IDatabaseConnection
 import linketinder.model.Candidato
 import linketinder.model.dto.CandidatoDTO
+import linketinder.model.dto.ExperienciaDTO
+import linketinder.model.dto.FormacaoDTO
 
 import java.sql.Connection
 import java.sql.PreparedStatement
@@ -15,7 +17,7 @@ class CandidatoDao implements ICandidatoDao {
 
     private IDatabaseConnection databaseConnection
 
-    CandidatoDao(IDatabaseConnection databaseConnection ) {
+    CandidatoDao(IDatabaseConnection databaseConnection) {
         this.databaseConnection = databaseConnection
     }
 
@@ -59,23 +61,26 @@ class CandidatoDao implements ICandidatoDao {
 
     @Override
     List<CandidatoDTO> listarCandidatos() {
-        String sql = "SELECT " +
-                "    c.id, " +
+        String sql = "SELECT  " +
+                "    c.id , " +
                 "    c.nome, " +
                 "    c.descricao, " +
-                "    ARRAY_AGG(DISTINCT comp.nome) AS competencias " +
-                "FROM " +
-                "    candidatos c " +
-                "LEFT JOIN " +
-                "    candidato_competencia cc ON c.id = cc.idCandidato " +
-                "LEFT JOIN " +
-                "    competencias comp ON cc.idCompetencia = comp.id " +
-                "GROUP BY c.id, c.nome, c.descricao;"
+                "    f.instituicao AS instituicao_formacao, " +
+                "    f.curso AS curso_formacao, " +
+                "    f.anoConclusao AS ano_conclusao_formacao, " +
+                "    e.cargo AS cargo_experiencia, " +
+                "    e.empresa AS empresa_experiencia, " +
+                "    comp.nome AS competencia " +
+                "FROM candidatos c " +
+                "   LEFT JOIN formacoes f ON c.id = f.idCandidato " +
+                "   LEFT JOIN experiencias e ON c.id = e.idCandidato " +
+                "   LEFT JOIN candidato_competencia vc ON c.id = vc.idCandidato " +
+                "   LEFT JOIN competencias comp ON vc.idCompetencia = comp.id; "
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)
              ResultSet resultSet = statement.executeQuery()) {
-             return retornarCandidatosDTOResultSet(resultSet)
+            return retornarCandidatosDTOResultSet(resultSet)
 
         } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
@@ -89,15 +94,45 @@ class CandidatoDao implements ICandidatoDao {
             int candidatoId = resultSet.getInt("id")
             String nome = resultSet.getString("nome")
             String descricao = resultSet.getString("descricao")
-            String nomesCompetencia = resultSet.getString("competencias")
 
-            List<String> nomesCompetenciaList = Arrays.asList(nomesCompetencia.split(", "))
+            List<FormacaoDTO> formacoes = new ArrayList<>()
+            List<ExperienciaDTO> experiencias = new ArrayList<>()
+            List<String> competencias = new ArrayList<>()
 
-            CandidatoDTO candidatoDTO = new CandidatoDTO(candidatoId, nome, descricao, nomesCompetenciaList)
+            do {
+                String instituicaoFormacao = resultSet.getString("instituicao_formacao")
+                String cursoFormacao = resultSet.getString("curso_formacao")
+                String anoConclusaoFormacao = resultSet.getString("ano_conclusao_formacao")
+                String cargoExperiencia = resultSet.getString("cargo_experiencia")
+                String empresaExperiencia = resultSet.getString("empresa_experiencia")
+                String competencia = resultSet.getString("competencia")
+
+                if (instituicaoFormacao != null) {
+                    formacoes.add(new FormacaoDTO(instituicaoFormacao, cursoFormacao, anoConclusaoFormacao))
+                }
+                if (cargoExperiencia != null) {
+                    experiencias.add(new ExperienciaDTO(cargoExperiencia, empresaExperiencia))
+                }
+                if (competencia != null) {
+                    competencias.add(competencia)
+                }
+            } while (resultSet.next() && resultSet.getInt("id") == candidatoId)
+
+            CandidatoDTO candidatoDTO = new CandidatoDTO(
+                    candidatoId,
+                    nome,
+                    descricao,
+                    formacoes,
+                    experiencias,
+                    competencias
+            )
+
             candidatosDTO.add(candidatoDTO)
         }
         return candidatosDTO
     }
+
+
 
     @Override
     void adicionarCandidato(Candidato candidato) {
@@ -109,8 +144,8 @@ class CandidatoDao implements ICandidatoDao {
             statement.setString(2, candidato.getSobrenome())
             statement.setDate(3, new java.sql.Date(candidato.getDataNascimento().time))
             statement.setString(4, candidato.getEmail())
-            statement.setString(5 , candidato.getRedeSocial())
-            statement.setString(6 , candidato.getTelefone())
+            statement.setString(5, candidato.getRedeSocial())
+            statement.setString(6, candidato.getTelefone())
             statement.setString(7, candidato.getCpf())
             statement.setString(8, candidato.getPais())
             statement.setString(9, candidato.getCep())
@@ -146,7 +181,7 @@ class CandidatoDao implements ICandidatoDao {
             statement.setInt(12, candidato.getId())
             statement.executeUpdate()
 
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
         }
     }
