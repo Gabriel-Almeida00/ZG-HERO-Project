@@ -50,25 +50,7 @@ class EmpresaDao implements IEmpresaDao {
     }
 
 
-    @Override
-    void adicionarEmpresa(Empresa empresa) throws SQLException {
-        String sql = "INSERT INTO empresas (nome, cnpj, email, descricao, pais, cep, senha) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)"
 
-        try (PreparedStatement statement = databaseConnection.prepareStatement(sql)) {
-            statement.setString(1, empresa.getNome())
-            statement.setString(2, empresa.getCnpj())
-            statement.setString(3, empresa.getEmail())
-            statement.setString(4, empresa.getDescricao())
-            statement.setString(5, empresa.getPais())
-            statement.setString(6, empresa.getCep())
-            statement.setString(7, empresa.getSenha())
-
-            statement.executeUpdate()
-        } catch (SQLException e) {
-            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
-        }
-    }
 
     @Override
     void atualizarEmpresa(Empresa empresa) throws SQLException {

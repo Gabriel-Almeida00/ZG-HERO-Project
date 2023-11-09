@@ -43,13 +43,7 @@ class EmpresaController extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        servletResponse.methodPost(response, () -> {
-            Empresa empresa = servletUtils.parseObjectFromRequest(request, Empresa.class)
-            this.empresaService.adicionarEmpresa(empresa)
-        })
-    }
+
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {

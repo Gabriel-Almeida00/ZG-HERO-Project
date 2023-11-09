@@ -22,10 +22,7 @@ class EmpresaService implements IEmpresaService {
         return empresaDao.buscarEmpresaPorId(id)
     }
 
-    @Override
-    void adicionarEmpresa(Empresa empresa) {
-        empresaDao.adicionarEmpresa(empresa)
-    }
+
 
     @Override
     void atualizarEmpresa(Empresa empresa) {
