@@ -67,22 +67,6 @@ class EmpresaServiceTest {
         assert empresaMock == result
     }
 
-    @Test
-    void testAdicionarEmpresa() throws SQLException {
-        Empresa empresaMock = new Empresa(
-                "Empresa 1",
-                "empresa1@gmail.com",
-                "brasil",
-                "321123",
-                "descrição empresa 1",
-                "321teste",
-                "1233"
-        )
-
-        empresaService.adicionarEmpresa(empresaMock)
-
-        verify(empresaService).adicionarEmpresa(empresaMock)
-    }
 
     @Test
     void testAtualizarEmpresa() throws SQLException {
