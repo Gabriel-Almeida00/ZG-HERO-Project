@@ -1,6 +1,8 @@
 package linketinder.service.vaga
 
 import linketinder.model.Vaga
+import linketinder.model.dto.ExperienciaVagaDTO
+import linketinder.model.dto.FormacaoVagaDTO
 import linketinder.model.dto.VagaDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -26,12 +28,18 @@ class VagaServiceTest {
                 1,
                 "desenvolvedor",
                 "tech descricao",
+                "teste",
+                new FormacaoVagaDTO(),
+                new ExperienciaVagaDTO(),
                 new ArrayList<>()
         ))
         vagasMock.add(new VagaDTO(
-                2,
+                1,
                 "desenvolvedor",
                 "tech descricao",
+                "teste",
+                new FormacaoVagaDTO(),
+                new ExperienciaVagaDTO(),
                 new ArrayList<>()
         ))
 
@@ -52,18 +60,24 @@ class VagaServiceTest {
                 1,
                 "desenvolvedor",
                 "tech descricao",
+                "teste",
+                new FormacaoVagaDTO(),
+                new ExperienciaVagaDTO(),
                 new ArrayList<>()
         ))
         vagasMock.add(new VagaDTO(
-                2,
+                1,
                 "desenvolvedor",
                 "tech descricao",
+                "teste",
+                new FormacaoVagaDTO(),
+                new ExperienciaVagaDTO(),
                 new ArrayList<>()
         ))
 
-        when(service.listarVagasDaEmpresa(idEmpresa)).thenReturn(vagasMock)
+        when(service.listarVagasDaEmpresa(idEmpresa)).thenReturn(vagasMock as List<Vaga>)
 
-        List<VagaDTO> result = service.listarVagasDaEmpresa(idEmpresa)
+        List<VagaDTO> result = service.listarVagasDaEmpresa(idEmpresa) as List<VagaDTO>
 
         verify(service, times(1)).listarVagasDaEmpresa(idEmpresa)
 
