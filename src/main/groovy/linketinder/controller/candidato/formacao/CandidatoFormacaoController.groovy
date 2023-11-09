@@ -1,4 +1,4 @@
-package linketinder.controller.candidato
+package linketinder.controller.candidato.formacao
 
 
 import linketinder.dao.candidato.CandidatoDao

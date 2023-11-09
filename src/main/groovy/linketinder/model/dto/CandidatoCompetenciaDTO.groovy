@@ -1,15 +1,14 @@
-package linketinder.model
+package linketinder.model.dto
 
-class CandidatoCompetencia {
+class CandidatoCompetenciaDTO {
 
     private Integer id
     private Integer idCandidato
     private Integer idCompetencia
     private Integer idNivelCompetencia
 
-
-
-    CandidatoCompetencia(Integer idCandidato, Integer idCompetencia, Integer idNivelCompetencia) {
+    CandidatoCompetenciaDTO(Integer id, Integer idCandidato, Integer idCompetencia, Integer idNivelCompetencia) {
+        this.id = id
         this.idCandidato = idCandidato
         this.idCompetencia = idCompetencia
         this.idNivelCompetencia = idNivelCompetencia
@@ -17,10 +16,6 @@ class CandidatoCompetencia {
 
     Integer getId() {
         return id
-    }
-
-    void setId(Integer id) {
-        this.id = id
     }
 
     Integer getIdCandidato() {

@@ -1,4 +1,4 @@
-package linketinder.controller.vaga
+package linketinder.controller.vaga.competencia
 
 
 import linketinder.dao.vaga.VagaCompetenciaDao

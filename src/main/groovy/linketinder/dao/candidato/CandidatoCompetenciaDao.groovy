@@ -1,8 +1,10 @@
 package linketinder.dao.candidato
 
-import linketinder.exception.DataBaseException
 import linketinder.db.IDatabaseConnection
+import linketinder.exception.CompetenciaNotFoundException
+import linketinder.exception.DataBaseException
 import linketinder.model.CandidatoCompetencia
+import linketinder.model.dto.CandidatoCompetenciaDTO
 import linketinder.model.dto.CompetenciaDTO
 
 import java.sql.Connection
@@ -25,7 +27,7 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
         candidatoDao.obterCandidatoPorId(idCandidato)
 
         String sql = listarCompetenciasPorCandidatoQuery(idCandidato)
-        List<CompetenciaDTO> competenciasList = retornarCompetenciaResultSet(sql)
+        List<CompetenciaDTO> competenciasList = retornarCompetenciasResultSet(sql)
         return competenciasList
     }
 
@@ -38,7 +40,7 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
                 "WHERE cc.idCandidato = " + idCandidato
     }
 
-    private List<CompetenciaDTO> retornarCompetenciaResultSet(String sql) throws SQLException {
+    private List<CompetenciaDTO> retornarCompetenciasResultSet(String sql) throws SQLException {
         List<CompetenciaDTO> competenciasList = new ArrayList<>()
 
         try (PreparedStatement statement = databaseConnection.prepareStatement(sql)
@@ -56,6 +58,40 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
         }
         return competenciasList
     }
+
+    @Override
+    CandidatoCompetenciaDTO buscarCompetenciaDoCandidatoPorId(Integer id){
+        String sql =
+                "SELECT * FROM candidato_competencia WHERE id=?"
+
+        try (Connection connection = databaseConnection.getConnection()
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id)
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return retornarCompetenciaResultSet(resultSet)
+            }
+        } catch (SQLException e) {
+            throw new DataBaseException("Erro ao acessar o banco de dados: " + e.getMessage())
+        }
+    }
+
+    private CandidatoCompetenciaDTO retornarCompetenciaResultSet(ResultSet resultSet) {
+        if (resultSet.next()) {
+            CandidatoCompetenciaDTO competencia = new CandidatoCompetenciaDTO(
+                    resultSet.getInt("id"),
+                    resultSet.getInt("idCandidato"),
+                    resultSet.getInt("idCompetencia"),
+                    resultSet.getInt("idNivelCompetencia")
+            )
+
+            return competencia
+        } else {
+            throw new CompetenciaNotFoundException("Competencia não encontrado")
+        }
+    }
+
+
 
     @Override
     void adicionarCandidatoCompetencia(CandidatoCompetencia candidatoCompetencia) throws SQLException {
@@ -79,7 +115,7 @@ class CandidatoCompetenciaDao implements ICandidatoCompetenciaDao {
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement updateStatement = connection.prepareStatement(updateSql)) {
 
-            updateStatement.setInt(1, candidatoCompetencia.getNivel())
+            updateStatement.setInt(1, candidatoCompetencia.getIdNivelCompetencia())
             updateStatement.setInt(2, candidatoCompetencia.getId())
 
             updateStatement.executeUpdate()

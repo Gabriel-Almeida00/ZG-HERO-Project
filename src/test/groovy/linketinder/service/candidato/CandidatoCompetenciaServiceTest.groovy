@@ -31,6 +31,8 @@ class CandidatoCompetenciaServiceTest {
                 "123teste",
                 "almeida",
                 new Date(System.currentTimeMillis()),
+                "teste",
+                "11121212",
                 "321321311"
         )
         Integer idCandidato = 1

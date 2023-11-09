@@ -3,8 +3,10 @@ package linketinder.service.curtida
 
 import linketinder.dao.curtida.ICurtidaDao
 import linketinder.model.Candidato
+import linketinder.model.CandidatoCurtido
 import linketinder.model.Empresa
 import linketinder.model.Vaga
+import linketinder.model.VagaCurtida
 import linketinder.model.dto.CandidatoQueCurtiuVagaDTO
 import linketinder.model.dto.EmpresaDTO
 import org.junit.jupiter.api.BeforeEach
@@ -40,6 +42,8 @@ class CurtidaServiceTest {
                 "123teste",
                 "almeida",
                 new Date(System.currentTimeMillis()),
+                "lindken",
+                "1112121212",
                 "321321311"
         )
         candidato.setId(idCandidato)
@@ -54,10 +58,11 @@ class CurtidaServiceTest {
         )
         vaga.setId(idVaga)
 
+        VagaCurtida vagaCurtida = new VagaCurtida(idCandidato, idVaga)
 
-        curtidaService.curtirVaga(idCandidato, idVaga)
+        curtidaService.curtirVaga(vagaCurtida)
 
-        verify(curtidaService).curtirVaga(idCandidato, idVaga)
+        verify(curtidaService).curtirVaga(vagaCurtida)
     }
 
     @Test
@@ -75,6 +80,8 @@ class CurtidaServiceTest {
                 "123teste",
                 "almeida",
                 new Date(System.currentTimeMillis()),
+                "facebook",
+                "23232323",
                 "321321311"
         )
         candidato.setId(idCandidato)
@@ -110,6 +117,8 @@ class CurtidaServiceTest {
                 "123teste",
                 "almeida",
                 new Date(System.currentTimeMillis()),
+                "linkdln",
+                "12121212",
                 "321321311"
         )
         candidato.setId(id)
@@ -160,6 +169,8 @@ class CurtidaServiceTest {
                 "123teste",
                 "almeida",
                 new Date(System.currentTimeMillis()),
+                "teste rede social",
+                "11121212",
                 "321321311"
         )
         candidato.setId(idCandidato)
@@ -175,12 +186,13 @@ class CurtidaServiceTest {
         )
         empresa.setId(idEmpresa)
 
+        CandidatoCurtido candidatoCurtido = new CandidatoCurtido(idCandidato, idEmpresa)
 
         when(curtidaDao.verificaCurtidaDaEmpresa(idEmpresa, idCandidato)).thenReturn(null)
 
-        curtidaService.curtirCandidato(idCandidato, idEmpresa)
+        curtidaService.curtirCandidato(candidatoCurtido)
 
-        verify(curtidaService).curtirCandidato(idCandidato, idEmpresa)
+        verify(curtidaService).curtirCandidato(candidatoCurtido)
     }
 
     @Test
@@ -198,6 +210,8 @@ class CurtidaServiceTest {
                 "123teste",
                 "almeida",
                 new Date(System.currentTimeMillis()),
+                "tetste",
+                "11121212",
                 "321321311"
         )
         candidato.setId(idCandidato)
@@ -213,11 +227,12 @@ class CurtidaServiceTest {
         )
         empresa.setId(idEmpresa)
 
+        CandidatoCurtido candidatoCurtido = new CandidatoCurtido(idCandidato, idEmpresa)
 
         when(curtidaDao.verificaCurtidaDoCandidato(idCandidato)).thenReturn(idVaga)
 
-        curtidaService.curtirCandidato(idCandidato, idEmpresa)
+        curtidaService.curtirCandidato(candidatoCurtido)
 
-        verify(curtidaService).curtirCandidato(idCandidato, idEmpresa)
+        verify(curtidaService).curtirCandidato(candidatoCurtido)
     }
 }

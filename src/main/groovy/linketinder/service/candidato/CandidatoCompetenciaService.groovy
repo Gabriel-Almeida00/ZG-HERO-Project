@@ -2,6 +2,7 @@ package linketinder.service.candidato
 
 import linketinder.dao.candidato.ICandidatoCompetenciaDao
 import linketinder.model.CandidatoCompetencia
+import linketinder.model.dto.CandidatoCompetenciaDTO
 import linketinder.model.dto.CompetenciaDTO
 
 class CandidatoCompetenciaService implements ICandidatoCompetenciaService {
@@ -14,6 +15,11 @@ class CandidatoCompetenciaService implements ICandidatoCompetenciaService {
     @Override
     List<CompetenciaDTO> listarCompetenciasPorCandidato(Integer idCandidato) {
         return candidatoCompetenciaDao.listarCompetenciasPorCandidato(idCandidato)
+    }
+
+    @Override
+    CandidatoCompetenciaDTO buscarCompetenciaDoCandidatoPorId(Integer id) {
+        return this.candidatoCompetenciaDao.buscarCompetenciaDoCandidatoPorId(id)
     }
 
     @Override

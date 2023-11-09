@@ -52,6 +52,8 @@ class CandidatoExperienciaServiceTest {
                 "123teste",
                 "almeida",
                 new Date(System.currentTimeMillis()),
+                "teste",
+                "1123244",
                 "321321311"
         )
         candidatoMock.setId(idCandidato)

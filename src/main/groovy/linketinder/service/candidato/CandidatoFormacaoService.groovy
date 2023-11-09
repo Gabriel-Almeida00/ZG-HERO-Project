@@ -26,6 +26,11 @@ class CandidatoFormacaoService implements ICandidatoFormacaoService {
     }
 
     @Override
+    Formacao buscarFormacaoPorId(Integer idFormacao) {
+        return this.formacaoDao.buscarFormacaoPorId(idFormacao)
+    }
+
+    @Override
     List<Formacao> listarFormacoesPorCandidato(Integer idCandidato) {
         return formacaoDao.listarFormacoesPorCandidato(idCandidato)
     }

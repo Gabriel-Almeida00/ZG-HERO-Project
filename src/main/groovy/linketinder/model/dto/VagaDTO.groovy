@@ -1,31 +1,29 @@
 package linketinder.model.dto
 
 class VagaDTO {
-    private Integer id
+    private Integer idVaga
     private String nome
     private String descricao
-    private List<String> nomeCompetencia
+    private String cidade
+    private FormacaoVagaDTO formacao
+    private ExperienciaVagaDTO experiencia
+    private List<CompetenciaCandidatoDTO> competencias
 
-    VagaDTO(Integer id, String nome, String descricao, List<String> nomeCompetencia) {
-        this.id = id
+    VagaDTO(
+            Integer idVaga,
+            String nome,
+            String descricao,
+            String cidade,
+            FormacaoVagaDTO formacao,
+            ExperienciaVagaDTO experiencia,
+            List<CompetenciaCandidatoDTO> competencias
+    ) {
+        this.idVaga = idVaga
         this.nome = nome
         this.descricao = descricao
-        this.nomeCompetencia = nomeCompetencia
-    }
-
-    Integer getId() {
-        return id
-    }
-
-    String getNome() {
-        return nome
-    }
-
-    String getDescricao() {
-        return descricao
-    }
-
-    List<String> getNomeCompetencia() {
-        return nomeCompetencia
+        this.cidade = cidade
+        this.formacao = formacao
+        this.experiencia = experiencia
+        this.competencias = competencias
     }
 }

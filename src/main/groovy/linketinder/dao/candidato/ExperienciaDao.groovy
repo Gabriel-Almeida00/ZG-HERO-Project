@@ -104,7 +104,7 @@ class ExperienciaDao implements IExperienciaDao {
 
     @Override
     Experiencia buscarExperienciaPorId(Integer idExperiencia) throws SQLException {
-        String sql = "SELECT idCandidato, cargo, empresa, idNivelExperiencia FROM experiencias WHERE id = ?"
+        String sql = "SELECT id, idCandidato, cargo, empresa, idNivelExperiencia FROM experiencias WHERE id = ?"
 
         try (Connection connection = databaseConnection.getConnection()
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -120,12 +120,15 @@ class ExperienciaDao implements IExperienciaDao {
 
     private Experiencia retornarIdExperienciaResultSet(ResultSet resultSet) throws SQLException {
         if (resultSet.next()) {
+            Integer id = resultSet.getInt("id")
             Integer idCandidato = resultSet.getInt("idCandidato")
             String cargo = resultSet.getString("cargo")
             String empresa = resultSet.getString("empresa")
             Integer nivel = resultSet.getInt("idNivelExperiencia")
 
-            return new Experiencia(idCandidato, cargo, empresa, nivel)
+            Experiencia experiencia = new Experiencia(idCandidato, cargo, empresa, nivel)
+            experiencia.setId(id)
+            return experiencia
         } else {
             throw new ExperienciaNotFoundException("Experiencia não encontrada")
         }
