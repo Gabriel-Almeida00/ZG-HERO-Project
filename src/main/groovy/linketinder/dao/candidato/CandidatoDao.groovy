@@ -133,7 +133,6 @@ class CandidatoDao implements ICandidatoDao {
                     experiencias,
                     competencias
             )
-
             candidatosDTO.add(candidatoDTO)
         }
         return candidatosDTO
