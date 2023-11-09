@@ -5,8 +5,8 @@ class VagaDTO {
     private String nome
     private String descricao
     private String cidade
-    private List<FormacaoVagaDTO> formacao
-    private List<ExperienciaVagaDTO> experiencia
+    private FormacaoVagaDTO formacao
+    private ExperienciaVagaDTO experiencia
     private List<CompetenciaCandidatoDTO> competencias
 
     VagaDTO(
@@ -14,8 +14,8 @@ class VagaDTO {
             String nome,
             String descricao,
             String cidade,
-            List<FormacaoVagaDTO> formacao,
-            List<ExperienciaVagaDTO> experiencia,
+            FormacaoVagaDTO formacao,
+            ExperienciaVagaDTO experiencia,
             List<CompetenciaCandidatoDTO> competencias
     ) {
         this.idVaga = idVaga

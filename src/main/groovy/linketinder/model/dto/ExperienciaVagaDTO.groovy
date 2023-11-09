@@ -4,8 +4,14 @@ class ExperienciaVagaDTO {
     private Integer nivel
     private String nome
 
-    ExperienciaVagaDTO(Integer nivel, String nome) {
+    ExperienciaVagaDTO() {
+    }
+
+    void setNivel(Integer nivel) {
         this.nivel = nivel
+    }
+
+    void setNome(String nome) {
         this.nome = nome
     }
 }

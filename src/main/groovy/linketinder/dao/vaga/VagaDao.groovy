@@ -62,12 +62,12 @@ class VagaDao implements IVagaDao {
             String nome = resultSet.getString("nome_vaga")
             String descricao = resultSet.getString("descricao_vaga")
             String cidade = resultSet.getString("cidade")
-            String formacao = resultSet.getString("formacao")
-            String experiencia = resultSet.getString("experiencia")
+
 
             List<CompetenciaCandidatoDTO> competencias = new ArrayList<>()
-            List<FormacaoVagaDTO> formacoes = new ArrayList<>()
-            List<ExperienciaVagaDTO> experiencias = new ArrayList<>()
+            ExperienciaVagaDTO experiencia = new ExperienciaVagaDTO()
+            FormacaoVagaDTO formacao = new FormacaoVagaDTO()
+
             do {
                 String competencia = resultSet.getString("competencia")
                 Integer nivel = resultSet.getInt("nivel_competencia")
@@ -82,10 +82,12 @@ class VagaDao implements IVagaDao {
                     competencias.add(new CompetenciaCandidatoDTO(competencia, nivel))
                 }
                 if(idFormacao != null && nomeFormacao != null){
-                    formacoes.add(new FormacaoVagaDTO(idFormacao, nomeFormacao))
+                    formacao.setNivel(idFormacao)
+                    formacao.setNome(nomeFormacao)
                 }
                 if(idExperiencia != null && nomeExperiencia != null){
-                    experiencias.add(new ExperienciaVagaDTO(idExperiencia, nomeExperiencia))
+                    experiencia.setNivel(idExperiencia)
+                    experiencia.setNome(nomeFormacao)
                 }
             } while (resultSet.next() && resultSet.getInt("id_vaga") == id)
 
@@ -94,8 +96,8 @@ class VagaDao implements IVagaDao {
                     nome,
                     descricao,
                     cidade,
-                    formacoes,
-                    experiencias,
+                    formacao,
+                    experiencia,
                     competencias
             )
             vagasList.add(vagaDTO)
