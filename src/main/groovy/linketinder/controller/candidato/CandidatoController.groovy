@@ -46,13 +46,7 @@ class CandidatoController extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        servletResponse.methodPost(response, () -> {
-            Candidato candidato = servletUtils.parseObjectFromRequest(request, Candidato.class)
-            this.candidatoService.cadastrarCandidato(candidato)
-        })
-    }
+
 
 
     @Override

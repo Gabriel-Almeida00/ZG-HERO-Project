@@ -67,26 +67,7 @@ class CandidatoServiceTest {
         assert candidatoMock == result
     }
 
-    @Test
-    void testCadastrarCandidato() throws SQLException {
-        Candidato candidatoMock = new Candidato(
-                "gabriel",
-                "gabrel@gmail.com",
-                "brasil",
-                "32132",
-                "descrição",
-                "123teste",
-                "almeida",
-                new Date(System.currentTimeMillis()),
-                "teste",
-                "11232323",
-                "321321311"
-        )
 
-        candidatoService.cadastrarCandidato(candidatoMock)
-
-        verify(candidatoService).cadastrarCandidato(candidatoMock)
-    }
 
     @Test
     void testAtualizarCandidato() throws SQLException {

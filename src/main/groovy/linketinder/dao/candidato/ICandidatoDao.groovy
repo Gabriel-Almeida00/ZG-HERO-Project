@@ -7,7 +7,6 @@ import linketinder.model.dto.CandidatoDTO
 interface ICandidatoDao {
 
     List<CandidatoDTO> listarCandidatos()
-    void adicionarCandidato(Candidato candidato)
 
     Candidato obterCandidatoPorId(Integer id)
     void atualizarCandidato(Candidato candidato)
