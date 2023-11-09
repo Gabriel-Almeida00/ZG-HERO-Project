@@ -2,6 +2,9 @@
 
 O Linketinder é um sistema de contratação de funcionários inspirado no Linkedin e no Tinder, desenvolvido em Groovy. Ele permite cadastrar candidatos (Pessoa Física) e empresas (Pessoa Jurídica) com suas respectivas informações e competências. Além disso, oferece a funcionalidade de encontrar candidatos compatíveis com as competências desejadas.
 
+## Microservice de Cadastro
+- foi desenvolvido um microservice de cadastro disponivel nesse repositório: https://github.com/Gabriel-Almeida00/linketinder_microservices
+
 ## Funcionalidades
 
 - Listar empresas cadastradas
