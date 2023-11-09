@@ -23,10 +23,7 @@ class CandidatoService implements ICandidatoService {
         return candidato
     }
 
-    @Override
-    void cadastrarCandidato(Candidato candidato) {
-        candidatoDao.adicionarCandidato(candidato)
-    }
+
 
     @Override
     void atualizarCandidato(Candidato candidato) {
